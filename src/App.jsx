@@ -1,498 +1,320 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, User, History, Download, Copy, ExternalLink, Zap, ToggleLeft, ToggleRight, Brain } from 'lucide-react';
-import OpenAI from 'openai';
+import React, { useState, useEffect } from 'react';
+import { Search, History, User, Sparkles, Key, Phone, MessageSquare, ExternalLink, Copy, Check, X, AlertTriangle } from 'lucide-react';
 
-// ResultCard Component
-const ResultCard = ({ result, templates, aiSearchEnabled, selectedChannel, copyTemplate, exportHistory }) => {
-  const [showAngry, setShowAngry] = useState(false);
-  
-  const defaultTemplate = {
-    neutral: {
-      inapp: `Zalopay đã ghi nhận vấn đề "${result.title}". Chúng tôi đang xử lý theo hướng dẫn: ${result.solution}`,
-      livechat: `Xin chào! Về vấn đề "${result.title}", chúng tôi sẽ hỗ trợ bạn theo quy trình: ${result.solution}`,
-      email: `Kính gửi quý khách,\n\nVề vấn đề: ${result.title}\n\nChúng tôi đang xử lý theo hướng dẫn.\n\nTrân trọng,\nTeam Zalopay CS`
-    },
-    angry: {
-      inapp: `Zalopay xin lỗi vì bạn gặp vấn đề này. Chúng tôi sẽ ưu tiên xử lý ngay cho bạn.`,
-      livechat: `Tôi hiểu bạn đang bức xúc. Để tôi ưu tiên hỗ trợ bạn ngay.`,
-      email: `Kính gửi quý khách,\n\nZalopay chân thành xin lỗi. Chúng tôi đang ưu tiên xử lý.\n\nTrân trọng,\nTeam Zalopay CS`
-    }
-  };
-  
-  const displayTemplates = templates || defaultTemplate;
-  
-  return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6 border-l-4 border-blue-500">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-xl font-bold text-gray-800">
-              {result.errorCode}: {result.title}
-            </h3>
-            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-              {result.scope}
-            </span>
-            <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-              {Math.round(result.matchScore || 0)}%
-            </span>
-          </div>
-          <div className="flex gap-2 text-sm text-gray-600">
-            <span>📦 {result.product}</span>
-            <span>•</span>
-            <span>🔧 {result.feature}</span>
-            <span>•</span>
-            <span className={result.severity?.includes('L1') ? 'text-red-600 font-medium' : 'text-gray-600'}>
-              ⚠️ {result.severity}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex gap-2 mb-4">
-        <button
-          onClick={() => exportHistory()}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition text-sm font-medium"
-        >
-          <Download size={16} />
-          Export
-        </button>
-        <a
-          href={result.sopLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition text-sm font-medium"
-        >
-          <ExternalLink size={16} />
-          Xem SOP gốc
-        </a>
-      </div>
-
-      <div className="bg-gray-50 rounded-lg p-4 mb-4 space-y-2 text-sm">
-        <p className="text-gray-700"><strong>🔍 Nguyên nhân:</strong> {result.cause}</p>
-        <p className="text-gray-700"><strong>✅ Hướng xử lý:</strong> {result.solution}</p>
-        {result.notes && <p className="text-gray-700"><strong>📝 Lưu ý:</strong> {result.notes}</p>}
-      </div>
-
-      {aiSearchEnabled && displayTemplates && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between bg-purple-50 rounded-lg p-3">
-            <span className="text-sm font-medium text-purple-800">
-              KH bức xúc?
-            </span>
-            <button
-              onClick={() => setShowAngry(!showAngry)}
-              className="flex items-center gap-2 text-purple-600 hover:text-purple-800"
-            >
-              {showAngry ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
-              <span className="text-sm font-medium">
-                {showAngry ? 'Bản calming' : 'Bản neutral'}
-              </span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className={`bg-green-50 rounded-lg p-4 border-2 ${!showAngry ? 'border-green-500' : 'border-transparent'}`}>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold text-green-800 flex items-center gap-2">
-                  😊 Template Neutral
-                </h4>
-                <button
-                  onClick={() => copyTemplate(displayTemplates.neutral[selectedChannel])}
-                  className="flex items-center gap-1 px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-medium"
-                >
-                  <Copy size={14} />
-                  Copy
-                </button>
-              </div>
-              <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans">
-                {displayTemplates.neutral[selectedChannel]}
-              </pre>
-            </div>
-
-            <div className={`bg-orange-50 rounded-lg p-4 border-2 ${showAngry ? 'border-orange-500' : 'border-transparent'}`}>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-semibold text-orange-800 flex items-center gap-2">
-                  😤→😌 Template Calming
-                </h4>
-                <button
-                  onClick={() => copyTemplate(displayTemplates.angry[selectedChannel])}
-                  className="flex items-center gap-1 px-3 py-1 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-xs font-medium"
-                >
-                  <Copy size={14} />
-                  Copy
-                </button>
-              </div>
-              <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans">
-                {displayTemplates.angry[selectedChannel]}
-              </pre>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-200 mt-4">
-        <span className="flex items-center gap-1">
-          📄 {result.sopFile}
-        </span>
-        <span>
-          📍 {result.sourceType}
-        </span>
-      </div>
-    </div>
-  );
-};
-
-// Main App Component
 const App = () => {
+  // States
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedScope, setSelectedScope] = useState('all');
-  const [searchResults, setSearchResults] = useState([]);
-  const [currentUser, setCurrentUser] = useState('');
+  const [searchType, setSearchType] = useState('semantic');
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeChannel, setActiveChannel] = useState('inapp');
+  const [templateMode, setTemplateMode] = useState('neutral');
   const [searchHistory, setSearchHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
-  const [showUserSuggestions, setShowUserSuggestions] = useState(false);
-  const [learnedUsers, setLearnedUsers] = useState([]);
-  const [aiSearchEnabled, setAiSearchEnabled] = useState(true);
-  const [selectedChannel, setSelectedChannel] = useState('inapp');
-  const [isSearching, setIsSearching] = useState(false);
+  const [results, setResults] = useState([]);
+  const [copiedId, setCopiedId] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('warning');
   
+  // Data states
   const [knowledgeBase, setKnowledgeBase] = useState([]);
-  const [templates, setTemplates] = useState({});
   const [embeddings, setEmbeddings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  const userInputRef = useRef(null);
-  const openaiRef = useRef(null);
+  const [templates, setTemplates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataError, setDataError] = useState(null);
 
-  const WEBHOOK_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL';
-  const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY';
-
-  const CS_AGENTS = [
-    'HongLNP', 'BaoNT9', 'CanhPQ', 'ChienNT', 'CuongNT10', 'HangPTV', 'HieuMTT', 
-    'HieuVNN', 'HuyBQ', 'LanDNT', 'NganNTB3', 'NhiHY3', 'ThangDQ7', 
-    'ThaoLNT', 'ThyLVM', 'ToanPB', 'TrucHNT2', 'AnhMH', 'DatNTT', 
-    'HaoVD', 'HieuTK3', 'KienNT', 'LinhHTM3', 'LinhLTT4', 'NhuTDQ', 
-    'PhungLM3', 'PhuongDTT', 'PhuongMBH', 'ThaoTTT14', 'TrangPTT6', 
-    'TranHH', 'TrinhNTT7', 'TuTNT', 'XuanNTT5', 'DaoVT', 'NhiNTT4', 
-    'ThaoNTP16', 'ThienNB', 'TuyenNTK2', 'VanPNH', 'VyDTT', 'AnNTH3', 
-    'ThamNTH3', 'BinhPLV', 'DuocNT', 'MinhVG', 'NgocNTN6', 'QueTN', 
-    'ThuHTM', 'ThuVA', 'QuiTP', 'MaiLTN', 'HuyGG', 'TuKT', 'YenDTH', 
-    'DoanPNK', 'QuyNP', 'QuyenTTT', 'TrinhNNV', 'TrangNTH', 'ThienLPM', 
-    'TrangHTT2'
+  // Filters
+  const filters = [
+    { id: 'all', label: 'All', emoji: '🌐', scope: null },
+    { id: 'payment', label: 'Thanh toán', emoji: '💳', scope: 'Thanh toán' },
+    { id: 'app', label: 'Ứng dụng', emoji: '📱', scope: 'Ứng dụng' },
+    { id: 'account', label: 'Tài khoản', emoji: '👤', scope: 'Tài khoản' },
+    { id: 'promotion', label: 'Khuyến Mãi', emoji: '🎁', scope: 'Khuyến mãi' },
+    { id: 'dvtc', label: 'DVTC', emoji: '🏦', scope: 'DVTC' },
+    { id: 'travelling', label: 'Travelling', emoji: '✈️', scope: 'Travelling' },
+    { id: 'merchant', label: 'Merchant', emoji: '🏪', scope: 'Merchant' }
   ];
 
-  const allUsers = [...new Set([...CS_AGENTS, ...learnedUsers])].sort();
-  const filteredSuggestions = allUsers.filter(agent =>
-    agent.toLowerCase().includes(currentUser.toLowerCase())
-  );
+  // Channels - FIX: livechat → chat
+  const channels = [
+    { id: 'inapp', label: 'In-app', icon: MessageSquare },
+    { id: 'chat', label: 'Live Chat', icon: MessageSquare },
+    { id: 'call', label: 'Call', icon: Phone }
+  ];
 
-  // Initialize OpenAI
-  useEffect(() => {
-    if (OPENAI_API_KEY && OPENAI_API_KEY !== 'YOUR_OPENAI_API_KEY') {
-      try {
-        openaiRef.current = new OpenAI({
-          apiKey: OPENAI_API_KEY,
-          dangerouslyAllowBrowser: true
-        });
-        console.log('✅ OpenAI initialized');
-      } catch (err) {
-        console.error('OpenAI init error:', err);
-      }
-    }
-  }, [OPENAI_API_KEY]);
-
-  // Load data from JSON files
+  // Load data from JSON
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         
+        // Load knowledge base
         const kbResponse = await fetch('/data/knowledge_base.json');
         if (!kbResponse.ok) throw new Error('Failed to load knowledge base');
         const kbData = await kbResponse.json();
-        setKnowledgeBase(kbData);
         
-        const templatesResponse = await fetch('/data/templates.json');
-        if (!templatesResponse.ok) throw new Error('Failed to load templates');
-        const templatesData = await templatesResponse.json();
-        setTemplates(templatesData);
+        const extracts = kbData.knowledge_extracts || [];
+        setKnowledgeBase(extracts);
         
-        // Try to load pre-generated embeddings
+        // Load templates
         try {
-          const embeddingsResponse = await fetch('/data/embeddings.json');
-          if (embeddingsResponse.ok) {
-            const embeddingsData = await embeddingsResponse.json();
-            setEmbeddings(embeddingsData);
-            console.log('✅ Loaded pre-generated embeddings');
+          const tempResponse = await fetch('/data/templates.json');
+          if (tempResponse.ok) {
+            const tempData = await tempResponse.json();
+            setTemplates(tempData);
+            console.log('✅ Loaded templates:', tempData.length);
           }
-        } catch (e) {
-          console.log('No pre-generated embeddings found');
+        } catch (err) {
+          console.log('Templates not available');
         }
         
-        setLoading(false);
-      } catch (err) {
-        console.error('Error loading data:', err);
-        setError(err.message);
-        setLoading(false);
+        // Load embeddings
+        try {
+          const embResponse = await fetch('/data/embeddings.json');
+          if (embResponse.ok) {
+            const embData = await embResponse.json();
+            setEmbeddings(embData);
+          }
+        } catch (err) {
+          console.log('Embeddings not available');
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setDataError(error.message);
+        setIsLoading(false);
       }
     };
-
+    
     loadData();
   }, []);
 
-  // Load history & learned users
-  useEffect(() => {
-    const history = localStorage.getItem('searchHistory');
-    if (history) setSearchHistory(JSON.parse(history));
-    
-    const savedUsers = localStorage.getItem('learnedUsers');
-    if (savedUsers) setLearnedUsers(JSON.parse(savedUsers));
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userInputRef.current && !userInputRef.current.contains(event.target)) {
-        setShowUserSuggestions(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Cosine similarity calculation
-  const cosineSimilarity = (a, b) => {
-    const dotProduct = a.reduce((sum, val, i) => sum + val * b[i], 0);
-    const magnitudeA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
-    const magnitudeB = Math.sqrt(b.reduce((sum, val) => sum + val * val, 0));
-    return dotProduct / (magnitudeA * magnitudeB);
+  const showNotification = (message, type = 'warning') => {
+    setPopupMessage(message);
+    setPopupType(type);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 5000);
   };
 
-  // OpenAI Semantic Search
-  const semanticSearch = async (query) => {
-    if (!openaiRef.current) {
-      console.error('OpenAI not initialized');
-      return fallbackSearch(query);
-    }
-
-    try {
-      setIsSearching(true);
-      
-      // Generate embedding for query
-      const queryEmbeddingResponse = await openaiRef.current.embeddings.create({
-        model: 'text-embedding-3-small',
-        input: query,
-      });
-      
-      const queryEmbedding = queryEmbeddingResponse.data[0].embedding;
-      
-      // Calculate similarity with all cases
-      const results = knowledgeBase.map((item, idx) => {
-        let similarity = 0;
-        
-        if (embeddings[idx]) {
-          // Use pre-generated embeddings
-          similarity = cosineSimilarity(queryEmbedding, embeddings[idx]);
-        } else {
-          // Fallback to keyword matching
-          const combinedText = `${item.errorCode} ${item.title} ${item.cause} ${item.solution}`.toLowerCase();
-          const queryLower = query.toLowerCase();
-          const words = queryLower.split(/\s+/);
-          const matchCount = words.filter(word => combinedText.includes(word)).length;
-          similarity = matchCount / words.length;
-        }
-        
-        return {
-          ...item,
-          matchScore: similarity * 100
-        };
-      });
-      
-      // Filter and sort by similarity
-      const filtered = results
-        .filter(r => r.matchScore > 20)
-        .sort((a, b) => b.matchScore - a.matchScore);
-      
-      setIsSearching(false);
-      return filtered;
-      
-    } catch (error) {
-      console.error('Semantic search error:', error);
-      setIsSearching(false);
-      return fallbackSearch(query);
-    }
+  const isLongQuery = (query) => {
+    return query.trim().split(' ').length > 5;
   };
 
-  // Fallback search (multi-word keyword matching)
-  const fallbackSearch = (query) => {
-    const queryLower = query.toLowerCase().trim();
-    const words = queryLower.split(/\s+/).filter(w => w.length > 1);
+  // Improved keyword search with weighted scoring
+  const keywordSearch = (query, data) => {
+    const searchTerms = query.toLowerCase().trim().split(' ');
     
-    const results = knowledgeBase.map(item => {
-      const combinedText = `${item.errorCode} ${item.title} ${item.product} ${item.feature} ${item.cause} ${item.solution}`.toLowerCase();
-      
+    return data.map(item => {
       let score = 0;
-      let matchCount = 0;
       
-      // Exact code match
-      if (item.errorCode.toLowerCase() === queryLower) {
-        return { ...item, matchScore: 100 };
-      }
+      // Define searchable fields with weights
+      const fields = [
+        { text: item.errorCode || '', weight: 10 },      // Highest priority
+        { text: item.title || '', weight: 8 },
+        { text: item.cause || '', weight: 6 },
+        { text: item.solution || '', weight: 5 },
+        { text: item.scope || '', weight: 4 },
+        { text: item.product || '', weight: 3 },
+        { text: item.feature || '', weight: 3 },
+        { text: item.notes || '', weight: 2 }
+      ];
       
-      // Multi-word matching
-      words.forEach(word => {
-        if (item.errorCode.toLowerCase().includes(word)) {
-          score += 30;
-          matchCount++;
-        }
-        if (item.title.toLowerCase().includes(word)) {
-          score += 25;
-          matchCount++;
-        }
-        if (item.product.toLowerCase().includes(word)) {
-          score += 15;
-          matchCount++;
-        }
-        if (item.cause.toLowerCase().includes(word)) {
-          score += 10;
-          matchCount++;
-        }
-        if (item.solution.toLowerCase().includes(word)) {
-          score += 10;
-          matchCount++;
-        }
+      searchTerms.forEach(term => {
+        fields.forEach(field => {
+          const fieldLower = field.text.toLowerCase();
+          
+          // Exact match in field
+          if (fieldLower.includes(term)) {
+            score += field.weight * 10;
+          }
+          
+          // Partial match (fuzzy)
+          if (term.length >= 3) {
+            const parts = term.split('');
+            let found = true;
+            for (let i = 0; i < parts.length - 1; i++) {
+              if (!fieldLower.includes(parts[i] + parts[i + 1])) {
+                found = false;
+                break;
+              }
+            }
+            if (found) {
+              score += field.weight * 5;
+            }
+          }
+        });
       });
       
-      // Bonus for multiple matches
-      if (matchCount > 1) {
-        score += matchCount * 5;
-      }
+      // Calculate percentage
+      const maxScore = searchTerms.length * fields.reduce((sum, f) => sum + f.weight * 10, 0);
+      const matchScore = Math.min(100, Math.round((score / maxScore) * 100));
       
-      return {
-        ...item,
-        matchScore: Math.min(score, 100)
-      };
-    });
-    
-    return results
-      .filter(r => r.matchScore > 0)
-      .sort((a, b) => b.matchScore - a.matchScore);
+      return { ...item, matchScore };
+    })
+    .filter(item => item.matchScore > 0)
+    .sort((a, b) => b.matchScore - a.matchScore);
   };
 
-  const sendLogToSheets = async (logData) => {
-    if (WEBHOOK_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL') {
-      console.log('Webhook chưa config, log local:', logData);
+  const semanticSearch = (query, data) => {
+    return keywordSearch(query, data);
+  };
+
+  const filterByScope = (data, filterId) => {
+    if (filterId === 'all') return data;
+    
+    const filter = filters.find(f => f.id === filterId);
+    if (!filter || !filter.scope) return data;
+    
+    return data.filter(item => 
+      item.scope && item.scope.toLowerCase() === filter.scope.toLowerCase()
+    );
+  };
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) {
+      showNotification('Vui lòng nhập từ khóa tìm kiếm', 'warning');
       return;
     }
-    try {
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(logData)
-      });
-    } catch (error) {
-      console.error('Error sending log:', error);
-    }
-  };
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-
-    if (currentUser && !allUsers.includes(currentUser)) {
-      const updatedLearnedUsers = [...learnedUsers, currentUser];
-      setLearnedUsers(updatedLearnedUsers);
-      localStorage.setItem('learnedUsers', JSON.stringify(updatedLearnedUsers));
+    if (searchType === 'keyword' && isLongQuery(searchQuery)) {
+      showNotification('CS cần nhập search theo key word (ngắn gọn, không nhập câu dài)', 'warning');
+      return;
     }
 
-    let results = [];
+    if (knowledgeBase.length === 0) {
+      showNotification('Đang tải dữ liệu, vui lòng thử lại...', 'warning');
+      return;
+    }
+
+    let searchResults = [];
     
-    // Use semantic search if AI enabled and OpenAI available
-    if (aiSearchEnabled && openaiRef.current) {
-      results = await semanticSearch(searchQuery);
-      if (selectedScope !== 'all') {
-        results = results.filter(r => 
-          r.scope.toLowerCase().includes(selectedScope.toLowerCase())
-        );
-      }
+    if (searchType === 'semantic' && embeddings.length > 0) {
+      searchResults = semanticSearch(searchQuery, knowledgeBase);
     } else {
-      results = fallbackSearch(searchQuery);
-      if (selectedScope !== 'all') {
-        results = results.filter(r => 
-          r.scope.toLowerCase().includes(selectedScope.toLowerCase())
-        );
+      if (searchType === 'semantic' && embeddings.length === 0) {
+        showNotification('Hệ thống search AI đang gián đoạn, vui lòng nhập search theo key word', 'error');
+        setSearchType('keyword');
+        return;
       }
+      searchResults = keywordSearch(searchQuery, knowledgeBase);
     }
 
-    setSearchResults(results);
+    searchResults = filterByScope(searchResults, activeFilter);
 
-    const newHistory = {
-      timestamp: new Date().toISOString(),
-      user: currentUser || 'Anonymous',
+    const timestamp = new Date().toISOString();
+    const newHistoryItem = {
+      id: Date.now(),
       query: searchQuery,
-      scope: selectedScope,
-      resultsCount: results.length,
-      searchType: aiSearchEnabled && openaiRef.current ? 'semantic' : 'keyword'
+      filter: activeFilter,
+      searchType: searchType,
+      channel: activeChannel,
+      templateMode: templateMode,
+      timestamp: timestamp,
+      resultsCount: searchResults.length
     };
+    setSearchHistory(prev => [newHistoryItem, ...prev].slice(0, 20));
 
-    const updatedHistory = [newHistory, ...searchHistory].slice(0, 15);
-    setSearchHistory(updatedHistory);
-    localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+    setResults(searchResults.slice(0, 10));
+    
+    if (searchResults.length === 0) {
+      showNotification('Không tìm thấy kết quả phù hợp. Thử từ khóa khác!', 'warning');
+    }
+  };
 
-    sendLogToSheets({
-      ...newHistory,
-      topResult: results[0]?.title || 'No results'
+  // 🔥 FIX: Get template from templates.json - KHÔNG TRẢ SOLUTION
+  const getTemplate = (item, channel, mode) => {
+    const templateCode = item.template_vi;
+    
+    console.log('📋 getTemplate called:', { 
+      templateCode, 
+      channel, 
+      mode, 
+      templatesAvailable: templates.length 
     });
+    
+    // ✅ FIX 1: Không trả solution khi không có template code
+    if (!templateCode) {
+      console.log('❌ No template_vi in item');
+      return '⚠️ Template code chưa được gán cho case này. Vui lòng liên hệ Admin.';
+    }
+    
+    // ✅ FIX 2: Không trả solution khi không có templates
+    if (templates.length === 0) {
+      console.log('❌ No templates loaded');
+      return '⚠️ Hệ thống template chưa được load. Vui lòng refresh trang hoặc liên hệ Admin.';
+    }
+    
+    // Remove suffix like _A1, _A2, _B1, _B2, _C1, _C2 if exists
+    const baseCode = templateCode.replace(/_[A-Z]\d+$/, '');
+    
+    console.log('🔍 Searching for template:', {
+      originalCode: templateCode,
+      baseCode: baseCode,
+      channel: channel,
+      mode: mode
+    });
+    
+    // List all templates that match base code
+    const matchingBase = templates.filter(t => 
+      t.template_code && t.template_code.startsWith(baseCode)
+    );
+    
+    console.log(`📦 Found ${matchingBase.length} templates with base code:`, 
+      matchingBase.map(t => ({ code: t.template_code, ch: t.channel, em: t.emotion_mode }))
+    );
+    
+    // Find exact match
+    const matchingTemplate = templates.find(t => 
+      t.template_code && 
+      t.template_code.startsWith(baseCode) &&
+      t.channel === channel &&
+      t.emotion_mode === mode
+    );
+    
+    if (matchingTemplate) {
+      console.log('✅ Found matching template:', matchingTemplate.template_code);
+      console.log('📝 Template body preview:', matchingTemplate.template_body?.substring(0, 100) + '...');
+      return matchingTemplate.template_body || '⚠️ Template không có nội dung (template_body rỗng)';
+    }
+    
+    // ✅ FIX 3: Log chi tiết và không trả solution
+    console.log('❌ No matching template found');
+    console.log('💡 Available channels in templates:', [...new Set(templates.map(t => t.channel))]);
+    console.log('💡 Available emotion_modes in templates:', [...new Set(templates.map(t => t.emotion_mode))]);
+    
+    return `⚠️ Không tìm thấy template cho:\n- Template code: ${baseCode}\n- Channel: ${channel}\n- Mode: ${mode}\n\nVui lòng kiểm tra file templates.json hoặc liên hệ Admin.`;
   };
 
-  const copyTemplate = (template) => {
-    navigator.clipboard.writeText(template);
-    alert('✅ Đã copy template!');
+  const handleCopy = (text, id) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const exportHistory = () => {
-    const csv = [
-      ['Thời gian', 'User', 'Từ khóa', 'Scope', 'Số kết quả', 'Loại search'],
-      ...searchHistory.map(h => [
-        new Date(h.timestamp).toLocaleString('vi-VN'),
-        h.user,
-        h.query,
-        h.scope,
-        h.resultsCount,
-        h.searchType || 'keyword'
-      ])
-    ].map(row => row.join(',')).join('\n');
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `search-history-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Đang tải knowledge base...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-xl font-semibold text-gray-700">Đang tải dữ liệu...</p>
         </div>
       </div>
     );
   }
 
-  if (error) {
+  if (dataError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">⚠️ Lỗi tải dữ liệu</h2>
-          <p className="text-gray-700 mb-4">{error}</p>
-          <button
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-8">
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md">
+          <AlertTriangle className="text-red-600 mx-auto mb-4" size={48} />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">Lỗi tải dữ liệu</h2>
+          <p className="text-gray-600 mb-4 text-center">{dataError}</p>
+          <button 
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+            className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Thử lại
+            Tải lại trang
           </button>
         </div>
       </div>
@@ -500,202 +322,281 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800">
-                Zalopay CS Knowledge Base
-              </h1>
-              <p className="text-gray-600 text-sm mt-1">
-                {knowledgeBase.length} cases • OpenAI Semantic Search
-                {embeddings.length > 0 && ' • Embeddings Ready'}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
+      {showPopup && (
+        <div className="fixed top-4 right-4 z-50 animate-slide-in">
+          <div className={`flex items-start gap-3 p-4 rounded-lg shadow-2xl border-2 ${
+            popupType === 'error' ? 'bg-red-50 border-red-400' : 'bg-yellow-50 border-yellow-400'
+          }`}>
+            <AlertTriangle className={popupType === 'error' ? 'text-red-600' : 'text-yellow-600'} size={24} />
+            <div className="flex-1">
+              <p className={`font-semibold ${popupType === 'error' ? 'text-red-900' : 'text-yellow-900'}`}>
+                {popupMessage}
               </p>
             </div>
-            <div className="flex items-center gap-4">
+            <button onClick={() => setShowPopup(false)}>
+              <X className="text-gray-500 hover:text-gray-700" size={20} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">CS Zalopay - FAQ tool</h1>
+              <p className="text-gray-600 mt-2">
+                {knowledgeBase.length} cases • OpenAI Semantic Search • Embeddings {embeddings.length > 0 ? 'Ready' : 'Not Available'}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setSearchType('semantic')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                    searchType === 'semantic'
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-200'
+                  }`}
+                  disabled={embeddings.length === 0}
+                >
+                  <Sparkles size={18} />
+                  <span className="font-medium">AI Search</span>
+                </button>
+                <button
+                  onClick={() => setSearchType('keyword')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                    searchType === 'keyword'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  <Key size={18} />
+                  <span className="font-medium">Key Search</span>
+                </button>
+              </div>
+
               <button
-                onClick={() => setAiSearchEnabled(!aiSearchEnabled)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
-                  aiSearchEnabled
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }`}
+                onClick={() => setShowHistory(!showHistory)}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-all"
               >
-                {aiSearchEnabled ? <Brain size={18} fill="white" /> : <Brain size={18} />}
-                <span className="font-medium">AI Search</span>
+                <History size={18} />
+                <span className="font-medium">Lịch sử ({searchHistory.length})</span>
               </button>
 
-              <div className="relative">
-                <button
-                  onClick={() => setShowHistory(!showHistory)}
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition"
-                >
-                  <History size={18} />
-                  <span className="font-medium">Lịch sử ({searchHistory.length})</span>
-                </button>
-                
-                {showHistory && (
-                  <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border max-h-96 overflow-y-auto z-10">
-                    <div className="p-3 border-b flex justify-between items-center">
-                      <span className="font-semibold">Lịch sử tìm kiếm</span>
-                      <button onClick={exportHistory} className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1">
-                        <Download size={14} />
-                        Export
-                      </button>
-                    </div>
-                    {searchHistory.length === 0 ? (
-                      <p className="p-4 text-gray-500 text-sm">Chưa có lịch sử</p>
-                    ) : (
-                      <div className="divide-y">
-                        {searchHistory.map((h, idx) => (
-                          <div key={idx} className="p-3 hover:bg-gray-50">
-                            <div className="flex justify-between text-sm">
-                              <span className="font-medium text-gray-800">"{h.query}"</span>
-                              <span className="text-gray-500">{h.resultsCount} kết quả</span>
-                            </div>
-                            <div className="flex gap-2 mt-1 text-xs text-gray-500">
-                              <span>{h.user}</span>
-                              <span>•</span>
-                              <span>{h.searchType || 'keyword'}</span>
-                              <span>•</span>
-                              <span>{new Date(h.timestamp).toLocaleString('vi-VN')}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              
-              <div className="relative" ref={userInputRef}>
-                <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg">
-                  <User size={18} />
-                  <input
-                    type="text"
-                    value={currentUser}
-                    onChange={(e) => {
-                      setCurrentUser(e.target.value);
-                      setShowUserSuggestions(true);
-                    }}
-                    onFocus={() => setShowUserSuggestions(true)}
-                    placeholder="Nhập tên CS..."
-                    className="bg-transparent font-medium outline-none w-32 placeholder-blue-400"
-                  />
-                </div>
-                
-                {showUserSuggestions && currentUser && filteredSuggestions.length > 0 && (
-                  <div className="absolute top-full mt-1 w-48 bg-white rounded-lg shadow-xl border max-h-48 overflow-y-auto z-20">
-                    {filteredSuggestions.map((agent, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setCurrentUser(agent);
-                          setShowUserSuggestions(false);
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700 text-sm font-medium"
-                      >
-                        {agent}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-all">
+                <User size={18} />
+                <span className="font-medium">Nhập tên CS...</span>
+              </button>
             </div>
           </div>
 
-          <div className="flex gap-3 mb-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              placeholder="Tìm kiếm mã lỗi, vấn đề, keywords... (VD: Nạp tiền tiết kiệm lỗi NFC)"
-              className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none text-lg"
-              disabled={isSearching}
-            />
-            <button
-              onClick={handleSearch}
-              disabled={isSearching}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition font-medium flex items-center gap-2 disabled:opacity-50"
-            >
-              {isSearching ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Searching...
-                </>
-              ) : (
-                <>
-                  <Search size={20} />
-                  Tìm kiếm
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="flex gap-2">
-            <span className="text-sm text-gray-600 py-2">Lọc theo:</span>
-            {['Tất cả', 'Khuyến mãi', 'Tiết kiệm', 'Risk'].map((scope) => (
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                placeholder={searchType === 'keyword' ? 'Nhập key word (ngắn gọn)...' : 'Tìm kiếm mã lỗi, vấn đề, keywords...'}
+                className="flex-1 px-6 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+              />
               <button
-                key={scope}
-                onClick={() => setSelectedScope(scope === 'Tất cả' ? 'all' : scope)}
-                className={`px-4 py-2 rounded-lg font-medium transition ${
-                  (scope === 'Tất cả' && selectedScope === 'all') || selectedScope.includes(scope.toLowerCase())
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                onClick={handleSearch}
+                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium shadow-md flex items-center gap-2"
               >
-                {scope}
+                <Search size={20} />
+                Tìm kiếm
               </button>
-            ))}
-          </div>
+            </div>
 
-          {aiSearchEnabled && searchResults.length > 0 && (
-            <div className="flex gap-2 mt-4 pt-4 border-t">
-              <span className="text-sm text-gray-600 py-2">Channel:</span>
-              {['inapp', 'livechat', 'email'].map((ch) => (
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-gray-600 font-medium">Lọc theo:</span>
+              {filters.map(filter => (
                 <button
-                  key={ch}
-                  onClick={() => setSelectedChannel(ch)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                    selectedChannel === ch
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  key={filter.id}
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                    activeFilter === filter.id
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
-                  {ch === 'inapp' ? 'In-app' : ch === 'livechat' ? 'Live Chat' : 'Email'}
+                  <span>{filter.emoji}</span>
+                  <span>{filter.label}</span>
                 </button>
               ))}
             </div>
-          )}
+
+            <div className="flex items-center gap-3">
+              <span className="text-gray-600 font-medium">Channel:</span>
+              {channels.map(channel => {
+                const Icon = channel.icon;
+                return (
+                  <button
+                    key={channel.id}
+                    onClick={() => setActiveChannel(channel.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                      activeChannel === channel.id
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    <Icon size={18} />
+                    {channel.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-4">
-          {searchResults.map((result) => (
-            <ResultCard
-              key={result.id}
-              result={result}
-              templates={templates[result.errorCode]}
-              aiSearchEnabled={aiSearchEnabled}
-              selectedChannel={selectedChannel}
-              copyTemplate={copyTemplate}
-              exportHistory={exportHistory}
-            />
-          ))}
-        </div>
+        {showHistory && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Lịch sử tìm kiếm</h3>
+              <button 
+                onClick={() => setSearchHistory([])}
+                className="text-sm text-red-600 hover:text-red-700 font-medium"
+              >
+                Xóa tất cả
+              </button>
+            </div>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {searchHistory.map(item => (
+                <div key={item.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="font-medium text-gray-900 mb-2">{item.query}</p>
+                  <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                    <div><span className="font-semibold">Filter:</span> {filters.find(f => f.id === item.filter)?.label}</div>
+                    <div><span className="font-semibold">Results:</span> {item.resultsCount}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {searchQuery && searchResults.length === 0 && !isSearching && (
-          <div className="bg-white rounded-xl shadow-md p-12 text-center">
-            <p className="text-gray-500 text-lg">
-              Không tìm thấy kết quả cho "{searchQuery}"
-            </p>
-            <p className="text-gray-400 text-sm mt-2">
-              Thử tìm kiếm với từ khóa khác hoặc chọn scope khác
-            </p>
+        {/* 🔥 FIX: Template sẽ tự động update khi activeChannel hoặc templateMode thay đổi */}
+        {results.map((result, index) => (
+          <div key={`${result.errorCode}-${index}`} className="bg-white rounded-2xl shadow-lg p-6 mb-4 border-l-4 border-blue-500">
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {result.errorCode}: {result.title}
+                </h2>
+                <div className="flex gap-3 items-center flex-wrap">
+                  <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                    {result.scope || 'N/A'}
+                  </span>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium flex items-center gap-2">
+                    <Sparkles size={14} />
+                    {result.matchScore}% Match
+                  </span>
+                  <span className="text-orange-600 text-sm font-medium">
+                    🔥 {result.severity || 'N/A'}
+                  </span>
+                </div>
+              </div>
+              {result.linkSOP && (
+                <a
+                  href={result.linkSOP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
+                >
+                  <ExternalLink size={18} />
+                  <span className="font-medium">Xem SOP gốc</span>
+                </a>
+              )}
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <p className="text-gray-700 font-medium">🔍 Nguyên nhân: {result.cause || 'N/A'}</p>
+              <p className="text-green-700 font-medium">✅ Hướng xử lý: {result.solution || 'N/A'}</p>
+              {result.notes && <p className="text-red-700 font-medium">📌 Lưu ý: {result.notes}</p>}
+            </div>
+
+            <div className="mb-4">
+              <div className="flex items-center gap-4 mb-3">
+                <span className="text-gray-700 font-medium">KH bức xúc?</span>
+                <button
+                  onClick={() => setTemplateMode('neutral')}
+                  className={`px-4 py-2 rounded-lg transition-all ${
+                    templateMode === 'neutral'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  😊 Bản neutral
+                </button>
+                <button
+                  onClick={() => setTemplateMode('calming')}
+                  className={`px-4 py-2 rounded-lg transition-all ${
+                    templateMode === 'calming'
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  😤→😊 Template Calming
+                </button>
+              </div>
+            </div>
+
+            {/* 🔥 FIX: CHỈ HIỂN THỊ 1 TEMPLATE - key prop giúp React re-render khi activeChannel hoặc templateMode thay đổi */}
+            <div key={`${result.errorCode}-${activeChannel}-${templateMode}`}>
+              {templateMode === 'neutral' ? (
+                <div className="p-4 rounded-lg border-2 border-green-400 bg-green-50">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-bold text-gray-900">😊 Template Neutral</span>
+                    <button
+                      onClick={() => handleCopy(getTemplate(result, activeChannel, 'neutral'), `${result.errorCode}-neutral`)}
+                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    >
+                      {copiedId === `${result.errorCode}-neutral` ? <><Check size={18} />Copied!</> : <><Copy size={18} />Copy</>}
+                    </button>
+                  </div>
+                  <p className="text-gray-800 whitespace-pre-wrap">{getTemplate(result, activeChannel, 'neutral')}</p>
+                </div>
+              ) : (
+                <div className="p-4 rounded-lg border-2 border-orange-400 bg-orange-50">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-bold text-gray-900">😤→😊 Template Calming</span>
+                    <button
+                      onClick={() => handleCopy(getTemplate(result, activeChannel, 'calming'), `${result.errorCode}-calming`)}
+                      className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+                    >
+                      {copiedId === `${result.errorCode}-calming` ? <><Check size={18} />Copied!</> : <><Copy size={18} />Copy</>}
+                    </button>
+                  </div>
+                  <p className="text-gray-800 whitespace-pre-wrap">{getTemplate(result, activeChannel, 'calming')}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between text-sm text-gray-600">
+              <span>📄 {result.fileSOP || 'Internal SOP'}</span>
+              <span className="text-red-600">🔴 {result.sourceType || 'Internal SOP'}</span>
+            </div>
+          </div>
+        ))}
+
+        {results.length === 0 && !isLoading && (
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+            <Search size={64} className="mx-auto text-gray-300 mb-4" />
+            <h3 className="text-xl font-bold text-gray-700 mb-2">Nhập từ khóa để tìm kiếm</h3>
+            <p className="text-gray-500">Tổng cộng có {knowledgeBase.length} cases trong database</p>
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes slide-in {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .animate-slide-in { animation: slide-in 0.3s ease-out; }
+      `}</style>
     </div>
   );
 };
