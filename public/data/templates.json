@@ -1,226 +1,226 @@
 [
   {
-    "template_code": "TPL_E_BL_001_A1",
+    "template_code": "TPL_E_BL_001_INAPP_NEUTRAL",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\".Qua kiểm tra, hệ thống ghi nhận tài khoản của bạn không đủ điều kiện tham gia chương trình do phát hiện có các dấu hiệu sử dụng tài khoản/thanh toán không phù hợp, bao gồm:\nSử dụng nhiều tài khoản Zalopay\nDùng thiết bị đã từng đăng nhập nhiều tài khoản khác\nDùng chung thẻ hoặc tài khoản ngân hàng với các tài khoản khác\nHoặc các hành vi vi phạm điều khoản sử dụng/thể lệ chương trình\nBạn có thể xem chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinhRất mong bạn thông cảm và tiếp tục đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\".\n\nQua kiểm tra, hệ thống ghi nhận tài khoản của bạn không đủ điều kiện tham gia chương trình do phát hiện có các dấu hiệu sử dụng tài khoản/thanh toán không phù hợp, bao gồm:\n- Sử dụng nhiều tài khoản Zalopay\n- Dùng thiết bị đã từng đăng nhập nhiều tài khoản khác\n- Dùng chung thẻ hoặc tài khoản ngân hàng với các tài khoản khác\n- Hoặc các hành vi vi phạm điều khoản sử dụng/thể lệ chương trình\nBạn có thể xem chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinh\n\nRất mong bạn thông cảm và tiếp tục đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_001_A2",
+    "template_code": "TPL_E_BL_001_INAPP_CALMING",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay xin gửi lời cảm ơn chân thành đến bạn vì đã quan tâm và tham gia chương trình khuyến mãi \"[Tên chương trình]\".\nZalopay hiểu rằng bạn đang mong đợi nhận được ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ lưỡng, hệ thống ghi nhận tài khoản của bạn hiện chưa đủ điều kiện tham gia do phát hiện một số dấu hiệu sử dụng tài khoản/thanh toán không phù hợp với quy định chương trình, cụ thể:\nSử dụng nhiều tài khoản Zalopay\nDùng thiết bị đã từng đăng nhập nhiều tài khoản khác\nDùng chung thẻ hoặc tài khoản ngân hàng với các tài khoản khác\nHoặc các hành vi không phù hợp với điều khoản sử dụng/thể lệ chương trình\nZalopay luôn nỗ lực tạo ra môi trường công bằng cho tất cả người dùng tham gia các chương trình khuyến mãi. Bạn có thể tham khảo chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinh\nZalopay rất mong nhận được sự thông cảm từ bạn và hy vọng bạn sẽ tiếp tục đồng hành cùng chúng tôi trong những chương trình sắp tới."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay xin gửi lời cảm ơn chân thành đến bạn vì đã quan tâm và tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n\nZalopay hiểu rằng bạn đang mong đợi nhận được ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ lưỡng, hệ thống ghi nhận tài khoản của bạn hiện chưa đủ điều kiện tham gia do phát hiện một số dấu hiệu sử dụng tài khoản/thanh toán không phù hợp với quy định chương trình, cụ thể:\n- Sử dụng nhiều tài khoản Zalopay\n- Dùng thiết bị đã từng đăng nhập nhiều tài khoản khác\n- Dùng chung thẻ hoặc tài khoản ngân hàng với các tài khoản khác\n- Hoặc các hành vi không phù hợp với điều khoản sử dụng/thể lệ chương trình\nZalopay luôn nỗ lực tạo ra môi trường công bằng cho tất cả người dùng tham gia các chương trình khuyến mãi. Bạn có thể tham khảo chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinh\n\nZalopay rất mong nhận được sự thông cảm từ bạn và hy vọng bạn sẽ tiếp tục đồng hành cùng chúng tôi trong những chương trình sắp tới."
   },
   {
-    "template_code": "TPL_E_BL_001_B1",
+    "template_code": "TPL_E_BL_001_CHAT_NEUTRAL",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\nEm vừa kiểm tra và thấy rằng tài khoản của anh/chị hiện chưa đủ điều kiện tham gia chương trình này do hệ thống phát hiện có một số dấu hiệu sử dụng tài khoản/thanh toán chưa phù hợp ạ, cụ thể:\nSử dụng nhiều tài khoản Zalopay\nDùng thiết bị đã đăng nhập nhiều tài khoản khác\nDùng chung thẻ/TK ngân hàng với các tài khoản khác\nHoặc các hành vi vi phạm điều khoản sử dụng/thể lệ chương trình\nAnh/chị có thể xem chi tiết quy định tại đây nhé: https://zalopay.vn/quy-dinh\nEm mong anh/chị thông cảm và tiếp tục đồng hành cùng Zalopay ạ."
+    "template_body": "Em cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\nEm vừa kiểm tra và thấy rằng tài khoản của anh/chị hiện chưa đủ điều kiện tham gia chương trình này do hệ thống phát hiện có một số dấu hiệu sử dụng tài khoản/thanh toán chưa phù hợp ạ, cụ thể:\n- Sử dụng nhiều tài khoản Zalopay\n- Dùng thiết bị đã đăng nhập nhiều tài khoản khác\n- Dùng chung thẻ/TK ngân hàng với các tài khoản khác\n- Hoặc các hành vi vi phạm điều khoản sử dụng/thể lệ chương trình\nAnh/chị có thể xem chi tiết quy định tại đây nhé: https://zalopay.vn/quy-dinh"
   },
   {
-    "template_code": "TPL_E_BL_001_B2",
+    "template_code": "TPL_E_BL_001_CHAT_CALMING",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nTrước tiên, em xin cảm ơn anh/chị đã tin tưởng và quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\nEm hoàn toàn hiểu anh/chị đang rất mong chờ ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ, em thấy rằng tài khoản của anh/chị hiện chưa đủ điều kiện tham gia do hệ thống phát hiện một số dấu hiệu sử dụng chưa phù hợp với quy định ạ:\nSử dụng nhiều tài khoản Zalopay\nDùng thiết bị đã đăng nhập nhiều tài khoản khác\nDùng chung thẻ/TK ngân hàng với các tài khoản khác\nHoặc các hành vi chưa phù hợp với điều khoản/thể lệ chương trình\nEm biết thông tin này có thể khiến anh/chị không vui, nhưng Zalopay luôn cố gắng tạo môi trường công bằng cho tất cả người dùng tham gia các chương trình khuyến mãi ạ.\nAnh/chị có thể tham khảo quy định chi tiết tại: https://zalopay.vn/quy-dinh\nEm rất mong anh/chị thông cảm và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay trong những chương trình tiếp theo nhé."
+    "emotion_mode": "calming",
+    "template_body": "Trước tiên, em xin cảm ơn anh/chị đã tin tưởng và quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\n\nEm hoàn toàn hiểu anh/chị đang rất mong chờ ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ, em thấy rằng tài khoản của anh/chị hiện chưa đủ điều kiện tham gia do hệ thống phát hiện một số dấu hiệu sử dụng chưa phù hợp với quy định ạ:\n- Sử dụng nhiều tài khoản Zalopay\n- Dùng thiết bị đã đăng nhập nhiều tài khoản khác\n- Dùng chung thẻ/TK ngân hàng với các tài khoản khác\n- Hoặc các hành vi chưa phù hợp với điều khoản/thể lệ chương trình\n\nEm biết thông tin này có thể khiến anh/chị không vui, nhưng Zalopay luôn cố gắng tạo môi trường công bằng cho tất cả người dùng tham gia các chương trình khuyến mãi ạ. Anh/chị có thể tham khảo quy định chi tiết tại: https://zalopay.vn/quy-dinh\n\nEm rất mong anh/chị thông cảm và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay trong những chương trình tiếp theo nhé."
   },
   {
-    "template_code": "TPL_E_BL_001_C1",
+    "template_code": "TPL_E_BL_001_CALL_NEUTRAL",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\nQua kiểm tra hệ thống, em xin phép thông báo với anh/chị rằng tài khoản của anh/chị hiện chưa đủ điều kiện để tham gia chương trình này ạ. Lý do là vì hệ thống phát hiện có một số dấu hiệu sử dụng tài khoản hoặc thanh toán chưa phù hợp với quy định, cụ thể là:\nThứ nhất, sử dụng nhiều tài khoản Zalopay.\nThứ hai, dùng thiết bị đã từng đăng nhập nhiều tài khoản khác.\nThứ ba, dùng chung thẻ hoặc tài khoản ngân hàng với các tài khoản khác.\nHoặc có các hành vi khác vi phạm điều khoản sử dụng và thể lệ chương trình ạ.\nNếu anh/chị muốn tìm hiểu thêm chi tiết, anh/chị có thể truy cập vào đường link https://zalopay.vn/quy-dinh để xem quy định sử dụng đầy đủ ạ.\nEm rất mong anh/chị thông cảm và tiếp tục sử dụng Zalopay trong thời gian tới ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị ạ.\n\nTrước tiên, em cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nQua kiểm tra hệ thống, em xin phép thông báo với anh/chị rằng tài khoản của anh/chị hiện chưa đủ điều kiện để tham gia chương trình này ạ. Lý do là vì hệ thống phát hiện có một số dấu hiệu sử dụng tài khoản hoặc thanh toán chưa phù hợp với quy định, cụ thể là:\n- Sử dụng nhiều tài khoản Zalopay\n- Dùng thiết bị đã đăng nhập nhiều tài khoản khác\n- Dùng chung thẻ/TK ngân hàng với các tài khoản khác\n- Hoặc các hành vi chưa phù hợp với điều khoản/thể lệ chương trình\nNếu anh/chị muốn tìm hiểu thêm chi tiết, anh/chị có thể truy cập Thỏa thuận sử dụng dịch vụ Zalopay để xem quy định đầy đủ ạ.\n\nEm rất mong anh/chị thông cảm và tiếp tục sử dụng Zalopay trong thời gian tới ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_001_C2",
+    "template_code": "TPL_E_BL_001_CALL_CALMING",
     "purpose": "Không tham gia được CTKM do greylist/blacklist",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nĐầu tiên, em xin gửi lời cảm ơn chân thành đến anh/chị vì đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị đang rất mong đợi nhận được ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ lưỡng trên hệ thống, em xin phép thông báo với anh/chị là tài khoản của anh/chị hiện tại chưa đủ điều kiện để tham gia chương trình ạ.\nCụ thể là hệ thống đã phát hiện một số dấu hiệu sử dụng tài khoản hoặc thanh toán chưa phù hợp với quy định của chương trình, bao gồm:\nCó thể là sử dụng nhiều tài khoản Zalopay.\nHoặc dùng thiết bị đã từng đăng nhập nhiều tài khoản khác.\nHoặc dùng chung thẻ, tài khoản ngân hàng với các tài khoản khác.\nHoặc có các hành vi chưa phù hợp với điều khoản sử dụng và thể lệ chương trình ạ.\nEm hiểu đây có thể là thông tin khiến anh/chị không vui, nhưng Zalopay luôn cố gắng tạo ra môi trường công bằng cho tất cả người dùng khi tham gia các chương trình khuyến mãi ạ. Nếu anh/chị muốn tìm hiểu rõ hơn, anh/chị có thể tham khảo quy định chi tiết tại https://zalopay.vn/quy-dinh ạ.\nEm rất mong anh/chị thông cảm cho tình hình này và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay trong các chương trình tiếp theo ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nĐầu tiên, em xin gửi lời cảm ơn chân thành đến anh/chị vì đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nEm hoàn toàn hiểu rằng anh/chị đang rất mong đợi nhận được ưu đãi từ chương trình này. Tuy nhiên, sau khi kiểm tra kỹ lưỡng trên hệ thống, em xin phép thông báo với anh/chị là tài khoản của anh/chị hiện tại chưa đủ điều kiện để tham gia chương trình ạ.\n\nCụ thể là hệ thống đã phát hiện một số dấu hiệu sử dụng tài khoản hoặc thanh toán chưa phù hợp với quy định của chương trình, bao gồm:\n- Có thể là sử dụng nhiều tài khoản Zalopay.\n- Hoặc dùng thiết bị đã từng đăng nhập nhiều tài khoản khác.\n- Hoặc dùng chung thẻ, tài khoản ngân hàng với các tài khoản khác.\n- Hoặc có các hành vi chưa phù hợp với điều khoản sử dụng và thể lệ chương trình ạ.\nEm hiểu đây có thể là thông tin khiến anh/chị không vui, nhưng Zalopay luôn cố gắng tạo ra môi trường công bằng cho tất cả người dùng khi tham gia các chương trình khuyến mãi ạ. Nếu anh/chị muốn tìm hiểu rõ hơn, anh/chị có thể tham khảo quy định chi tiết tại Thỏa thuận sử dụng dịch vụ của Zalopay ạ.\n\nEm rất mong anh/chị thông cảm cho tình hình này và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay trong các chương trình tiếp theo ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_001_A1",
+    "template_code": "TPL_E_KM_001_INAPP_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,\nCảm ơn bạn đã dành thời gian góp ý về thể lệ chương trình \"[Tên chương trình]\".\nZalopay xin lỗi vì sự chưa rõ ràng trong cách diễn đạt đã gây khó hiểu cho bạn. Zalopay đã ghi nhận ý kiến của bạn và sẽ cải thiện cách trình bày thể lệ để dễ hiểu hơn trong các chương trình tiếp theo.\nGóp ý của bạn rất có giá trị để Zalopay hoàn thiện hơn. Cảm ơn bạn đã đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã dành thời gian góp ý về thể lệ chương trình \"[Tên chương trình]\".\n\nZalopay xin lỗi vì sự chưa rõ ràng trong cách diễn đạt đã gây khó hiểu cho bạn. Zalopay đã ghi nhận ý kiến của bạn và sẽ cải thiện cách trình bày thể lệ để dễ hiểu hơn trong các chương trình tiếp theo. Góp ý của bạn rất có giá trị để Zalopay hoàn thiện hơn. \n\nCảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_001_A2",
+    "template_code": "TPL_E_KM_001_INAPP_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\".\nZalopay thành thật xin lỗi vì những điểm chưa rõ ràng trong cách diễn đạt thể lệ đã gây khó hiểu và bất tiện cho bạn. Zalopay hoàn toàn ghi nhận phản hồi này và cam kết sẽ cải thiện cách trình bày thể lệ một cách dễ hiểu, minh bạch hơn trong các chương trình sắp tới.\nGóp ý của bạn thực sự rất quý giá và giúp Zalopay ngày càng hoàn thiện hơn để phục vụ bạn tốt hơn. Cảm ơn bạn đã tin tưởng và đồng hành cùng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\".\n\nZalopay thành thật xin lỗi vì những điểm chưa rõ ràng trong cách diễn đạt thể lệ đã gây khó hiểu và bất tiện cho bạn. Zalopay hoàn toàn ghi nhận phản hồi này và cam kết sẽ cải thiện cách trình bày thể lệ một cách dễ hiểu, minh bạch hơn trong các chương trình sắp tới. Góp ý của bạn thực sự rất quý giá và giúp Zalopay ngày càng hoàn thiện hơn để phục vụ bạn tốt hơn. \n\nCảm ơn bạn đã tin tưởng và đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_001_B1",
+    "template_code": "TPL_E_KM_001_CHAT_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị,\nTrước tiên, em cảm ơn anh/chị đã góp ý về thể lệ chương trình \"[Tên chương trình]\".\nEm hiểu rằng một số nội dung trong thể lệ có thể chưa thật sự rõ ràng với anh/chị ạ. Zalopay đã ghi nhận và sẽ cải thiện cách trình bày thể lệ cho dễ hiểu hơn trong các chương trình tiếp theo nhé.\nGóp ý của anh/chị rất có ý nghĩa để Zalopay hoàn thiện hơn ạ. Em cảm ơn anh/chị đã đồng hành cùng Zalopay."
+    "template_body": "Chào anh/chị,\nTrước tiên, em cảm ơn anh/chị đã góp ý về thể lệ chương trình \"[Tên chương trình]\".\n\nEm hiểu rằng một số nội dung trong thể lệ có thể chưa thật sự rõ ràng với anh/chị ạ. Zalopay đã ghi nhận và sẽ cải thiện cách trình bày thể lệ cho dễ hiểu hơn trong các chương trình tiếp theo nhé. Góp ý của anh/chị rất có ý nghĩa để Zalopay hoàn thiện hơn ạ. \n\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_001_B2",
+    "template_code": "TPL_E_KM_001_CHAT_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm chân thành cảm ơn anh/chị đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\" ạ.\nEm thành thật xin lỗi vì những điểm chưa rõ ràng trong thể lệ đã gây khó hiểu và bất tiện cho anh/chị ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi đọc thông tin chưa minh bạch.\nZalopay đã ghi nhận kỹ phản hồi của anh/chị và cam kết sẽ cải thiện cách trình bày thể lệ rõ ràng, dễ hiểu hơn trong các chương trình sắp tới nhé.\nGóp ý của anh/chị thực sự rất quý giá giúp Zalopay ngày càng hoàn thiện hơn ạ. Em cảm ơn anh/chị đã tin tưởng và đồng hành cùng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị ạ,\nTrước tiên, em chân thành cảm ơn anh/chị đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\" ạ.\n\nEm thành thật xin lỗi vì những điểm chưa rõ ràng trong thể lệ đã gây khó hiểu và bất tiện cho anh/chị ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi đọc thông tin chưa minh bạch. Zalopay đã ghi nhận kỹ phản hồi của anh/chị và cam kết sẽ cải thiện cách trình bày thể lệ rõ ràng, dễ hiểu hơn trong các chương trình sắp tới nhé. Góp ý của anh/chị thực sự rất quý giá giúp Zalopay ngày càng hoàn thiện hơn ạ. \n\nEm cảm ơn anh/chị đã tin tưởng và đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_001_C1",
+    "template_code": "TPL_E_KM_001_CALL_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Trước tiên, em cảm ơn anh/chị đã dành thời gian góp ý về thể lệ chương trình \"[Tên chương trình]\" ạ.\nEm hiểu rằng một số nội dung trong thể lệ có thể chưa thật sự rõ ràng với anh/chị ạ. Zalopay đã ghi nhận ý kiến của anh/chị và sẽ cải thiện cách trình bày thể lệ cho dễ hiểu hơn trong các chương trình tiếp theo ạ.\nGóp ý của anh/chị rất có ý nghĩa để Zalopay ngày càng hoàn thiện hơn ạ. Em cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
+    "template_body": "Trước tiên, em cảm ơn anh/chị đã dành thời gian góp ý về thể lệ chương trình \"[Tên chương trình]\" ạ.\n\nEm hiểu rằng một số nội dung trong thể lệ có thể chưa thật sự rõ ràng với anh/chị ạ. Zalopay đã ghi nhận ý kiến của anh/chị và sẽ cải thiện cách trình bày thể lệ cho dễ hiểu hơn trong các chương trình tiếp theo ạ. Góp ý của anh/chị rất có ý nghĩa để Zalopay ngày càng hoàn thiện hơn ạ. \n\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_001_C2",
+    "template_code": "TPL_E_KM_001_CALL_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, chỉ ghi nhận góp ý",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em xin chân thành cảm ơn anh/chị đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\" ạ.\nEm thành thật xin lỗi anh/chị vì những điểm chưa rõ ràng trong cách diễn đạt thể lệ đã gây khó hiểu và bất tiện cho anh/chị ạ. Em hoàn toàn thấu hiểu cảm giác của anh/chị khi đọc thông tin chưa được minh bạch ạ.\nZalopay đã ghi nhận kỹ phản hồi của anh/chị và cam kết sẽ cải thiện cách trình bày thể lệ một cách dễ hiểu, rõ ràng và minh bạch hơn trong các chương trình sắp tới ạ.\nGóp ý của anh/chị thực sự rất quý giá và giúp Zalopay ngày càng hoàn thiện hơn để phục vụ anh/chị tốt hơn ạ. Em cảm ơn anh/chị đã tin tưởng và đồng hành cùng Zalopay. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em xin chân thành cảm ơn anh/chị đã dành thời gian đóng góp ý kiến về thể lệ chương trình \"[Tên chương trình]\" ạ.\n\nEm thành thật xin lỗi anh/chị vì những điểm chưa rõ ràng trong cách diễn đạt thể lệ đã gây khó hiểu và bất tiện cho anh/chị ạ. Em hoàn toàn thấu hiểu cảm giác của anh/chị khi đọc thông tin chưa được minh bạch ạ. Zalopay đã ghi nhận kỹ phản hồi của anh/chị và cam kết sẽ cải thiện cách trình bày thể lệ một cách dễ hiểu, rõ ràng và minh bạch hơn trong các chương trình sắp tới ạ. Góp ý của anh/chị thực sự rất quý giá và giúp Zalopay ngày càng hoàn thiện hơn để phục vụ anh/chị tốt hơn ạ. \n\nEm cảm ơn anh/chị đã tin tưởng và đồng hành cùng Zalopay. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_002_A1",
+    "template_code": "TPL_E_KM_002_INAPP_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,\nCảm ơn bạn đã phản ánh về thể lệ chương trình \"[Tên chương trình]\".\nZalopay đã ghi nhận khiếu nại của bạn và sẽ tiến hành kiểm tra lại nội dung thể lệ chương trình để xem xét, xử lý phù hợp.\nZalopay sẽ phản hồi kết quả đến bạn trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay.\nCảm ơn bạn đã đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã phản ánh về thể lệ chương trình \"[Tên chương trình]\".\n\nZalopay đã ghi nhận khiếu nại của bạn và sẽ tiến hành kiểm tra lại nội dung thể lệ chương trình để xem xét, xử lý phù hợp. Zalopay sẽ phản hồi kết quả đến bạn trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay.\n\nCảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_002_A2",
+    "template_code": "TPL_E_KM_002_INAPP_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã phản ánh về tình huống liên quan đến thể lệ chương trình \"[Tên chương trình]\".\nZalopay thành thật xin lỗi vì sự chưa rõ ràng trong thể lệ đã ảnh hưởng đến quyền lợi của bạn. Zalopay hoàn toàn thấu hiểu cảm xúc và mong muốn của bạn trong trường hợp này.\nZalopay đã ghi nhận đầy đủ thông tin khiếu nại của bạn và sẽ tiến hành kiểm tra, rà soát lại nội dung thể lệ chương trình một cách kỹ lưỡng để có phương án xử lý phù hợp nhất.\nZalopay cam kết sẽ phản hồi kết quả cụ thể đến bạn trong vòng 3-5 ngày làm việc. Trong thời gian này, vui lòng theo dõi thông báo từ Zalopay.\nZalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn. Cảm ơn bạn đã tin tưởng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã phản ánh về tình huống liên quan đến thể lệ chương trình \"[Tên chương trình]\".\n\nZalopay thành thật xin lỗi vì sự chưa rõ ràng trong thể lệ đã ảnh hưởng đến quyền lợi của bạn. Zalopay hoàn toàn thấu hiểu cảm xúc và mong muốn của bạn trong trường hợp này. Zalopay đã ghi nhận đầy đủ thông tin khiếu nại của bạn và sẽ tiến hành kiểm tra, rà soát lại nội dung thể lệ chương trình một cách kỹ lưỡng để có phương án xử lý phù hợp nhất.\n\nZalopay cam kết sẽ phản hồi kết quả cụ thể đến bạn trong vòng 3-5 ngày làm việc. Trong thời gian này, vui lòng theo dõi thông báo từ Zalopay.\n\nRất mong nhận được sự thông cảm và kiên nhẫn từ bạn. Cảm ơn bạn đã tin tưởng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_002_B1",
+    "template_code": "TPL_E_KM_002_CHAT_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Em cảm ơn anh/chị đã phản ánh về thể lệ chương trình \"[Tên chương trình]\" ạ.\nZalopay đã ghi nhận khiếu nại của anh/chị và sẽ tiến hành kiểm tra lại thể lệ chương trình để xem xét, xử lý phù hợp ạ.\nZalopay sẽ phản hồi kết quả đến anh/chị trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay nhé.\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
+    "template_body": "Em cảm ơn anh/chị đã phản ánh về thể lệ chương trình \"[Tên chương trình]\" ạ.\n\nZalopay đã ghi nhận khiếu nại của anh/chị và sẽ tiến hành kiểm tra lại thể lệ chương trình để xem xét, xử lý phù hợp ạ. Zalopay sẽ phản hồi kết quả đến anh/chị trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay nhé.\n\nRất cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_KM_002_B2",
+    "template_code": "TPL_E_KM_002_CHAT_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Em chân thành cảm ơn anh/chị đã phản ánh tình huống liên quan đến thể lệ chương trình \"[Tên chương trình]\" ạ.\nEm thành thật xin lỗi vì sự chưa rõ ràng trong thể lệ đã ảnh hưởng đến quyền lợi của anh/chị ạ. Em hoàn toàn hiểu cảm xúc và mong muốn của anh/chị trong trường hợp này.\nZalopay đã ghi nhận đầy đủ thông tin khiếu nại của anh/chị và sẽ tiến hành kiểm tra, rà soát lại thể lệ chương trình kỹ lưỡng để có phương án xử lý công bằng và phù hợp nhất ạ.\nZalopay cam kết sẽ phản hồi kết quả cụ thể đến anh/chị trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay nhé.\nEm rất mong anh/chị thông cảm và kiên nhẫn trong thời gian Zalopay xử lý ạ. Em cảm ơn anh/chị đã tin tưởng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Em thành thật xin lỗi vì sự chưa rõ ràng trong thể lệ \"[Tên chương trình]\" đã ảnh hưởng đến quyền lợi của anh/chị ạ. Em hoàn toàn hiểu cảm xúc và mong muốn của anh/chị trong trường hợp này. \n\nZalopay đã ghi nhận đầy đủ thông tin khiếu nại của anh/chị và sẽ tiến hành kiểm tra, rà soát lại thể lệ chương trình kỹ lưỡng để có phương án xử lý công bằng và phù hợp nhất ạ. Zalopay cam kết sẽ phản hồi kết quả cụ thể đến anh/chị trong vòng 3-5 ngày làm việc. Vui lòng theo dõi thông báo từ Zalopay nhé.\n\nRất mong anh/chị thông cảm và kiên nhẫn trong thời gian Zalopay xử lý ạ. Em cảm ơn anh/chị đã tin tưởng Zalopay."
   },
   {
-    "template_code": "TPL_E_KM_002_C1",
+    "template_code": "TPL_E_KM_002_CALL_NEUTRAL",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã phản ánh về thể lệ chương trình \"[Tên chương trình]\" ạ.\nZalopay đã ghi nhận khiếu nại của anh/chị và sẽ tiến hành kiểm tra lại nội dung thể lệ chương trình để xem xét và xử lý phù hợp ạ.\nZalopay sẽ phản hồi kết quả đến anh/chị trong vòng 3-5 ngày làm việc ạ. Em xin phép anh/chị vui lòng theo dõi thông báo từ Zalopay trong thời gian này nhé.\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị. Em cảm ơn anh/chị đã phản ánh về thể lệ chương trình \"[Tên chương trình]\" ạ.\n\nZalopay đã ghi nhận khiếu nại của anh/chị và sẽ tiến hành kiểm tra lại nội dung thể lệ chương trình để xem xét và xử lý phù hợp ạ. Zalopay sẽ phản hồi kết quả đến anh/chị trong vòng 3-5 ngày làm việc ạ. Em xin phép anh/chị vui lòng theo dõi thông báo từ Zalopay trong thời gian này nhé.\n\nRất cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_002_C2",
+    "template_code": "TPL_E_KM_002_CALL_CALMING",
     "purpose": "Thể lệ CTKM không rõ ràng, có khiếu nại đền bù",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em xin chân thành cảm ơn anh/chị đã phản ánh tình huống liên quan đến thể lệ chương trình \"[Tên chương trình]\" ạ.\nEm thành thật xin lỗi anh/chị vì sự chưa rõ ràng trong thể lệ đã ảnh hưởng đến quyền lợi của anh/chị ạ. Em hoàn toàn hiểu được cảm xúc và mong muốn được giải quyết thỏa đáng của anh/chị trong trường hợp này ạ.\nZalopay đã ghi nhận đầy đủ thông tin khiếu nại của anh/chị và sẽ tiến hành kiểm tra, rà soát lại nội dung thể lệ chương trình một cách kỹ lưỡng để có phương án xử lý công bằng và phù hợp nhất cho anh/chị ạ.\nZalopay cam kết sẽ phản hồi kết quả cụ thể đến anh/chị trong vòng 3-5 ngày làm việc ạ. Trong thời gian này, em xin phép anh/chị vui lòng theo dõi thông báo từ Zalopay nhé.\nEm rất mong anh/chị thông cảm và kiên nhẫn chờ đợi trong thời gian Zalopay xử lý ạ. Em cảm ơn anh/chị đã tin tưởng Zalopay. Anh/chị còn thắc mắc gì em có thể ghi nhận thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị. Trước tiên, em thành thật xin lỗi anh/chị vì sự chưa rõ ràng trong thể lệ \"[Tên chương trình]\" đã ảnh hưởng đến quyền lợi của anh/chị ạ. Em hoàn toàn hiểu được cảm xúc và mong muốn được giải quyết thỏa đáng của anh/chị trong trường hợp này ạ.\n\nZalopay đã ghi nhận đầy đủ thông tin khiếu nại của anh/chị và sẽ tiến hành kiểm tra, rà soát lại nội dung thể lệ chương trình một cách kỹ lưỡng để có phương án xử lý công bằng và phù hợp nhất cho anh/chị ạ. Zalopay cam kết sẽ phản hồi kết quả cụ thể đến anh/chị trong vòng 3-5 ngày làm việc ạ. Trong thời gian này, em xin phép anh/chị vui lòng theo dõi thông báo từ Zalopay nhé. Em rất mong anh/chị thông cảm và kiên nhẫn chờ đợi trong thời gian Zalopay xử lý ạ. \n\nĐồng thời, em rất cảm ơn anh/chị đã tin tưởng Zalopay. Anh/chị còn thắc mắc gì em có thể ghi nhận thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_003_A1",
+    "template_code": "TPL_E_KM_003_INAPP_NEUTRAL",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm đến chương trình \"[Tên chương trình]\".Về thắc mắc của bạn, Zalopay xin được phép giải đáp như sau:[Nội dung giải đáp cụ thể]Nếu bạn còn thắc mắc gì khác, vui lòng liên hệ với Zalopay để được hỗ trợ thêm."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm đến chương trình \"[Tên chương trình]\".\n\nVề thắc mắc của bạn, Zalopay xin được phép giải đáp như sau:\n[Nội dung giải đáp cụ thể]\n\nNếu bạn còn thắc mắc gì khác, vui lòng liên hệ với Zalopay để được hỗ trợ thêm."
   },
   {
-    "template_code": "TPL_E_KM_003_A2",
+    "template_code": "TPL_E_KM_003_INAPP_CALMING",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm đến chương trình \"[Tên chương trình]\".\nZalopay hoàn toàn hiểu rằng bạn cần thông tin rõ ràng về các điều kiện của chương trình để tham gia một cách thuận lợi nhất. Về thắc mắc của bạn, Zalopay xin được phép giải đáp như sau:\n[Nội dung giải đáp cụ thể]\nZalopay hy vọng thông tin trên đã giúp bạn hiểu rõ hơn về chương trình. Nếu bạn còn bất kỳ thắc mắc nào khác, đừng ngại liên hệ với Zalopay để được hỗ trợ tận tình nhé."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm đến chương trình \"[Tên chương trình]\".\n\nZalopay hoàn toàn hiểu rằng bạn cần thông tin rõ ràng về các điều kiện của chương trình để tham gia một cách thuận lợi nhất. Về thắc mắc của bạn, Zalopay xin được phép giải đáp như sau:\n[Nội dung giải đáp cụ thể]\n\nZalopay hy vọng thông tin trên đã giúp bạn hiểu rõ hơn về chương trình. Nếu bạn còn bất kỳ thắc mắc nào khác, đừng ngại liên hệ với Zalopay để được hỗ trợ tận tình nhé."
   },
   {
-    "template_code": "TPL_E_KM_003_B1",
+    "template_code": "TPL_E_KM_003_CHAT_NEUTRAL",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Em cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" ạ.\nVề thắc mắc của anh/chị, em xin được phép giải đáp như sau nhé:\n[Nội dung giải đáp cụ thể]\nAnh/chị còn thắc mắc gì khác em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Em cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" ạ.\n\nVề thắc mắc của anh/chị, em xin được phép giải đáp như sau nhé:\n[Nội dung giải đáp cụ thể]\n\nAnh/chị còn thắc mắc gì khác em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_003_B2",
+    "template_code": "TPL_E_KM_003_CHAT_CALMING",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Em chân thành cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" ạ.\nEm hoàn toàn hiểu anh/chị muốn nắm rõ các điều kiện để tham gia chương trình thuận lợi nhất ạ. Về thắc mắc của anh/chị, em xin được phép giải đáp chi tiết như sau nhé:\n[Nội dung giải đáp cụ thể]\nEm hy vọng thông tin trên đã giúp anh/chị hiểu rõ hơn ạ. Anh/chị còn điều gì cần em giải thích thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Em chân thành cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" ạ.\n\nEm hoàn toàn hiểu anh/chị muốn nắm rõ các điều kiện để tham gia chương trình thuận lợi nhất ạ. Về thắc mắc của anh/chị, em xin được phép giải đáp chi tiết như sau nhé:\n[Nội dung giải đáp cụ thể]\n\nEm hy vọng thông tin trên đã giúp anh/chị hiểu rõ hơn ạ. Anh/chị còn điều gì cần em giải thích thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_003_C1",
+    "template_code": "TPL_E_KM_003_CALL_NEUTRAL",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "call",
     "language": "vi",
@@ -230,57 +230,57 @@
     "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\nVề thắc mắc của anh/chị, em xin được phép giải đáp như sau ạ:\n[Nội dung giải đáp cụ thể]\nAnh/chị đã nắm được phần này chưa ạ? Anh/chị còn thắc mắc gì khác em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_003_C2",
+    "template_code": "TPL_E_KM_003_CALL_CALMING",
     "purpose": "Thắc mắc thể lệ CTKM",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nEm chân thành cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị muốn nắm rõ các điều kiện của chương trình để có thể tham gia một cách thuận lợi nhất ạ. Về thắc mắc của anh/chị, em xin được phép giải đáp chi tiết như sau ạ:\n[Nội dung giải đáp cụ thể]\nEm hy vọng thông tin trên đã giúp anh/chị hiểu rõ hơn về chương trình ạ. Anh/chị còn điều gì chưa rõ hoặc cần em giải thích thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nEm chân thành cảm ơn anh/chị đã quan tâm đến chương trình \"[Tên chương trình]\" của Zalopay ạ.\n\nEm hoàn toàn hiểu rằng anh/chị muốn nắm rõ các điều kiện của chương trình để có thể tham gia một cách thuận lợi nhất ạ. Về thắc mắc của anh/chị, em xin được phép giải đáp chi tiết như sau ạ:\n[Nội dung giải đáp cụ thể]\n\nEm hy vọng thông tin trên đã giúp anh/chị hiểu rõ hơn về chương trình ạ. Anh/chị còn điều gì chưa rõ hoặc cần em giải thích thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_004_A1",
+    "template_code": "TPL_E_KM_004_INAPP_NEUTRAL",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,\nZalopay xin lỗi vì những bất tiện bạn gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.\n[Chọn 1 trong các trường hợp sau:]\nZalopay kiểm tra giao dịch bạn phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên do [lý do cụ thể].\nZalopay kiểm tra tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi.\nZalopay kiểm tra tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Số dư sinh lời >> Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\nTheo thể lệ:\n[CS nêu các điều khoản phù hợp]\nZalopay rất tiếc khi bạn chưa thể tham gia chương trình khuyến mãi này. Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.\nRất cảm ơn bạn đã tin dùng và mong bạn luôn ủng hộ Zalopay. Trân trọng."
+    "template_body": "Chào bạn,\nZalopay xin lỗi vì những bất tiện bạn gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.\n[Chọn 1 trong các trường hợp sau:]\nZalopay kiểm tra giao dịch bạn phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên do [lý do cụ thể].\nZalopay kiểm tra tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi.\nZalopay kiểm tra tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Số dư sinh lời >> Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\n\nTheo thể lệ:\n- [CS nêu các điều khoản phù hợp]\n\nZalopay rất tiếc khi bạn chưa thể tham gia chương trình khuyến mãi này. Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.\nRất cảm ơn bạn đã tin dùng và mong bạn luôn ủng hộ Zalopay. Trân trọng."
   },
   {
-    "template_code": "TPL_E_KM_004_A2",
+    "template_code": "TPL_E_KM_004_INAPP_CALMING",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay chân thành xin lỗi vì những bất tiện và trải nghiệm chưa tốt mà bạn gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n[Chọn 1 trong các trường hợp sau:]\n\nZalopay đã kiểm tra kỹ và nhận thấy giao dịch bạn phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên do [lý do cụ thể]. Zalopay hiểu rằng điều này có thể khiến bạn cảm thấy không hài lòng.\nZalopay đã kiểm tra và xác nhận tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi nhé.\nZalopay đã kiểm tra và xác nhận tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Số dư sinh lời >> Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\n\nĐể bạn hiểu rõ hơn, theo thể lệ chương trình:\n[CS nêu các điều khoản phù hợp]\nZalopay rất tiếc và thành thật xin lỗi vì lần này bạn chưa thể tham gia chương trình khuyến mãi này. Tuy nhiên, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội tiếp theo nhé.\nZalopay chân thành cảm ơn bạn đã tin tưởng và hy vọng bạn sẽ tiếp tục đồng hành cùng Zalopay. Trân trọng."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành xin lỗi vì những bất tiện và trải nghiệm chưa tốt mà bạn gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n[Chọn 1 trong các trường hợp sau:]\nZalopay đã kiểm tra kỹ và nhận thấy giao dịch bạn phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên do [lý do cụ thể]. Zalopay hiểu rằng điều này có thể khiến bạn cảm thấy không hài lòng.\nZalopay đã kiểm tra và xác nhận tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi nhé.\nZalopay đã kiểm tra và xác nhận tài khoản của bạn đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm]. Bạn vui lòng truy cập mục Số dư sinh lời >> Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\n\nĐể bạn hiểu rõ hơn, theo thể lệ chương trình:\n[CS nêu các điều khoản phù hợp]\n\nZalopay rất tiếc và thành thật xin lỗi vì lần này bạn chưa thể tham gia chương trình khuyến mãi này. Tuy nhiên, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội tiếp theo nhé.\n\nCảm ơn bạn đã tin tưởng và hy vọng bạn sẽ tiếp tục đồng hành cùng Zalopay. Trân trọng."
   },
   {
-    "template_code": "TPL_E_KM_004_B1",
+    "template_code": "TPL_E_KM_004_CHAT_NEUTRAL",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Em xin lỗi anh/chị vì những bất tiện trong quá trình tham gia chương trình \"[Tên chương trình]\" ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra và thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi do [lý do cụ thể] ạ.\nEm đã kiểm tra và thấy tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Lịch sử và Số dư ví để kiểm tra nhé.\nEm đã kiểm tra và thấy tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Số dư sinh lời >> Lịch sử để kiểm tra nhé.\nTheo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\nEm rất tiếc khi anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay đang có nhiều chương trình khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng tham khảo tại mục Ưu đãi nhé.\nEm cảm ơn anh/chị đã tin dùng và mong anh/chị luôn ủng hộ Zalopay ạ."
+    "template_body": "Em xin lỗi anh/chị vì những bất tiện trong quá trình tham gia chương trình \"[Tên chương trình]\" ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra và thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi do [lý do cụ thể] ạ.\nEm đã kiểm tra và thấy tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Lịch sử và Số dư ví để kiểm tra nhé.\nEm đã kiểm tra và thấy tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Số dư sinh lời >> Lịch sử để kiểm tra nhé.\n\nTheo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\n\nEm rất tiếc khi anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay đang có nhiều chương trình khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng tham khảo tại mục Ưu đãi nhé.\n\nEm cảm ơn anh/chị đã tin dùng và mong anh/chị luôn ủng hộ Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_KM_004_B2",
+    "template_code": "TPL_E_KM_004_CHAT_CALMING",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm chân thành xin lỗi anh/chị vì những bất tiện và trải nghiệm chưa tốt trong quá trình tham gia chương trình \"[Tên chương trình]\" ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra kỹ và thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi do [lý do cụ thể] ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi gặp tình huống này.\nEm đã kiểm tra và xác nhận tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Lịch sử và Số dư ví để kiểm tra nhé.\nEm đã kiểm tra và xác nhận tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Số dư sinh lời >> Lịch sử để kiểm tra nhé.\nĐể anh/chị hiểu rõ hơn, theo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\nEm rất tiếc và thành thật xin lỗi vì lần này anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay đang có nhiều chương trình hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để đừng bỏ lỡ các cơ hội tiếp theo nhé.\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị ạ,\nEm chân thành xin lỗi anh/chị vì những bất tiện và trải nghiệm chưa tốt trong quá trình tham gia chương trình \"[Tên chương trình]\" ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra kỹ và thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi do [lý do cụ thể] ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi gặp tình huống này.\nEm đã kiểm tra và xác nhận tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Lịch sử và Số dư ví để kiểm tra nhé.\nEm đã kiểm tra và xác nhận tài khoản anh/chị đã nhận khuyến mãi vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập Số dư sinh lời >> Lịch sử để kiểm tra nhé.\n\nĐể anh/chị hiểu rõ hơn, theo thể lệ chương trình:\n[CS nêu các điều khoản phù hợp]\n\nEm rất tiếc và thành thật xin lỗi vì lần này anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay đang có nhiều chương trình hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để đừng bỏ lỡ các cơ hội tiếp theo nhé.\n\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_KM_004_C2",
+    "template_code": "TPL_E_KM_004_CALL_NEUTRAL",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "call",
     "language": "vi",
@@ -290,457 +290,457 @@
     "template_body": "Dạ, em chào anh/chị ạ.\nEm xin lỗi anh/chị vì những bất tiện anh/chị gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra và thấy rằng giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên là do [lý do cụ thể] ạ.\nEm đã kiểm tra và thấy tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi nhé.\nEm đã kiểm tra và thấy tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Số dư sinh lời, sau đó chọn Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\nTheo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\nEm rất tiếc khi lần này anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay cũng đang có nhiều chương trình khuyến mãi khác rất phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và tham gia cùng Zalopay nhé.\nEm rất cảm ơn anh/chị đã tin dùng và mong anh/chị luôn ủng hộ Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_KM_004_C2",
+    "template_code": "TPL_E_KM_004_CALL_CALMING",
     "purpose": "Không nhận/sử dụng được khuyến mãi, đã có nguyên nhân",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em xin chân thành xin lỗi anh/chị vì những bất tiện và trải nghiệm chưa tốt mà anh/chị gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra kỹ và nhận thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên là do [lý do cụ thể] ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi gặp tình huống này.\nEm đã kiểm tra và xác nhận tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi nhé.\nEm đã kiểm tra và xác nhận tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Số dư sinh lời, sau đó chọn Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\nĐể anh/chị hiểu rõ hơn, em xin phép giải thích theo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\nEm rất tiếc và thành thật xin lỗi vì lần này anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội tiếp theo nhé.\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\n\nTrước tiên, em xin chân thành xin lỗi anh/chị vì những bất tiện và trải nghiệm chưa tốt mà anh/chị gặp phải trong quá trình tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n[Chọn 1 trong các trường hợp sau:]\nEm đã kiểm tra kỹ và nhận thấy giao dịch anh/chị phản ánh không [nhận/sử dụng] được khuyến mãi từ chương trình trên là do [lý do cụ thể] ạ. Em hoàn toàn hiểu cảm giác của anh/chị khi gặp tình huống này.\nEm đã kiểm tra và xác nhận tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Lịch sử và Số dư ví để kiểm tra tiền hoàn khuyến mãi nhé.\nEm đã kiểm tra và xác nhận tài khoản của anh/chị đã nhận được khuyến mãi của chương trình trên vào ngày [ngày/tháng/năm] rồi ạ. Anh/chị vui lòng truy cập mục Số dư sinh lời, sau đó chọn Lịch sử để kiểm tra tiền hoàn khuyến mãi nhé.\n\nĐể anh/chị hiểu rõ hơn, em xin phép giải thích theo thể lệ chương trình ạ:\n[CS nêu các điều khoản phù hợp]\n\nEm rất tiếc và thành thật xin lỗi vì lần này anh/chị chưa thể tham gia chương trình này ạ. Tuy nhiên, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội tiếp theo nhé.\n\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_CB_001_A1",
+    "template_code": "TPL_E_CB_001_INAPP_NEUTRAL",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm và sử dụng dịch vụ của Zalopay.Qua kiểm tra giao dịch thanh toán [tên dịch vụ] của bạn không được hoàn tiền chiết khấu do bạn đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán.Theo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch của khách hàng có sử dụng khuyến mãi giảm giá khác.Ngoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và tham gia cùng Zalopay.Mong bạn thông cảm vì sự bất tiện này. Chân thành cảm ơn bạn."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm và sử dụng dịch vụ của Zalopay.\n\nQua kiểm tra giao dịch thanh toán [tên dịch vụ] của bạn không được hoàn tiền chiết khấu do bạn đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán.\n\nTheo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch của khách hàng có sử dụng khuyến mãi giảm giá khác.\n\nNgoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và tham gia cùng Zalopay.\n\nMong bạn thông cảm vì sự bất tiện này. Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_CB_001_A2",
+    "template_code": "TPL_E_CB_001_INAPP_CALMING",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay.Zalopay hoàn toàn hiểu rằng bạn đang mong đợi nhận được tiền hoàn chiết khấu từ giao dịch thanh toán [tên dịch vụ]. Tuy nhiên, qua kiểm tra, giao dịch của bạn không được hoàn tiền chiết khấu do bạn đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán.Theo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch của khách hàng có sử dụng khuyến mãi giảm giá khác. Zalopay rất tiếc vì điều này đã gây ra sự bất tiện cho bạn.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và không bỏ lỡ các cơ hội tiếp theo nhé.Zalopay rất mong nhận được sự thông cảm từ bạn. Chân thành cảm ơn bạn đã đồng hành cùng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn, \nZalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay.\n\nZalopay hoàn toàn hiểu rằng bạn đang mong đợi nhận được tiền hoàn chiết khấu từ giao dịch thanh toán [tên dịch vụ]. Tuy nhiên, qua kiểm tra, giao dịch của bạn không được hoàn tiền chiết khấu do bạn đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán.\n\nTheo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch của khách hàng có sử dụng khuyến mãi giảm giá khác. \n\nZalopay rất tiếc vì điều này đã gây ra sự bất tiện cho bạn.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và không bỏ lỡ các cơ hội tiếp theo nhé.\n\nZalopay rất mong nhận được sự thông cảm từ bạn. Chân thành cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_CB_001_B1",
+    "template_code": "TPL_E_CB_001_CHAT_NEUTRAL",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Em kiểm tra thấy giao dịch thanh toán [tên dịch vụ] của anh/chị không được hoàn tiền chiết khấu do đã áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\nTheo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ.\nZalopay đang có nhiều chương trình khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo nhé.\nEm mong anh/chị thông cảm ạ. Cảm ơn anh/chị nhiều ạ."
+    "template_body": "Em kiểm tra thấy giao dịch thanh toán [tên dịch vụ] của anh/chị không được hoàn tiền chiết khấu do đã áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\n\nTheo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ. Zalopay đang có nhiều chương trình khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo nhé.\n\nEm mong anh/chị thông cảm ạ. Cảm ơn anh/chị nhiều ạ."
   },
   {
-    "template_code": "TPL_E_CB_001_B2",
+    "template_code": "TPL_E_CB_001_CHAT_CALMING",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Em hiểu anh/chị đang mong đợi nhận tiền hoàn chiết khấu từ giao dịch [tên dịch vụ]. Tuy nhiên, em kiểm tra thấy giao dịch không được hoàn do anh/chị đã áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\nTheo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi có sử dụng khuyến mãi giảm giá khác ạ. Em rất tiếc vì sự bất tiện này.\nZalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị đấy. Anh/chị truy cập mục Ưu đãi để tham khảo nhé.\nEm mong anh/chị thông cảm ạ. "
+    "emotion_mode": "calming",
+    "template_body": "Em hiểu anh/chị đang mong đợi nhận tiền hoàn chiết khấu từ giao dịch [tên dịch vụ]. Tuy nhiên, em kiểm tra thấy giao dịch không được hoàn do anh/chị đã áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\n\nTheo thể lệ, chương trình hoàn chiết khấu không áp dụng đồng thời khi có sử dụng khuyến mãi giảm giá khác ạ. Em rất tiếc vì sự bất tiện này. Zalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị đấy. Anh/chị truy cập mục Ưu đãi để tham khảo nhé.\n\nEm mong anh/chị thông cảm ạ. "
   },
   {
-    "template_code": "TPL_E_CB_001_C1",
+    "template_code": "TPL_E_CB_001_CALL_NEUTRAL",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.Em cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ của Zalopay ạ.Qua kiểm tra, em thấy giao dịch thanh toán [tên dịch vụ] của anh/chị không được hoàn tiền chiết khấu do anh/chị đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.Theo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ.Ngoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và tham gia cùng Zalopay nhé.Em mong anh/chị thông cảm vì sự bất tiện này ạ. Em chân thành cảm ơn anh/chị. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị, cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ của Zalopay ạ.\n\nQua kiểm tra, em thấy giao dịch thanh toán [tên dịch vụ] của anh/chị không được hoàn tiền chiết khấu do anh/chị đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\n\nTheo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ.\n\nNgoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và tham gia cùng Zalopay nhé.Em mong anh/chị thông cảm vì sự bất tiện này ạ. \n\nAnh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_CB_001_C2",
+    "template_code": "TPL_E_CB_001_CALL_CALMING",
     "purpose": "GD có mã ưu đãi không hoàn Cashback",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị đang mong đợi nhận được tiền hoàn chiết khấu từ giao dịch thanh toán [tên dịch vụ] ạ. Tuy nhiên, qua kiểm tra, em thấy giao dịch của anh/chị không được hoàn tiền chiết khấu do anh/chị đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\nTheo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ. Em rất tiếc vì điều này đã gây ra sự bất tiện cho anh/chị.\nBên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và đừng bỏ lỡ các cơ hội tiếp theo nhé.\nEm rất mong anh/chị thông cảm ạ. Em chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay ạ.\n\nEm hoàn toàn hiểu rằng anh/chị đang mong đợi nhận được tiền hoàn chiết khấu từ giao dịch thanh toán [tên dịch vụ] ạ. Tuy nhiên, qua kiểm tra, em thấy giao dịch của anh/chị không được hoàn tiền chiết khấu do anh/chị đã có áp dụng khuyến mãi [giảm giá/sử dụng giảm giá từ xu] ở bước thanh toán rồi ạ.\n\nTheo thể lệ chương trình, chương trình hoàn chiết khấu không áp dụng đồng thời khi giao dịch có sử dụng khuyến mãi giảm giá khác ạ. Em rất tiếc vì điều này đã gây ra sự bất tiện cho anh/chị.\n\nBên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo thể lệ và đừng bỏ lỡ các cơ hội tiếp theo nhé.\n\nEm rất mong anh/chị thông cảm ạ. Em chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_CB_002_A1",
+    "template_code": "TPL_E_CB_002_INAPP_NEUTRAL",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.Với chương trình khuyến mãi này, khi bạn thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ).Zalopay xin lỗi bạn vì những hiểu lầm có thể có trong quá trình bạn tham gia khuyến mãi.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.Chân thành cảm ơn bạn. Zalopay hy vọng vẫn luôn được bạn đồng hành và ủng hộ."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.\n\nVới chương trình khuyến mãi này, khi bạn thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ).\n\nZalopay xin lỗi bạn vì những hiểu lầm có thể có trong quá trình bạn tham gia khuyến mãi.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.\n\nChân thành cảm ơn bạn. Zalopay hy vọng vẫn luôn được bạn đồng hành và ủng hộ."
   },
   {
-    "template_code": "TPL_E_CB_002_A2",
+    "template_code": "TPL_E_CB_002_INAPP_CALMING",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\".Zalopay hiểu rằng bạn đang thắc mắc về số tiền hoàn từ chương trình. Xin được giải thích rõ hơn: với chương trình khuyến mãi này, khi bạn thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ).Zalopay thành thật xin lỗi bạn vì những hiểu lầm có thể có trong quá trình bạn tham gia khuyến mãi. Zalopay luôn mong muốn mang đến trải nghiệm tốt nhất cho bạn.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội tiếp theo nhé.Zalopay chân thành cảm ơn bạn và hy vọng vẫn luôn được bạn đồng hành, ủng hộ."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n\nZalopay hiểu rằng bạn đang thắc mắc về số tiền hoàn từ chương trình, Zalopay xin phép được giải thích một cách rõ ràng hơn.\n\nVới chương trình khuyến mãi này, khi bạn thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ).Zalopay thành thật xin lỗi bạn vì những hiểu lầm có thể có trong quá trình bạn tham gia khuyến mãi. \n\nZalopay luôn mong muốn mang đến trải nghiệm tốt nhất cho bạn. Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội tiếp theo nhé.\n\nZalopay chân thành cảm ơn bạn và hy vọng vẫn luôn được bạn đồng hành, ủng hộ."
   },
   {
-    "template_code": "TPL_E_CB_002_B1",
+    "template_code": "TPL_E_CB_002_CHAT_NEUTRAL",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\nVới chương trình này, mỗi giao dịch thoả thể lệ sẽ được hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ) ạ.\nEm xin lỗi vì những hiểu lầm trong quá trình anh/chị tham gia khuyến mãi ạ.\nZalopay đang có nhiều chương trình khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\nEm cảm ơn anh/chị và hy vọng được anh/chị đồng hành, ủng hộ ạ."
+    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\n\nVới chương trình này, mỗi giao dịch thoả thể lệ sẽ được hoàn tiền có thể lên đến [số tiền] VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] VNĐ) ạ.\nEm xin lỗi vì những hiểu lầm trong quá trình anh/chị tham gia khuyến mãi ạ. Zalopay đang có nhiều chương trình khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\n\nEm cảm ơn anh/chị và hy vọng được anh/chị đồng hành, ủng hộ ạ."
   },
   {
-    "template_code": "TPL_E_CB_002_B2",
+    "template_code": "TPL_E_CB_002_CHAT_CALMING",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã tin tưởng tham gia chương trình \"[Tên chương trình]\" ạ.\nEm hiểu anh/chị đang thắc mắc về số tiền hoàn. Với chương trình này, mỗi giao dịch thoả thể lệ sẽ được hoàn có thể lên đến [số tiền] VNĐ (có thể bằng hoặc thấp hơn [số tiền] VNĐ tuỳ giao dịch) ạ.\nEm thành thật xin lỗi vì những hiểu lầm này và mong anh/chị thông cảm ạ.\nZalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\nEm cảm ơn và hy vọng được anh/chị tiếp tục đồng hành ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã tin tưởng tham gia chương trình \"[Tên chương trình]\" ạ.\n\nEm hiểu anh/chị đang thắc mắc về số tiền hoàn. Với chương trình này, mỗi giao dịch thoả thể lệ sẽ được hoàn có thể lên đến [số tiền] VNĐ (có thể bằng hoặc thấp hơn [số tiền] VNĐ) ạ.\nEm thành thật xin lỗi vì những hiểu lầm này và mong anh/chị thông cảm ạ.\n\nBên cạnh đó, Zalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\n\nEm cảm ơn và hy vọng được anh/chị tiếp tục đồng hành ạ."
   },
   {
-    "template_code": "TPL_E_CB_002_C1",
+    "template_code": "TPL_E_CB_002_CALL_NEUTRAL",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.Em cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.Với chương trình khuyến mãi này, khi anh/chị thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] đồng ạ. Có nghĩa là số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] đồng tuỳ từng giao dịch ạ.Em xin lỗi anh/chị vì những hiểu lầm có thể có trong quá trình anh/chị tham gia khuyến mãi ạ.Ngoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và tham gia cùng Zalopay nhé.Em chân thành cảm ơn anh/chị. Zalopay hy vọng vẫn luôn được anh/chị đồng hành và ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị, cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nVới chương trình khuyến mãi này, khi anh/chị thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] đồng ạ. Có nghĩa là số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] đồng.\n\nEm xin lỗi anh/chị vì những hiểu lầm có thể có trong quá trình anh/chị tham gia khuyến mãi ạ. Ngoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và tham gia cùng Zalopay nhé.\n\nZalopay hy vọng vẫn luôn được anh/chị đồng hành và ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_CB_002_C2",
+    "template_code": "TPL_E_CB_002_CALL_CALMING",
     "purpose": "Khiếu nại mệnh giá hoàn thấp",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị đang thắc mắc về số tiền hoàn từ chương trình ạ. Em xin phép được giải thích rõ hơn nhé: với chương trình khuyến mãi này, khi anh/chị thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] đồng ạ. Có nghĩa là số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] đồng tuỳ từng giao dịch của anh/chị ạ.\nEm thành thật xin lỗi anh/chị vì những hiểu lầm có thể có trong quá trình anh/chị tham gia khuyến mãi. Zalopay luôn mong muốn mang đến trải nghiệm tốt nhất cho anh/chị ạ.\nBên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội tiếp theo nhé.\nEm chân thành cảm ơn anh/chị và hy vọng Zalopay vẫn luôn được anh/chị đồng hành, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và tin tưởng tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nEm hoàn toàn hiểu rằng anh/chị đang thắc mắc về số tiền hoàn từ chương trình ạ. Em xin phép được giải thích rõ hơn nhé: với chương trình khuyến mãi này, khi anh/chị thực hiện mỗi giao dịch thoả thể lệ chương trình, giải thưởng hoàn tiền có thể lên đến [số tiền] đồng ạ. Có nghĩa là số tiền hoàn có thể bằng hoặc thấp hơn [số tiền] đồng ạ.\n\nEm thành thật xin lỗi anh/chị vì những hiểu lầm có thể có trong quá trình anh/chị tham gia khuyến mãi. Zalopay luôn mong muốn mang đến trải nghiệm tốt nhất cho anh/chị ạ. Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội tiếp theo nhé.\n\nEm chân thành cảm ơn anh/chị và hy vọng Zalopay vẫn luôn được anh/chị đồng hành, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_002_A1",
+    "template_code": "TPL_E_BL_002_INAPP_NEUTRAL",
     "purpose": "Không thấy CTKM trên app",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.Chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên. Rất mong bạn thông cảm.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.Chân thành cảm ơn bạn đã đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.\n\nChương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên. Rất mong bạn thông cảm.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi và tham gia cùng Zalopay nhé.\n\nChân thành cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_002_A2",
+    "template_code": "TPL_E_BL_002_INAPP_CALMING",
     "purpose": "Không thấy CTKM trên app",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã quan tâm và mong muốn tham gia chương trình khuyến mãi \"[Tên chương trình]\".Zalopay hoàn toàn hiểu rằng bạn đang rất mong đợi được tham gia chương trình này. Tuy nhiên, chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên theo cơ chế của hệ thống. Zalopay rất mong bạn thông cảm và hy vọng bạn sẽ có cơ hội tham gia các chương trình tiếp theo.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội nhé.Zalopay chân thành cảm ơn bạn đã tin tưởng và hy vọng vẫn luôn được bạn đồng hành, ủng hộ."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm và mong muốn tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n\nZalopay hoàn toàn hiểu rằng bạn đang rất mong đợi được tham gia chương trình này. Tuy nhiên, chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên theo cơ chế của hệ thống. Zalopay rất mong bạn thông cảm và hy vọng bạn sẽ có cơ hội tham gia các chương trình tiếp theo.Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của bạn. Bạn vui lòng tham khảo thêm tại mục Ưu đãi để không bỏ lỡ các cơ hội nhé.\n\nZalopay chân thành cảm ơn bạn đã tin tưởng và hy vọng vẫn luôn được bạn đồng hành, ủng hộ."
   },
   {
-    "template_code": "TPL_E_BL_002_B1",
+    "template_code": "TPL_E_BL_002_CHAT_NEUTRAL",
     "purpose": "Không thấy CTKM trên app",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\nChương trình này chỉ áp dụng cho nhóm khách hàng được lựa chọn ngẫu nhiên ạ. Em mong anh/chị thông cảm.\nZalopay đang có nhiều chương trình khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
+    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\n\nChương trình này chỉ áp dụng cho nhóm khách hàng được lựa chọn ngẫu nhiên ạ. Em mong anh/chị thông cảm. Bên cạnh đó, Zalopay đang có nhiều chương trình khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\n\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_002_B2",
+    "template_code": "TPL_E_BL_002_CHAT_CALMING",
     "purpose": "Không thấy CTKM trên app",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\nEm hiểu anh/chị đang mong đợi tham gia chương trình này. Tuy nhiên, chương trình chỉ áp dụng cho nhóm khách hàng được lựa chọn ngẫu nhiên theo hệ thống ạ. Em rất mong anh/chị thông cảm và hy vọng anh/chị sẽ có cơ hội ở các chương trình tiếp theo.\nZalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\nEm cảm ơn anh/chị đã tin tưởng và hy vọng được anh/chị tiếp tục đồng hành ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\n\nEm hiểu anh/chị đang mong đợi tham gia chương trình này. Tuy nhiên, chương trình chỉ áp dụng cho nhóm khách hàng được lựa chọn ngẫu nhiên theo hệ thống ạ. Em rất mong anh/chị thông cảm và hy vọng anh/chị sẽ có cơ hội ở các chương trình tiếp theo.\nZalopay đang có nhiều chương trình hấp dẫn khác phù hợp với anh/chị. Anh/chị tham khảo tại mục Ưu đãi nhé.\n\nEm cảm ơn anh/chị đã tin tưởng và hy vọng được anh/chị tiếp tục đồng hành ạ."
   },
   {
-    "template_code": "TPL_E_BL_002_C1",
+    "template_code": "TPL_E_BL_002_CALL_NEUTRAL",
     "purpose": "Không thấy CTKM trên app",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\nChương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên ạ. Em rất mong anh/chị thông cảm.\nNgoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và tham gia cùng Zalopay nhé.\nEm chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nChương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên ạ. Em rất mong anh/chị thông cảm. Ngoài ra, Zalopay cũng đang có nhiều chương trình khuyến mãi khác phù hợp với tài khoản của anh/chị. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và tham gia cùng Zalopay nhé.\n\nEm chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_002_C2",
+    "template_code": "TPL_E_BL_002_CALL_CALMING",
     "purpose": "Không thấy CTKM trên app",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và mong muốn tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị đang rất mong đợi được tham gia chương trình này ạ. Tuy nhiên, chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên theo cơ chế của hệ thống ạ. Em rất mong anh/chị thông cảm và hy vọng anh/chị sẽ có cơ hội tham gia các chương trình tiếp theo.\nBên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội nhé.\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng Zalopay vẫn luôn được anh/chị đồng hành, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và mong muốn tham gia chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nEm hoàn toàn hiểu rằng anh/chị đang rất mong đợi được tham gia chương trình này ạ. Tuy nhiên, chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên theo cơ chế của hệ thống ạ. Em rất mong anh/chị thông cảm và hy vọng anh/chị sẽ có cơ hội tham gia các chương trình tiếp theo. Bên cạnh đó, Zalopay cũng đang có nhiều chương trình khuyến mãi hấp dẫn khác rất phù hợp với tài khoản của anh/chị đấy. Anh/chị vui lòng truy cập mục Ưu đãi để tham khảo và đừng bỏ lỡ các cơ hội nhé.\n\nEm chân thành cảm ơn anh/chị đã tin tưởng và hy vọng Zalopay vẫn luôn được anh/chị đồng hành, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_003_A1",
+    "template_code": "TPL_E_BL_003_INAPP_NEUTRAL",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.Sau khi kiểm tra lại, Zalopay đã cập nhật đánh giá lại tài khoản của bạn. Hiện tại, bạn đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi.Bạn vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.Chân thành cảm ơn bạn đã đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay.\n\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá lại tài khoản của bạn. Hiện tại, bạn đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi.Bạn vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.\n\nChân thành cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_003_A2",
+    "template_code": "TPL_E_BL_003_INAPP_CALMING",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã kiên nhẫn chờ đợi và tin tưởng Zalopay.Sau khi kiểm tra lại một cách kỹ lưỡng, Zalopay đã cập nhật và đánh giá lại tài khoản của bạn. Zalopay rất vui mừng thông báo rằng hiện tại bạn đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi \"[Tên chương trình]\".Zalopay xin lỗi vì những bất tiện trước đó và hy vọng bạn sẽ có trải nghiệm tốt khi tham gia chương trình. Bạn vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.Zalopay chân thành cảm ơn bạn đã đồng hành và hy vọng vẫn luôn được bạn tin tưởng, ủng hộ."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã kiên nhẫn chờ đợi và tin tưởng Zalopay.\n\nSau khi kiểm tra lại một cách kỹ lưỡng, Zalopay đã cập nhật và đánh giá lại tài khoản của bạn. Zalopay rất vui mừng thông báo rằng hiện tại bạn đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi \"[Tên chương trình]\". \n\nZalopay xin lỗi vì những bất tiện trước đó và hy vọng bạn sẽ có trải nghiệm tốt khi tham gia chương trình. Bạn vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.\n\nZalopay chân thành cảm ơn bạn đã đồng hành và hy vọng vẫn luôn được bạn tin tưởng, ủng hộ."
   },
   {
-    "template_code": "TPL_E_BL_003_B1",
+    "template_code": "TPL_E_BL_003_CHAT_NEUTRAL",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá tài khoản của anh/chị. Hiện tại anh/chị đã đủ điều kiện để tham gia chương trình rồi ạ.\nAnh/chị vui lòng tham khảo thể lệ và tham gia tại mục Ưu đãi nhé.\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
+    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm chương trình \"[Tên chương trình]\" ạ.\n\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá tài khoản của anh/chị. Hiện tại anh/chị đã đủ điều kiện để tham gia chương trình rồi ạ.\nAnh/chị vui lòng tham khảo thể lệ và tham gia tại mục Ưu đãi nhé.\n\nEm cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_003_B2",
+    "template_code": "TPL_E_BL_003_CHAT_CALMING",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã kiên nhẫn chờ đợi và tin tưởng Zalopay ạ.\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá tài khoản của anh/chị. Em rất vui thông báo anh/chị đã đủ điều kiện tham gia chương trình \"[Tên chương trình]\" rồi ạ.\nEm xin lỗi vì những bất tiện trước đó và hy vọng anh/chị sẽ có trải nghiệm tốt ạ. Anh/chị tham khảo thể lệ tại mục Ưu đãi nhé.\nEm cảm ơn và hy vọng được anh/chị tiếp tục tin tưởng, đồng hành ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị, em cảm ơn anh/chị đã kiên nhẫn chờ đợi và tin tưởng Zalopay ạ.\n\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá tài khoản của anh/chị. Em rất vui thông báo anh/chị đã đủ điều kiện tham gia chương trình \"[Tên chương trình]\" rồi ạ.\nEm xin lỗi vì những bất tiện trước đó và hy vọng anh/chị sẽ có trải nghiệm tốt ạ. Anh/chị tham khảo thể lệ tại mục Ưu đãi nhé.\n\nEm cảm ơn và hy vọng được anh/chị tiếp tục tin tưởng, đồng hành ạ."
   },
   {
-    "template_code": "TPL_E_BL_003_C1",
+    "template_code": "TPL_E_BL_003_CALL_NEUTRAL",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.Em cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.Sau khi kiểm tra lại, Zalopay đã cập nhật đánh giá lại tài khoản của anh/chị ạ. Hiện tại, anh/chị đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi rồi ạ.Anh/chị vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.Em chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã quan tâm đến chương trình khuyến mãi \"[Tên chương trình]\" của Zalopay ạ.\n\nSau khi kiểm tra lại, Zalopay đã cập nhật đánh giá lại tài khoản của anh/chị ạ. Hiện tại, anh/chị đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi rồi ạ.Anh/chị vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.\n\nEm chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_003_C2",
+    "template_code": "TPL_E_BL_003_CALL_CALMING",
     "purpose": "Risk xác nhận đủ điều kiện",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã kiên nhẫn chờ đợi và tin tưởng Zalopay ạ.\nSau khi kiểm tra lại một cách kỹ lưỡng, Zalopay đã cập nhật và đánh giá lại tài khoản của anh/chị ạ. Em rất vui mừng được thông báo rằng hiện tại anh/chị đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi \"[Tên chương trình]\" rồi ạ.\nEm xin lỗi anh/chị vì những bất tiện trước đó và hy vọng anh/chị sẽ có trải nghiệm tốt khi tham gia chương trình ạ. Anh/chị vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.\nEm chân thành cảm ơn anh/chị đã đồng hành và hy vọng Zalopay vẫn luôn được anh/chị tin tưởng, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã kiên nhẫn chờ đợi và tin tưởng Zalopay ạ.\n\nSau khi kiểm tra lại một cách kỹ lưỡng, Zalopay đã cập nhật và đánh giá lại tài khoản của anh/chị ạ. Em rất vui mừng được thông báo rằng hiện tại anh/chị đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi \"[Tên chương trình]\" rồi ạ.\n\nEm xin lỗi anh/chị vì những bất tiện trước đó và hy vọng anh/chị sẽ có trải nghiệm tốt khi tham gia chương trình ạ. Anh/chị vui lòng tham khảo chi tiết thể lệ và tham gia chương trình tại mục Ưu đãi nhé.\n\nEm chân thành cảm ơn anh/chị đã đồng hành và hy vọng Zalopay vẫn luôn được anh/chị tin tưởng, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_004_A1",
+    "template_code": "TPL_E_BL_004_INAPP_NEUTRAL",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Sau khi kiểm tra lại, rất tiếc tài khoản của bạn hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\".Hệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn các hành vi lạm dụng. Việc đánh giá tài khoản được thực hiện thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng.Nếu bạn tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo.Mong bạn thông cảm và tiếp tục ủng hộ Zalopay."
+    "template_body": "Chào bạn,\nSau khi kiểm tra lại, rất tiếc tài khoản của bạn hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\".\n\nHệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn các hành vi lạm dụng. Việc đánh giá tài khoản được thực hiện thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng.Nếu bạn tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo.\n\nMong bạn thông cảm và tiếp tục ủng hộ Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_004_A2",
+    "template_code": "TPL_E_BL_004_INAPP_CALMING",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã kiên nhẫn chờ đợi trong thời gian Zalopay kiểm tra lại tài khoản.Sau khi kiểm tra kỹ lưỡng, Zalopay rất tiếc phải thông báo rằng tài khoản của bạn hiện vẫn chưa đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\". Zalopay hoàn toàn hiểu rằng điều này có thể khiến bạn cảm thấy thất vọng.Hệ thống Zalopay được thiết kế để đảm bảo sự công bằng cho tất cả người dùng và ngăn chặn các hành vi lạm dụng. Việc đánh giá tài khoản được thực hiện thường xuyên và tự động nhằm đảm bảo các ưu đãi được phân phối đúng đối tượng, bảo vệ quyền lợi chung của cộng đồng người dùng.Zalopay khuyến khích bạn tiếp tục sử dụng Zalopay với các hoạt động hợp lệ. Tài khoản của bạn sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo và bạn có thể có cơ hội tham gia chương trình khi đáp ứng đủ điều kiện.Zalopay rất mong nhận được sự thông cảm từ bạn và hy vọng bạn sẽ tiếp tục tin tưởng, đồng hành cùng Zalopay."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã kiên nhẫn chờ đợi trong thời gian Zalopay kiểm tra lại tài khoản.\n\nSau khi kiểm tra kỹ lưỡng, Zalopay rất tiếc phải thông báo rằng tài khoản của bạn hiện vẫn chưa đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\". Zalopay hoàn toàn hiểu rằng điều này có thể khiến bạn cảm thấy thất vọng.Hệ thống Zalopay được thiết kế để đảm bảo sự công bằng cho tất cả người dùng và ngăn chặn các hành vi lạm dụng. Việc đánh giá tài khoản được thực hiện thường xuyên và tự động nhằm đảm bảo các ưu đãi được phân phối đúng đối tượng, bảo vệ quyền lợi chung của cộng đồng người dùng.\n\nZalopay khuyến khích bạn tiếp tục sử dụng Zalopay với các hoạt động hợp lệ. Tài khoản của bạn sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo và bạn có thể có cơ hội tham gia chương trình khi đáp ứng đủ điều kiện.\n\nZalopay rất mong nhận được sự thông cảm từ bạn và hy vọng bạn sẽ tiếp tục tin tưởng, đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_004_B1",
+    "template_code": "TPL_E_BL_004_CHAT_NEUTRAL",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nSau khi kiểm tra lại, em rất tiếc thông báo tài khoản của anh/chị hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình \"[Tên chương trình]\" ạ.\nHệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn lạm dụng. Việc đánh giá tài khoản thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng ạ.\nNếu anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo ạ.\nEm mong anh/chị thông cảm và tiếp tục ủng hộ Zalopay ạ."
+    "template_body": "Chào anh/chị ạ,\nSau khi kiểm tra lại, em rất tiếc thông báo tài khoản của anh/chị hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình \"[Tên chương trình]\" ạ.\n\nHệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn lạm dụng. Việc đánh giá tài khoản thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng. Nếu anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo ạ.\n\nEm mong anh/chị thông cảm và tiếp tục ủng hộ Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_004_B2",
+    "template_code": "TPL_E_BL_004_CHAT_CALMING",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã kiên nhẫn chờ đợi ạ.\nSau khi kiểm tra kỹ, em rất tiếc thông báo tài khoản của anh/chị hiện vẫn chưa đáp ứng đủ điều kiện bảo mật để tham gia chương trình \"[Tên chương trình]\" ạ. Em hiểu điều này có thể khiến anh/chị thất vọng.\nHệ thống Zalopay được thiết kế để đảm bảo công bằng cho tất cả người dùng và ngăn chặn lạm dụng. Việc đánh giá tài khoản thường xuyên nhằm bảo vệ quyền lợi chung ạ.\nAnh/chị hãy tiếp tục sử dụng Zalopay với các hoạt động hợp lệ nhé. Tài khoản sẽ được hệ thống tự động đánh giá lại và anh/chị có thể có cơ hội tham gia khi đáp ứng đủ điều kiện ạ.\nEm rất mong anh/chị thông cảm và tiếp tục tin tưởng, đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_004_C1",
+    "template_code": "TPL_E_BL_004_CALL_NEUTRAL",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nSau khi kiểm tra lại, em rất tiếc phải thông báo với anh/chị rằng tài khoản của anh/chị hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\" ạ.\nHệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn các hành vi lạm dụng ạ. Việc đánh giá tài khoản được thực hiện thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng.\nNếu anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo ạ.\nEm mong anh/chị thông cảm và tiếp tục ủng hộ Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị ạ.\nSau khi kiểm tra lại, em rất tiếc phải thông báo với anh/chị rằng tài khoản của anh/chị hiện vẫn không đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\" ạ.\n\nHệ thống Zalopay được thiết kế để đảm bảo công bằng và ngăn chặn các hành vi lạm dụng ạ. Việc đánh giá tài khoản được thực hiện thường xuyên nhằm đảm bảo ưu đãi được phân phối đúng đối tượng. Nếu anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ, tài khoản sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo ạ.\n\nEm mong anh/chị thông cảm và tiếp tục ủng hộ Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_004_C2",
+    "template_code": "TPL_E_BL_004_CALL_CALMING",
     "purpose": "Risk xác nhận không đủ điều kiện",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã kiên nhẫn chờ đợi trong thời gian Zalopay kiểm tra lại tài khoản ạ.\nSau khi kiểm tra kỹ lưỡng, em rất tiếc phải thông báo với anh/chị rằng tài khoản của anh/chị hiện vẫn chưa đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\" ạ. Em hoàn toàn hiểu rằng điều này có thể khiến anh/chị cảm thấy thất vọng.\nHệ thống Zalopay được thiết kế để đảm bảo sự công bằng cho tất cả người dùng và ngăn chặn các hành vi lạm dụng ạ. Việc đánh giá tài khoản được thực hiện thường xuyên và tự động nhằm đảm bảo các ưu đãi được phân phối đúng đối tượng, bảo vệ quyền lợi chung của cộng đồng người dùng ạ.\nEm khuyến khích anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ nhé. Tài khoản của anh/chị sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo và anh/chị có thể có cơ hội tham gia chương trình khi đáp ứng đủ điều kiện ạ.\nEm rất mong anh/chị thông cảm và hy vọng anh/chị sẽ tiếp tục tin tưởng, đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị. Trước tiên, em chân thành cảm ơn anh/chị đã kiên nhẫn chờ đợi trong thời gian Zalopay kiểm tra lại tài khoản ạ.\n\nSau khi kiểm tra kỹ lưỡng, em rất tiếc phải thông báo với anh/chị rằng tài khoản của anh/chị hiện vẫn chưa đáp ứng đủ điều kiện bảo mật để tham gia chương trình khuyến mãi \"[Tên chương trình]\" ạ. Em hoàn toàn hiểu rằng điều này có thể khiến anh/chị cảm thấy thất vọng.\n\nHệ thống Zalopay được thiết kế để đảm bảo sự công bằng cho tất cả người dùng và ngăn chặn các hành vi lạm dụng ạ. Việc đánh giá tài khoản được thực hiện thường xuyên và tự động nhằm đảm bảo các ưu đãi được phân phối đúng đối tượng, bảo vệ quyền lợi chung của cộng đồng người dùng ạ.\n\nEm khuyến khích anh/chị tiếp tục sử dụng Zalopay với các hoạt động hợp lệ nhé. Tài khoản của anh/chị sẽ được hệ thống tự động đánh giá lại trong các đợt tiếp theo và anh/chị có thể có cơ hội tham gia chương trình khi đáp ứng đủ điều kiện ạ.\n\nEm rất mong anh/chị thông cảm và hy vọng anh/chị sẽ tiếp tục tin tưởng, đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_005_A1",
+    "template_code": "TPL_E_BL_005_INAPP_NEUTRAL",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm và sử dụng dịch vụ của Zalopay.\nZalopay luôn mong muốn tạo điều kiện để các khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn.\nBạn hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của bạn trong các kỳ đánh giá định kỳ.\nTrân trọng cảm ơn bạn đã đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã quan tâm và sử dụng dịch vụ của Zalopay.\n\nZalopay luôn mong muốn tạo điều kiện để các khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn. Bạn hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của bạn trong các kỳ đánh giá định kỳ.\n\nTrân trọng cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_005_A2",
+    "template_code": "TPL_E_BL_005_INAPP_CALMING",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay.\nZalopay hoàn toàn hiểu rằng bạn mong muốn được tham gia các chương trình ưu đãi hấp dẫn. Zalopay luôn có mong muốn tạo điều kiện tốt nhất để các khách hàng thân thiết như bạn được tham gia nhiều chương trình khuyến mãi đặc biệt.\nZalopay khuyến khích bạn hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của bạn trong các kỳ đánh giá định kỳ. Những hoạt động sử dụng đều đặn sẽ giúp bạn có nhiều cơ hội hơn để nhận được các ưu đãi.\nZalopay trân trọng cảm ơn bạn đã đồng hành và hy vọng vẫn luôn được bạn tin tưởng, ủng hộ."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay.\n\nZalopay hoàn toàn hiểu rằng bạn mong muốn được tham gia các chương trình ưu đãi hấp dẫn. Zalopay luôn có mong muốn tạo điều kiện tốt nhất để các khách hàng thân thiết như bạn được tham gia nhiều chương trình khuyến mãi đặc biệt. Zalopay khuyến khích bạn hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của bạn trong các kỳ đánh giá định kỳ. Những hoạt động sử dụng đều đặn sẽ giúp bạn có nhiều cơ hội hơn để nhận được các ưu đãi.\n\nZalopay trân trọng cảm ơn bạn đã đồng hành và hy vọng vẫn luôn được bạn tin tưởng, ủng hộ."
   },
   {
-    "template_code": "TPL_E_BL_005_B1",
+    "template_code": "TPL_E_BL_005_CHAT_NEUTRAL",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ Zalopay ạ.\nZalopay luôn mong muốn tạo điều kiện để khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn ạ.\nAnh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động xem xét và cập nhật quyền lợi trong các kỳ đánh giá định kỳ ạ.\nEm trân trọng cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
+    "template_body": "Chào anh/chị, em cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ Zalopay ạ.\n\nZalopay luôn mong muốn tạo điều kiện để khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn ạ. Anh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động xem xét và cập nhật quyền lợi trong các kỳ đánh giá định kỳ ạ.\n\nEm trân trọng cảm ơn anh/chị đã đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_005_B2",
+    "template_code": "TPL_E_BL_005_CHAT_CALMING",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã quan tâm và tin tưởng sử dụng Zalopay ạ.\nEm hiểu anh/chị mong muốn tham gia các chương trình ưu đãi. Zalopay luôn muốn tạo điều kiện để khách hàng thân thiết như anh/chị được tham gia nhiều chương trình đặc biệt ạ.\nAnh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động cập nhật quyền lợi định kỳ. Hoạt động đều đặn sẽ giúp anh/chị có nhiều cơ hội nhận ưu đãi hơn đấy ạ.\nEm trân trọng cảm ơn anh/chị đã đồng hành và hy vọng được anh/chị tiếp tục tin tưởng ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị, em cảm ơn anh/chị đã quan tâm và tin tưởng sử dụng Zalopay ạ.\n\nEm hiểu anh/chị mong muốn tham gia các chương trình ưu đãi. Zalopay luôn muốn tạo điều kiện để khách hàng thân thiết như anh/chị được tham gia nhiều chương trình đặc biệt ạ. Anh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động cập nhật quyền lợi định kỳ. Hoạt động đều đặn sẽ giúp anh/chị có nhiều cơ hội nhận ưu đãi hơn đấy ạ.\n\nEm trân trọng cảm ơn anh/chị đã đồng hành và hy vọng được anh/chị tiếp tục tin tưởng ạ."
   },
   {
-    "template_code": "TPL_E_BL_005_C1",
+    "template_code": "TPL_E_BL_005_CALL_NEUTRAL",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ của Zalopay ạ.\nZalopay luôn mong muốn tạo điều kiện để các khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn ạ.\nAnh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của anh/chị trong các kỳ đánh giá định kỳ ạ.\nEm trân trọng cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị, em cảm ơn anh/chị đã quan tâm và sử dụng dịch vụ của Zalopay ạ.\n\nZalopay luôn mong muốn tạo điều kiện để các khách hàng thân thiết được tham gia nhiều chương trình ưu đãi hấp dẫn. Anh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của anh/chị trong các kỳ đánh giá định kỳ ạ.\n\nEm trân trọng cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_005_C2",
+    "template_code": "TPL_E_BL_005_CALL_CALMING",
     "purpose": "Hỏi cách gỡ blacklist",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chào anh/chị ạ.\nTrước tiên, em chân thành cảm ơn anh/chị đã quan tâm và tin tưởng sử dụng dịch vụ của Zalopay ạ.\nEm hoàn toàn hiểu rằng anh/chị mong muốn được tham gia các chương trình ưu đãi hấp dẫn ạ. Zalopay luôn có mong muốn tạo điều kiện tốt nhất để các khách hàng thân thiết như anh/chị được tham gia nhiều chương trình khuyến mãi đặc biệt.\nEm khuyến khích anh/chị hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày để được ghi nhận là tài khoản hoạt động tích cực nhé. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của anh/chị trong các kỳ đánh giá định kỳ ạ. Những hoạt động sử dụng đều đặn sẽ giúp anh/chị có nhiều cơ hội hơn để nhận được các ưu đãi đấy.\nEm trân trọng cảm ơn anh/chị đã đồng hành và hy vọng Zalopay vẫn luôn được anh/chị tin tưởng, ủng hộ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_006_A1",
+    "template_code": "TPL_E_BL_006_INAPP_NEUTRAL",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Hệ thống bảo mật Zalopay ghi nhận tài khoản của bạn có hoạt động chưa phù hợp với quy định của chương trình khuyến mãi.Vui lòng đảm bảo đã thực hiện định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau.Bạn có thể xem thêm quy định tại: https://zalopay.vn/quy-dinhRất mong bạn thông cảm và tiếp tục đồng hành cùng Zalopay."
+    "template_body": "Chào bạn,\nHệ thống bảo mật Zalopay ghi nhận tài khoản của bạn có hoạt động chưa phù hợp với quy định của chương trình khuyến mãi. Vui lòng đảm bảo đã thực hiện định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau.\n\nBạn có thể xem thêm quy định tại: https://zalopay.vn/quy-dinh\n\nRất mong bạn thông cảm và tiếp tục đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_BL_006_A2",
+    "template_code": "TPL_E_BL_006_INAPP_CALMING",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,\nZalopay xin thông báo đến bạn rằng hệ thống bảo mật của Zalopay đã ghi nhận tài khoản của bạn có một số hoạt động chưa phù hợp với quy định của chương trình khuyến mãi.\nZalopay hiểu rằng điều này có thể là do vô tình hoặc chưa nắm rõ thể lệ. Để đảm bảo tài khoản của bạn được tham gia các chương trình khuyến mãi trong tương lai mà không bị hạn chế, Zalopay khuyến nghị bạn:\nĐảm bảo đã hoàn tất định danh tài khoản\nTuân thủ đầy đủ thể lệ của các chương trình khuyến mãi\nBạn có thể tham khảo chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinh\nZalopay rất mong nhận được sự thông cảm và hợp tác từ bạn. Zalopay hy vọng bạn sẽ tiếp tục đồng hành cùng Zalopay với những hoạt động phù hợp và hợp lệ."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay xin thông báo đến bạn rằng hệ thống bảo mật của Zalopay đã ghi nhận tài khoản của bạn có một số hoạt động chưa phù hợp với quy định của chương trình khuyến mãi.\n\nZalopay hiểu rằng điều này có thể là do vô tình hoặc chưa nắm rõ thể lệ. Để đảm bảo tài khoản của bạn được tham gia các chương trình khuyến mãi trong tương lai mà không bị hạn chế, Zalopay khuyến nghị bạn:\n- Đảm bảo đã hoàn tất định danh tài khoản\n- Tuân thủ đầy đủ thể lệ của các chương trình khuyến mãi\nBạn có thể tham khảo chi tiết quy định sử dụng tại: https://zalopay.vn/quy-dinh\n\nZalopay rất mong nhận được sự thông cảm và hợp tác từ bạn. Zalopay hy vọng bạn sẽ tiếp tục đồng hành cùng Zalopay với những hoạt động phù hợp và hợp lệ."
   },
   {
-    "template_code": "TPL_E_BL_006_B1",
+    "template_code": "TPL_E_BL_006_CHAT_NEUTRAL",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Chào anh/chị ạ,\nHệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định chương trình khuyến mãi ạ.\nAnh/chị vui lòng đảm bảo đã định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau nhé.\nAnh/chị xem thêm quy định tại: https://zalopay.vn/quy-dinh\nEm mong anh/chị thông cảm và tiếp tục đồng hành cùng Zalopay ạ."
+    "template_body": "Chào anh/chị ạ.\n\nHiện hệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định chương trình khuyến mãi ạ. Anh/chị vui lòng đảm bảo đã định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau nhé. Ngoài ra, anh/chị có thể tham khảo thêm quy định tại: https://zalopay.vn/quy-dinh\n\nEm mong anh/chị thông cảm và tiếp tục đồng hành cùng Zalopay ạ."
   },
   {
-    "template_code": "TPL_E_BL_006_B2",
+    "template_code": "TPL_E_BL_006_CHAT_CALMING",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Chào anh/chị ạ,\nHệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định chương trình khuyến mãi ạ.\nEm hiểu điều này có thể do vô tình hoặc anh/chị chưa nắm rõ thể lệ. Để tránh bị hạn chế trong tương lai, anh/chị vui lòng:\nĐảm bảo đã định danh tài khoản\nTuân thủ đầy đủ thể lệ chương trình\nAnh/chị xem chi tiết quy định tại: https://zalopay.vn/quy-dinh\nEm mong anh/chị thông cảm và hợp tác. Hy vọng anh/chị tiếp tục đồng hành cùng Zalopay với hoạt động phù hợp ạ."
+    "emotion_mode": "calming",
+    "template_body": "Chào anh/chị ạ,\n\nHệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định chương trình khuyến mãi ạ. Em hiểu điều này có thể do vô tình hoặc anh/chị chưa nắm rõ thể lệ. Để tránh bị hạn chế trong tương lai, anh/chị vui lòng:\n- Đảm bảo đã định danh tài khoản\n- Tuân thủ đầy đủ thể lệ chương trình\nAnh/chị xem chi tiết quy định tại: https://zalopay.vn/quy-dinh\n\nEm mong anh/chị thông cảm và hợp tác. Hy vọng anh/chị tiếp tục đồng hành cùng Zalopay với hoạt động phù hợp ạ."
   },
   {
-    "template_code": "TPL_E_BL_006_C1",
+    "template_code": "TPL_E_BL_006_CALL_NEUTRAL",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "call",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": "Dạ, em chào anh/chị ạ.\nHệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định của chương trình khuyến mãi ạ.\nAnh/chị vui lòng đảm bảo đã thực hiện định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau nhé.\nAnh/chị có thể xem thêm quy định chi tiết tại đường link https://zalopay.vn/quy-dinh ạ.\nEm rất mong anh/chị thông cảm và tiếp tục đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "template_body": "Dạ, em chào anh/chị, hiện hệ thống bảo mật Zalopay ghi nhận tài khoản của anh/chị có hoạt động chưa phù hợp với quy định của chương trình khuyến mãi ạ. Anh/chị vui lòng đảm bảo đã thực hiện định danh tài khoản và tuân thủ thể lệ chương trình để tránh bị hạn chế trong các lần sau nhé. Anh/chị có thể xem thêm quy định chi tiết tại đường link https://zalopay.vn/quy-dinh ạ.\nEm rất mong anh/chị thông cảm và tiếp tục đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_BL_006_C2",
+    "template_code": "TPL_E_BL_006_CALL_CALMING",
     "purpose": "KH nhận cảnh báo thuộc blacklist trên app",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
-    "template_body": "Dạ, em chào anh/chị ạ.\nEm xin thông báo đến anh/chị rằng hệ thống bảo mật của Zalopay đã ghi nhận tài khoản của anh/chị có một số hoạt động chưa phù hợp với quy định của chương trình khuyến mãi ạ.\nEm hoàn toàn hiểu rằng điều này có thể là do vô tình hoặc anh/chị chưa nắm rõ thể lệ ạ. Để đảm bảo tài khoản của anh/chị được tham gia các chương trình khuyến mãi trong tương lai mà không bị hạn chế, em khuyến nghị anh/chị:\nĐảm bảo đã hoàn tất định danh tài khoản\nTuân thủ đầy đủ thể lệ của các chương trình khuyến mãi\nAnh/chị có thể tham khảo chi tiết quy định sử dụng tại đường link https://zalopay.vn/quy-dinh ạ.\nEm rất mong nhận được sự thông cảm và hợp tác từ anh/chị. Em hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay với những hoạt động phù hợp và hợp lệ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
+    "emotion_mode": "calming",
+    "template_body": "Dạ, em chào anh/chị, em xin thông báo đến anh/chị rằng hệ thống bảo mật của Zalopay đã ghi nhận tài khoản của anh/chị có một số hoạt động chưa phù hợp với quy định của chương trình khuyến mãi ạ.\n\nEm hoàn toàn hiểu rằng điều này có thể là do vô tình hoặc anh/chị chưa nắm rõ thể lệ ạ. Để đảm bảo tài khoản của anh/chị được tham gia các chương trình khuyến mãi trong tương lai mà không bị hạn chế, em khuyến nghị anh/chị:\n- Đảm bảo đã hoàn tất định danh tài khoản\n- Tuân thủ đầy đủ thể lệ của các chương trình khuyến mãi\nAnh/chị có thể tham khảo chi tiết quy định sử dụng tại đường link https://zalopay.vn/quy-dinh ạ.\n\nEm rất mong nhận được sự thông cảm và hợp tác từ anh/chị. Em hy vọng anh/chị sẽ tiếp tục đồng hành cùng Zalopay với những hoạt động phù hợp và hợp lệ ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_001_A1",
+    "template_code": "TPL_E_FD_001_INAPP_NEUTRAL",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": "Chào bạn,Cảm ơn bạn đã cung cấp thông tin.Để hoàn tất đăng ký sản phẩm Trả sau, bạn cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau.Bạn vui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin. Sau khi hoàn tất, bạn quay lại đăng ký sản phẩm Trả sau trên Zalopay nhé.Zalopay xin lỗi vì sự bất tiện này. Chân thành cảm ơn bạn."
+    "template_body": "Chào bạn,\nCảm ơn bạn đã cung cấp thông tin.Để hoàn tất đăng ký sản phẩm Trả sau, bạn cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau.\n\nBạn vui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin. Sau khi hoàn tất, bạn quay lại đăng ký sản phẩm Trả sau trên Zalopay nhé.\n\nZalopay xin lỗi vì sự bất tiện này. Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_001_A2",
+    "template_code": "TPL_E_FD_001_INAPP_CALMING",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã cung cấp thông tin và kiên nhẫn hợp tác.Zalopay hiểu rằng bạn đang mong muốn hoàn tất đăng ký sản phẩm Trả sau. Để có thể hoàn tất quá trình đăng ký, bạn cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau.Zalopay xin hướng dẫn bạn như sau:\nVui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin\nSau khi hoàn tất cập nhật thông tin, bạn quay lại đăng ký sản phẩm Trả sau trên Zalopay\nZalopay thành thật xin lỗi vì sự bất tiện này và hy vọng bạn sẽ sớm hoàn tất được đăng ký. Zalopay luôn sẵn sàng hỗ trợ bạn nếu cần thêm thông tin."
+    "emotion_mode": "calming",
+    "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã cung cấp thông tin và kiên nhẫn hợp tác.\n\nZalopay hiểu rằng bạn đang mong muốn hoàn tất đăng ký sản phẩm Trả sau. Để có thể hoàn tất quá trình đăng ký, bạn cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau. Zalopay xin hướng dẫn bạn như sau:\n- Vui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin\n- Sau khi hoàn tất cập nhật thông tin, bạn quay lại đăng ký sản phẩm Trả sau trên Zalopay\n\nZalopay thành thật xin lỗi vì sự bất tiện này và hy vọng bạn sẽ sớm hoàn tất được đăng ký. Zalopay luôn sẵn sàng hỗ trợ bạn nếu cần thêm thông tin."
   },
   {
-    "template_code": "TPL_E_FD_001_B1",
+    "template_code": "TPL_E_FD_001_CHAT_NEUTRAL",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "chat",
     "language": "vi",
@@ -750,17 +750,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã cung cấp thông tin ạ.\nĐể hoàn tất đăng ký sản phẩm Trả sau, anh/chị cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp nhau ạ.\nAnh/chị vui lòng liên hệ CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin. Sau đó quay lại đăng ký Trả sau trên Zalopay nhé ạ.\nEm xin lỗi vì sự bất tiện này ạ."
   },
   {
-    "template_code": "TPL_E_FD_001_B2",
+    "template_code": "TPL_E_FD_001_CHAT_CALMING",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã cung cấp thông tin và kiên nhẫn hợp tác ạ.\nEm hiểu anh/chị đang mong muốn hoàn tất đăng ký Trả sau. Để hoàn tất, anh/chị cần đảm bảo thông tin tại Zalopay và CIMB khớp nhau ạ.\nAnh/chị vui lòng:\nLiên hệ CIMB qua hotline 1900 969 696 để cập nhật thông tin\nSau đó quay lại đăng ký Trả sau trên Zalopay\nEm xin lỗi vì sự bất tiện và hy vọng anh/chị sớm hoàn tất đăng ký ạ. Em luôn sẵn sàng hỗ trợ thêm nếu anh/chị cần."
   },
   {
-    "template_code": "TPL_E_FD_001_C1",
+    "template_code": "TPL_E_FD_001_CALL_NEUTRAL",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "call",
     "language": "vi",
@@ -770,17 +770,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã cung cấp thông tin ạ.\nĐể hoàn tất đăng ký sản phẩm Trả sau, anh/chị cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau ạ.\nAnh/chị vui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin. Sau khi hoàn tất, anh/chị quay lại đăng ký sản phẩm Trả sau trên Zalopay nhé ạ.\nEm xin lỗi vì sự bất tiện này. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_001_C2",
+    "template_code": "TPL_E_FD_001_CALL_CALMING",
     "purpose": "Lỗi đồng nhất CIMB - hướng dẫn liên hệ đối tác",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã cung cấp thông tin và kiên nhẫn hợp tác ạ.\nEm hoàn toàn hiểu rằng anh/chị đang mong muốn hoàn tất đăng ký sản phẩm Trả sau ạ. Để có thể hoàn tất quá trình đăng ký, anh/chị cần đảm bảo thông tin cá nhân tại Zalopay và ngân hàng CIMB khớp với nhau ạ.\nEm xin hướng dẫn anh/chị như sau nhé:\nAnh/chị vui lòng liên hệ ngân hàng CIMB qua hotline 1900 969 696 để cập nhật đồng bộ thông tin\nSau khi hoàn tất cập nhật thông tin, anh/chị quay lại đăng ký sản phẩm Trả sau trên Zalopay là được ạ\nEm thành thật xin lỗi vì sự bất tiện này và hy vọng anh/chị sẽ sớm hoàn tất được đăng ký ạ. Em luôn sẵn sàng hỗ trợ anh/chị nếu cần thêm thông tin. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_002_A1",
+    "template_code": "TPL_E_FD_002_INAPP_NEUTRAL",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "inapp",
     "language": "vi",
@@ -790,17 +790,17 @@
     "template_body": "Chào bạn,Cảm ơn bạn đã liên hệ.Để hủy đăng ký tài khoản tiết kiệm, bạn vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký nhé. Bên CIMB sẽ hỗ trợ bạn xử lý nhanh nhất.Trường hợp bạn không thể liên hệ được với CIMB, Zalopay sẽ hỗ trợ bạn gửi yêu cầu đến đối tác. Lúc đó, bạn vui lòng cung cấp các thông tin sau:\nHọ và tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do muốn hủy đăng ký TKTK\nZalopay sẽ gửi yêu cầu đến CIMB và thông báo lại kết quả cho bạn trong vòng 1-3 ngày làm việc.Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_002_A2",
+    "template_code": "TPL_E_FD_002_INAPP_CALMING",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã liên hệ.Zalopay hiểu rằng bạn muốn hủy đăng ký tài khoản tiết kiệm. Để được hỗ trợ nhanh nhất, bạn vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký nhé. Bên CIMB sẽ hỗ trợ bạn xử lý ngay.Trong trường hợp bạn không thể liên hệ được với CIMB, đừng lo lắng, Zalopay sẽ hỗ trợ bạn gửi yêu cầu đến đối tác. Lúc đó, bạn vui lòng cung cấp đầy đủ các thông tin sau để Zalopay có thể xử lý nhanh chóng:\nHọ và tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do muốn hủy đăng ký TKTK\nZalopay cam kết sẽ gửi yêu cầu đến CIMB và thông báo lại kết quả cho bạn trong vòng 1-3 ngày làm việc.Zalopay luôn sẵn sàng hỗ trợ bạn. Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_002_B1",
+    "template_code": "TPL_E_FD_002_CHAT_NEUTRAL",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "chat",
     "language": "vi",
@@ -810,17 +810,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nĐể hủy đăng ký tài khoản tiết kiệm, anh/chị vui lòng liên hệ CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký nhé ạ. Bên CIMB sẽ hỗ trợ anh/chị nhanh nhất.\nTrường hợp không liên hệ được CIMB, Zalopay sẽ hỗ trợ gửi yêu cầu đến đối tác. Anh/chị cung cấp thông tin:\nHọ tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do hủy đăng ký TKTK\nZalopay sẽ thông báo kết quả trong 1-3 ngày làm việc ạ."
   },
   {
-    "template_code": "TPL_E_FD_002_B2",
+    "template_code": "TPL_E_FD_002_CHAT_CALMING",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nEm hiểu anh/chị muốn hủy đăng ký tài khoản tiết kiệm. Để được hỗ trợ nhanh nhất, anh/chị vui lòng liên hệ CIMB qua hotline 1900 96 96 96 nhé ạ.\nNếu không liên hệ được CIMB, đừng lo, Zalopay sẽ hỗ trợ gửi yêu cầu đến đối tác. Anh/chị cung cấp thông tin:\nHọ tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do hủy đăng ký TKTK\nZalopay cam kết thông báo kết quả trong 1-3 ngày làm việc ạ. Em luôn sẵn sàng hỗ trợ anh/chị."
   },
   {
-    "template_code": "TPL_E_FD_002_C1",
+    "template_code": "TPL_E_FD_002_CALL_NEUTRAL",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "call",
     "language": "vi",
@@ -830,17 +830,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.Để hủy đăng ký tài khoản tiết kiệm, anh/chị vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký nhé ạ. Bên CIMB sẽ hỗ trợ anh/chị xử lý nhanh nhất ạ.Trường hợp anh/chị không thể liên hệ được với CIMB, Zalopay sẽ hỗ trợ anh/chị gửi yêu cầu đến đối tác ạ. Lúc đó, anh/chị vui lòng cung cấp cho em các thông tin sau:\nHọ và tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do muốn hủy đăng ký TKTK\nZalopay sẽ gửi yêu cầu đến CIMB và thông báo lại kết quả cho anh/chị trong vòng 1-3 ngày làm việc ạ.Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_002_C2",
+    "template_code": "TPL_E_FD_002_CALL_CALMING",
     "purpose": "Muốn hủy FD đang duyệt",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ ạ.\nEm hoàn toàn hiểu rằng anh/chị muốn hủy đăng ký tài khoản tiết kiệm ạ. Để được hỗ trợ nhanh nhất, anh/chị vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký nhé ạ. Bên CIMB sẽ hỗ trợ anh/chị xử lý ngay.\nTrong trường hợp anh/chị không thể liên hệ được với CIMB, anh/chị đừng lo lắng nhé, Zalopay sẽ hỗ trợ anh/chị gửi yêu cầu đến đối tác ạ. Lúc đó, anh/chị vui lòng cung cấp cho em đầy đủ các thông tin sau để em có thể xử lý nhanh chóng nhé:\nHọ và tên chủ tài khoản\nSố điện thoại đăng ký\nSố CMND/CCCD\nNgày cấp\nLý do muốn hủy đăng ký TKTK\nZalopay cam kết sẽ gửi yêu cầu đến CIMB và thông báo lại kết quả cho anh/chị trong vòng 1-3 ngày làm việc ạ.\nEm luôn sẵn sàng hỗ trợ anh/chị. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_003_A1",
+    "template_code": "TPL_E_FD_003_INAPP_NEUTRAL",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "inapp",
     "language": "vi",
@@ -850,17 +850,17 @@
     "template_body": "Chào bạn,Cảm ơn bạn đã liên hệ.Zalopay đang đối soát với ngân hàng CIMB. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.Zalopay sẽ thông báo đến bạn ngay khi có kết quả. Mong bạn thông cảm và kiên nhẫn chờ đợi.Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_003_A2",
+    "template_code": "TPL_E_FD_003_INAPP_CALMING",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ và kiên nhẫn chờ đợi.\nZalopay hoàn toàn hiểu rằng bạn đang mong muốn nhận lại tiền hoàn. Hiện tại, Zalopay đang trong quá trình đối soát với ngân hàng CIMB để xử lý vấn đề của bạn. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc.\nZalopay cam kết sẽ thông báo đến bạn ngay khi có kết quả. Zalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn trong thời gian chờ đợi.\nZalopay chân thành cảm ơn bạn đã tin tưởng và đồng hành."
   },
   {
-    "template_code": "TPL_E_FD_003_B1",
+    "template_code": "TPL_E_FD_003_CHAT_NEUTRAL",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "chat",
     "language": "vi",
@@ -870,17 +870,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nZalopay đang đối soát với ngân hàng CIMB. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc ạ.\nZalopay sẽ thông báo ngay khi có kết quả. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi nhé."
   },
   {
-    "template_code": "TPL_E_FD_003_B2",
+    "template_code": "TPL_E_FD_003_CHAT_CALMING",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ và kiên nhẫn chờ đợi ạ.\nEm hiểu anh/chị đang mong muốn nhận lại tiền hoàn. Zalopay đang đối soát với CIMB để xử lý vấn đề của anh/chị. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc ạ.\nZalopay cam kết sẽ thông báo ngay khi có kết quả. Em rất mong anh/chị thông cảm nhé.\nEm cảm ơn anh/chị đã tin tưởng ạ."
   },
   {
-    "template_code": "TPL_E_FD_003_C1",
+    "template_code": "TPL_E_FD_003_CALL_NEUTRAL",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "call",
     "language": "vi",
@@ -890,17 +890,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nZalopay đang đối soát với ngân hàng CIMB ạ. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc.\nZalopay sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi nhé.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_003_C2",
+    "template_code": "TPL_E_FD_003_CALL_CALMING",
     "purpose": "Nạp CIMB chưa hoàn tiền",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ và kiên nhẫn chờ đợi ạ.\nEm hoàn toàn hiểu rằng anh/chị đang mong muốn nhận lại tiền hoàn ạ. Hiện tại, Zalopay đang trong quá trình đối soát với ngân hàng CIMB để xử lý vấn đề của anh/chị. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc ạ.\nZalopay cam kết sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em rất mong anh/chị thông cảm và kiên nhẫn trong thời gian chờ đợi nhé.\nEm chân thành cảm ơn anh/chị đã tin tưởng và đồng hành ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_004_A1",
+    "template_code": "TPL_E_FD_004_INAPP_NEUTRAL",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "inapp",
     "language": "vi",
@@ -910,17 +910,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã liên hệ.\nGiao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.\nZalopay sẽ thông báo đến bạn ngay khi có kết quả. Mong bạn thông cảm và kiên nhẫn chờ đợi.\nChân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_004_A2",
+    "template_code": "TPL_E_FD_004_INAPP_CALMING",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ.\nZalopay hoàn toàn hiểu rằng bạn đang muốn thực hiện giao dịch rút tiền. Tuy nhiên, giao dịch rút tiền trước đó của bạn đang trong quá trình chờ xử lý từ phía ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của bạn.\nThời gian dự kiến xử lý và hoàn tiền là 1-2 ngày làm việc. Sau khi giao dịch trước được hoàn tất, bạn có thể tiếp tục thực hiện giao dịch rút tiền mới.\nZalopay cam kết sẽ thông báo đến bạn ngay khi có kết quả. Zalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn trong thời gian chờ đợi.\nZalopay chân thành cảm ơn bạn đã tin tưởng."
   },
   {
-    "template_code": "TPL_E_FD_004_B1",
+    "template_code": "TPL_E_FD_004_CHAT_NEUTRAL",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "chat",
     "language": "vi",
@@ -930,17 +930,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo ạ. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.\nZalopay sẽ thông báo ngay khi có kết quả. Em mong anh/chị thông cảm và chờ thêm nhé."
   },
   {
-    "template_code": "TPL_E_FD_004_B2",
+    "template_code": "TPL_E_FD_004_CHAT_CALMING",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nEm hiểu anh/chị đang muốn rút tiền. Tuy nhiên, giao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của anh/chị ạ.\nThời gian dự kiến hoàn tiền: 1-2 ngày làm việc. Sau đó anh/chị có thể tiếp tục rút tiền nhé.\nZalopay cam kết sẽ thông báo ngay khi có kết quả. Em rất mong anh/chị thông cảm ạ."
   },
   {
-    "template_code": "TPL_E_FD_004_C1",
+    "template_code": "TPL_E_FD_004_CALL_NEUTRAL",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "call",
     "language": "vi",
@@ -950,17 +950,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch rút tiền trước đó của anh/chị đang chờ xử lý từ ngân hàng ạ, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc ạ.\nZalopay sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi thêm nhé.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_004_C2",
+    "template_code": "TPL_E_FD_004_CALL_CALMING",
     "purpose": "Rút CIMB pending không tạo GD mới",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ ạ.\nEm hoàn toàn hiểu rằng anh/chị đang muốn thực hiện giao dịch rút tiền ạ. Tuy nhiên, giao dịch rút tiền trước đó của anh/chị đang trong quá trình chờ xử lý từ phía ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của anh/chị ạ.\nThời gian dự kiến xử lý và hoàn tiền là 1-2 ngày làm việc ạ. Sau khi giao dịch trước được hoàn tất, anh/chị có thể tiếp tục thực hiện giao dịch rút tiền mới nhé.\nZalopay cam kết sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em rất mong anh/chị thông cảm và kiên nhẫn chờ đợi thêm.\nEm chân thành cảm ơn anh/chị đã tin tưởng ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_005_A1",
+    "template_code": "TPL_E_FD_005_INAPP_NEUTRAL",
     "purpose": "CIMB bị khóa",
     "channel": "inapp",
     "language": "vi",
@@ -970,17 +970,17 @@
     "template_body": "Chào bạn,Cảm ơn bạn đã liên hệ.Sau khi kiểm tra trên hệ thống, Zalopay thấy rằng bạn đang bị khóa hạn mức thấu chi bởi ngân hàng. Trường hợp này, bạn cần liên hệ CIMB hotline 1900 969 696 để mở khóa tài khoản thanh toán trước.Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_005_A2",
+    "template_code": "TPL_E_FD_005_INAPP_CALMING",
     "purpose": "CIMB bị khóa",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã liên hệ.Sau khi kiểm tra kỹ trên hệ thống, Zalopay thấy rằng bạn đang bị khóa hạn mức thấu chi bởi ngân hàng. Zalopay hiểu rằng bạn đang gặp khó khăn với tình huống này.Trường hợp này, bạn cần liên hệ trực tiếp với CIMB qua hotline 1900 969 696 để được hỗ trợ mở khóa tài khoản thanh toán trước. Bên CIMB sẽ hỗ trợ bạn xử lý nhanh nhất.Zalopay xin lỗi vì sự bất tiện này và hy vọng bạn sẽ sớm giải quyết được vấn đề.Chân thành cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_FD_005_B1",
+    "template_code": "TPL_E_FD_005_CHAT_NEUTRAL",
     "purpose": "CIMB bị khóa",
     "channel": "chat",
     "language": "vi",
@@ -990,17 +990,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nSau khi kiểm tra, em thấy anh/chị đang bị khóa hạn mức thấu chi bởi ngân hàng ạ. Trường hợp này, anh/chị cần liên hệ CIMB hotline 1900 969 696 để mở khóa tài khoản thanh toán trước nhé ạ.\nEm cảm ơn anh/chị ạ."
   },
   {
-    "template_code": "TPL_E_FD_005_B2",
+    "template_code": "TPL_E_FD_005_CHAT_CALMING",
     "purpose": "CIMB bị khóa",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nSau khi kiểm tra, em thấy anh/chị đang bị khóa hạn mức thấu chi bởi ngân hàng ạ. Em hiểu anh/chị đang gặp khó khăn với tình huống này.\nTrường hợp này, anh/chị cần liên hệ CIMB qua hotline 1900 969 696 để mở khóa tài khoản thanh toán trước nhé ạ. Bên CIMB sẽ hỗ trợ anh/chị ngay.\nEm xin lỗi vì sự bất tiện và hy vọng anh/chị sớm giải quyết được vấn đề ạ."
   },
   {
-    "template_code": "TPL_E_FD_005_C1",
+    "template_code": "TPL_E_FD_005_CALL_NEUTRAL",
     "purpose": "CIMB bị khóa",
     "channel": "call",
     "language": "vi",
@@ -1010,17 +1010,17 @@
     "template_body": "Dạ, em chào anh/chị ạ.\nEm cảm ơn anh/chị đã liên hệ ạ.\nSau khi kiểm tra trên hệ thống, em thấy rằng anh/chị đang bị khóa hạn mức thấu chi bởi ngân hàng ạ. Trường hợp này, anh/chị cần liên hệ CIMB qua hotline 1900 969 696 để mở khóa tài khoản thanh toán trước nhé ạ.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_005_C2",
+    "template_code": "TPL_E_FD_005_CALL_CALMING",
     "purpose": "CIMB bị khóa",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chào anh/chị ạ.\nEm chân thành cảm ơn anh/chị đã liên hệ ạ.\nSau khi kiểm tra kỹ trên hệ thống, em thấy rằng anh/chị đang bị khóa hạn mức thấu chi bởi ngân hàng ạ. Em hoàn toàn hiểu rằng anh/chị đang gặp khó khăn với tình huống này.\nTrường hợp này, anh/chị cần liên hệ trực tiếp với CIMB qua hotline 1900 969 696 để được hỗ trợ mở khóa tài khoản thanh toán trước nhé ạ. Bên CIMB sẽ hỗ trợ anh/chị xử lý ngay.\nEm xin lỗi vì sự bất tiện này và hy vọng anh/chị sẽ sớm giải quyết được vấn đề ạ.\nEm chân thành cảm ơn anh/chị đã đồng hành cùng Zalopay ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_006_A1",
+    "template_code": "TPL_E_FD_006_INAPP_NEUTRAL",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "inapp",
     "language": "vi",
@@ -1030,17 +1030,17 @@
     "template_body": "Chào bạn,Cảm ơn bạn đã liên hệ.Để thực hiện rút tiền, bạn cần hoàn tất xác thực CCCD (NFC) trên ứng dụng Zalopay trước nhé.Cách thực hiện:\nMở ứng dụng Zalopay\nVào mục Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn trên màn hình để quét chip CCCD\nSau khi xác thực thành công, bạn vui lòng quay lại thực hiện rút tiền nhé.Trường hợp bạn đã xác thực thành công nhưng vẫn không rút được tiền, vui lòng liên hệ lại để Zalopay hỗ trợ thêm phương án khác.Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_006_A2",
+    "template_code": "TPL_E_FD_006_INAPP_CALMING",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,Zalopay chân thành cảm ơn bạn đã liên hệ.Zalopay hiểu rằng bạn đang muốn thực hiện rút tiền. Để có thể rút tiền thành công, bạn cần hoàn tất xác thực CCCD (NFC) trên ứng dụng Zalopay trước nhé.Zalopay xin hướng dẫn bạn các bước thực hiện chi tiết như sau:Cách thực hiện:\nMở ứng dụng Zalopay\nVào mục Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn trên màn hình để quét chip CCCD\nSau khi xác thực thành công, bạn vui lòng quay lại thực hiện rút tiền nhé.Trong trường hợp bạn đã hoàn tất xác thực thành công nhưng vẫn không thể rút được tiền, đừng lo lắng, vui lòng liên hệ lại với Zalopay để được hỗ trợ thêm các phương án khác.Zalopay luôn sẵn sàng đồng hành cùng bạn. Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_006_B1",
+    "template_code": "TPL_E_FD_006_CHAT_NEUTRAL",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "chat",
     "language": "vi",
@@ -1050,17 +1050,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nĐể rút tiền, anh/chị cần hoàn tất xác thực CCCD (NFC) trên Zalopay trước nhé ạ.\nCách thực hiện:\nMở ứng dụng Zalopay\nVào Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn để quét chip CCCD\nSau khi xác thực xong, anh/chị quay lại thực hiện rút tiền nhé ạ.\nNếu đã xác thực nhưng vẫn không rút được, anh/chị liên hệ lại để em hỗ trợ thêm ạ."
   },
   {
-    "template_code": "TPL_E_FD_006_B2",
+    "template_code": "TPL_E_FD_006_CHAT_CALMING",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nEm hiểu anh/chị đang muốn rút tiền. Để rút tiền thành công, anh/chị cần hoàn tất xác thực CCCD (NFC) trước nhé ạ.\nCách thực hiện:\nMở ứng dụng Zalopay\nVào Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn để quét chip CCCD\nSau khi xác thực xong, anh/chị quay lại rút tiền nhé ạ.\nNếu đã xác thực nhưng vẫn không rút được, đừng lo, anh/chị liên hệ lại để em hỗ trợ thêm phương án khác ạ.\nEm luôn sẵn sàng hỗ trợ anh/chị ạ."
   },
   {
-    "template_code": "TPL_E_FD_006_C1",
+    "template_code": "TPL_E_FD_006_CALL_NEUTRAL",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "call",
     "language": "vi",
@@ -1070,17 +1070,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nĐể thực hiện rút tiền, anh/chị cần hoàn tất xác thực CCCD (NFC) trên ứng dụng Zalopay trước nhé ạ. Em xin hướng dẫn anh/chị các bước thực hiện:\nCách thực hiện:\nMở ứng dụng Zalopay\nVào mục Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn trên màn hình để quét chip CCCD\nSau khi xác thực thành công, anh/chị vui lòng quay lại thực hiện rút tiền nhé ạ.\nTrường hợp anh/chị đã xác thực thành công nhưng vẫn không rút được tiền, anh/chị vui lòng liên hệ lại để em hỗ trợ thêm phương án khác ạ.\nAnh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_006_C2",
+    "template_code": "TPL_E_FD_006_CALL_CALMING",
     "purpose": "Lỗi NFC - KH chưa NFC trên Zalopay",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ ạ.\nEm hoàn toàn hiểu rằng anh/chị đang muốn thực hiện rút tiền ạ. Để có thể rút tiền thành công, anh/chị cần hoàn tất xác thực CCCD (NFC) trên ứng dụng Zalopay trước nhé ạ. Em xin hướng dẫn anh/chị các bước thực hiện chi tiết:\nCách thực hiện:\nMở ứng dụng Zalopay\nVào mục Tài khoản > Xác thực CCCD (NFC)\nLàm theo hướng dẫn trên màn hình để quét chip CCCD\nSau khi xác thực thành công, anh/chị vui lòng quay lại thực hiện rút tiền nhé ạ.\nTrong trường hợp anh/chị đã hoàn tất xác thực thành công nhưng vẫn không thể rút được tiền, anh/chị đừng lo lắng nhé, vui lòng liên hệ lại với em để được hỗ trợ thêm các phương án khác ạ.\nEm luôn sẵn sàng hỗ trợ anh/chị ạ. Anh/chị còn thắc mắc gì em có thể giải đáp thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_007_A1",
+    "template_code": "TPL_E_FD_007_INAPP_NEUTRAL",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "inapp",
     "language": "vi",
@@ -1090,17 +1090,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã cung cấp thông tin.\nVì bạn đã xác thực CCCD tại Zalopay nhưng vẫn chưa rút được tiền, bạn cần cập nhật lại thông tin CCCD trên ứng dụng Octo by CIMB.\nCác bước thực hiện:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập vào tài khoản\nThực hiện cập nhật lại thông tin CCCD (NFC) theo hướng dẫn trên ứng dụng\nSau khi hoàn tất cập nhật tại Octo, bạn vui lòng quay lại ứng dụng Zalopay để thực hiện rút tiền nhé.\nChân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_007_A2",
+    "template_code": "TPL_E_FD_007_INAPP_CALMING",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã cung cấp thông tin.\nZalopay hiểu rằng bạn đã xác thực CCCD tại Zalopay nhưng vẫn chưa thể rút được tiền. Để giải quyết vấn đề này, bạn cần cập nhật lại thông tin CCCD trên ứng dụng Octo by CIMB.\nZalopay xin hướng dẫn bạn các bước thực hiện chi tiết:\nCác bước thực hiện:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập vào tài khoản\nThực hiện cập nhật lại thông tin CCCD (NFC) theo hướng dẫn trên ứng dụng\nSau khi hoàn tất cập nhật tại Octo, bạn vui lòng quay lại ứng dụng Zalopay để thực hiện rút tiền nhé.\nZalopay hy vọng bạn sẽ sớm hoàn tất và thực hiện rút tiền thành công. Zalopay luôn sẵn sàng hỗ trợ bạn.\nChân thành cảm ơn bạn đã đồng hành cùng Zalopay."
   },
   {
-    "template_code": "TPL_E_FD_007_B1",
+    "template_code": "TPL_E_FD_007_CHAT_NEUTRAL",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "chat",
     "language": "vi",
@@ -1110,17 +1110,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã cung cấp thông tin ạ.\nVì anh/chị đã xác thực CCCD tại Zalopay nhưng vẫn chưa rút được tiền, anh/chị cần cập nhật lại thông tin CCCD trên ứng dụng Octo by CIMB nhé ạ:\nCác bước:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập tài khoản\nCập nhật thông tin CCCD (NFC) theo hướng dẫn\nSau khi hoàn tất, anh/chị quay lại Zalopay để rút tiền nhé ạ."
   },
   {
-    "template_code": "TPL_E_FD_007_B2",
+    "template_code": "TPL_E_FD_007_CHAT_CALMING",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã cung cấp thông tin ạ.\nEm hiểu anh/chị đã xác thực CCCD tại Zalopay nhưng vẫn chưa rút được tiền. Để giải quyết, anh/chị cần cập nhật lại thông tin CCCD trên Octo by CIMB nhé ạ:\nCác bước:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập tài khoản\nCập nhật thông tin CCCD (NFC) theo hướng dẫn\nSau khi hoàn tất, anh/chị quay lại Zalopay để rút tiền nhé ạ.\nEm hy vọng anh/chị sớm hoàn tất thành công. Em luôn sẵn sàng hỗ trợ ạ."
   },
   {
-    "template_code": "TPL_E_FD_007_C1",
+    "template_code": "TPL_E_FD_007_CALL_NEUTRAL",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "call",
     "language": "vi",
@@ -1130,17 +1130,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã cung cấp thông tin ạ.\nVì anh/chị đã xác thực CCCD tại Zalopay nhưng vẫn chưa rút được tiền, em xin hướng dẫn anh/chị cập nhật lại thông tin CCCD trên ứng dụng Octo by CIMB nhé ạ:\nCác bước thực hiện:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập vào tài khoản\nThực hiện cập nhật lại thông tin CCCD (NFC) theo hướng dẫn trên ứng dụng\nSau khi hoàn tất cập nhật tại Octo, anh/chị vui lòng quay lại ứng dụng Zalopay để thực hiện rút tiền nhé ạ.\nAnh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_007_C2",
+    "template_code": "TPL_E_FD_007_CALL_CALMING",
     "purpose": "Lỗi NFC - KH đã NFC trên Zalopay",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã cung cấp thông tin ạ.\nEm hoàn toàn hiểu rằng anh/chị đã xác thực CCCD tại Zalopay nhưng vẫn chưa thể rút được tiền ạ. Để giải quyết vấn đề này, anh/chị cần cập nhật lại thông tin CCCD trên ứng dụng Octo by CIMB nhé ạ.\nEm xin hướng dẫn anh/chị các bước thực hiện chi tiết:\nCác bước thực hiện:\nTải và mở ứng dụng Octo by CIMB\nĐăng nhập vào tài khoản\nThực hiện cập nhật lại thông tin CCCD (NFC) theo hướng dẫn trên ứng dụng\nSau khi hoàn tất cập nhật tại Octo, anh/chị vui lòng quay lại ứng dụng Zalopay để thực hiện rút tiền nhé ạ.\nEm hy vọng anh/chị sẽ sớm hoàn tất và thực hiện rút tiền thành công ạ. Em luôn sẵn sàng hỗ trợ anh/chị.\nAnh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_008_A1",
+    "template_code": "TPL_E_FD_008_INAPP_NEUTRAL",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1150,17 +1150,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã liên hệ và chia sẻ thông tin.\nZalopay xin giải thích về tình huống này: Khi ngân hàng CIMB thay đổi lãi suất, các gói tạo trước thời điểm thay đổi vẫn được hưởng lãi suất cũ. Tuy nhiên, nếu bạn nạp tiền gần giờ chốt lãi suất của CIMB, có thể xảy ra trường hợp hệ thống đã cập nhật lãi suất mới sớm hơn dự kiến, khiến gói của bạn bị áp dụng lãi suất mới.\nBạn vui lòng kiểm tra lại thời gian chính xác khi nạp tiền trên ứng dụng Zalopay nhé.\nTrường hợp bạn kiểm tra và vẫn thấy có sai lệch, vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để được kiểm tra chi tiết và hỗ trợ cụ thể hơn.\nZalopay xin lỗi vì sự bất tiện này. Chân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_008_A2",
+    "template_code": "TPL_E_FD_008_INAPP_CALMING",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ và chia sẻ thông tin về tình huống này.\nZalopay hoàn toàn hiểu rằng bạn đang thắc mắc về lãi suất áp dụng cho gói tiết kiệm của mình. Zalopay xin giải thích chi tiết để bạn hiểu rõ hơn:\nKhi ngân hàng CIMB thay đổi lãi suất, các gói tạo trước thời điểm thay đổi vẫn được hưởng lãi suất cũ. Tuy nhiên, nếu bạn nạp tiền gần giờ chốt lãi suất của CIMB, có thể xảy ra trường hợp hệ thống đã cập nhật lãi suất mới sớm hơn dự kiến, khiến gói của bạn bị áp dụng lãi suất mới thay vì lãi suất cũ.\nZalopay khuyến nghị bạn vui lòng kiểm tra lại thời gian chính xác khi nạp tiền trên ứng dụng Zalopay để xác nhận nhé.\nTrong trường hợp bạn kiểm tra và vẫn thấy có sai lệch, bạn vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để được kiểm tra chi tiết và hỗ trợ cụ thể hơn. Bên CIMB sẽ có thông tin chính xác nhất về lãi suất áp dụng cho gói của bạn.\nZalopay thành thật xin lỗi vì sự bất tiện này. Zalopay chân thành cảm ơn bạn đã đồng hành."
   },
   {
-    "template_code": "TPL_E_FD_008_B1",
+    "template_code": "TPL_E_FD_008_CHAT_NEUTRAL",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "chat",
     "language": "vi",
@@ -1170,17 +1170,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ và chia sẻ thông tin ạ.\nEm xin giải thích: Khi CIMB thay đổi lãi suất, các gói tạo trước vẫn được hưởng lãi suất cũ ạ. Tuy nhiên, nếu anh/chị nạp tiền gần giờ chốt lãi suất, có thể hệ thống đã cập nhật lãi suất mới sớm hơn, khiến gói của anh/chị bị áp dụng lãi suất mới ạ.\nAnh/chị vui lòng kiểm tra lại thời gian nạp tiền trên Zalopay nhé ạ.\nNếu kiểm tra vẫn thấy sai lệch, anh/chị liên hệ CIMB qua hotline 1900 96 96 96 để được kiểm tra chi tiết hơn ạ.\nEm xin lỗi vì sự bất tiện này ạ."
   },
   {
-    "template_code": "TPL_E_FD_008_B2",
+    "template_code": "TPL_E_FD_008_CHAT_CALMING",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ và chia sẻ thông tin ạ.\nEm hiểu anh/chị đang thắc mắc về lãi suất áp dụng cho gói tiết kiệm. Em xin giải thích:\nKhi CIMB thay đổi lãi suất, các gói tạo trước vẫn được hưởng lãi suất cũ ạ. Tuy nhiên, nếu anh/chị nạp tiền gần giờ chốt lãi suất, có thể hệ thống đã cập nhật lãi suất mới sớm hơn, khiến gói của anh/chị bị áp dụng lãi suất mới ạ.\nAnh/chị vui lòng kiểm tra lại thời gian nạp tiền trên Zalopay để xác nhận nhé ạ.\nNếu kiểm tra vẫn thấy sai lệch, anh/chị liên hệ CIMB qua hotline 1900 96 96 96 để được hỗ trợ chi tiết hơn ạ. CIMB sẽ có thông tin chính xác nhất.\nEm thành thật xin lỗi vì sự bất tiện này. Em cảm ơn anh/chị đã đồng hành ạ."
   },
   {
-    "template_code": "TPL_E_FD_008_C1",
+    "template_code": "TPL_E_FD_008_CALL_NEUTRAL",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "call",
     "language": "vi",
@@ -1190,17 +1190,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ và chia sẻ thông tin ạ.\nEm xin giải thích về tình huống này: Khi ngân hàng CIMB thay đổi lãi suất, các gói tạo trước thời điểm thay đổi vẫn được hưởng lãi suất cũ ạ. Tuy nhiên, nếu anh/chị nạp tiền gần giờ chốt lãi suất của CIMB, có thể xảy ra trường hợp hệ thống đã cập nhật lãi suất mới sớm hơn dự kiến, khiến gói của anh/chị bị áp dụng lãi suất mới ạ.\nAnh/chị vui lòng kiểm tra lại thời gian chính xác khi nạp tiền trên ứng dụng Zalopay nhé ạ.\nTrường hợp anh/chị kiểm tra và vẫn thấy có sai lệch, anh/chị vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để được kiểm tra chi tiết và hỗ trợ cụ thể hơn ạ.\nEm xin lỗi vì sự bất tiện này. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_008_C2",
+    "template_code": "TPL_E_FD_008_CALL_CALMING",
     "purpose": "Đổi lãi suất CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ và chia sẻ thông tin về tình huống này ạ.\nEm hoàn toàn hiểu rằng anh/chị đang thắc mắc về lãi suất áp dụng cho gói tiết kiệm của mình ạ. Em xin giải thích chi tiết để anh/chị hiểu rõ hơn nhé:\nKhi ngân hàng CIMB thay đổi lãi suất, các gói tạo trước thời điểm thay đổi vẫn được hưởng lãi suất cũ ạ. Tuy nhiên, nếu anh/chị nạp tiền gần giờ chốt lãi suất của CIMB, có thể xảy ra trường hợp hệ thống đã cập nhật lãi suất mới sớm hơn dự kiến, khiến gói của anh/chị bị áp dụng lãi suất mới thay vì lãi suất cũ ạ.\nEm khuyến nghị anh/chị vui lòng kiểm tra lại thời gian chính xác khi nạp tiền trên ứng dụng Zalopay để xác nhận nhé ạ.\nTrong trường hợp anh/chị kiểm tra và vẫn thấy có sai lệch, anh/chị vui lòng liên hệ trực tiếp ngân hàng CIMB qua hotline 1900 96 96 96 để được kiểm tra chi tiết và hỗ trợ cụ thể hơn ạ. Bên CIMB sẽ có thông tin chính xác nhất về lãi suất áp dụng cho gói của anh/chị đấy.\nEm thành thật xin lỗi vì sự bất tiện này ạ. Em chân thành cảm ơn anh/chị đã đồng hành. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_009_A1",
+    "template_code": "TPL_E_FD_009_INAPP_NEUTRAL",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "inapp",
     "language": "vi",
@@ -1210,17 +1210,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã liên hệ.\nGiao dịch đang chờ đối soát với ngân hàng. Vui lòng đợi khoảng 15 phút, nếu chưa thấy kết quả sẽ xử lý vào ngày làm việc kế tiếp.\nZalopay sẽ thông báo đến bạn khi có kết quả. Mong bạn thông cảm.\nChân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_009_A2",
+    "template_code": "TPL_E_FD_009_INAPP_CALMING",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ.\nZalopay hiểu rằng bạn đang mong muốn biết kết quả giao dịch. Hiện tại, giao dịch của bạn đang trong quá trình chờ đối soát với ngân hàng.\nZalopay khuyến nghị bạn vui lòng đợi thêm khoảng 15 phút để hệ thống hoàn tất đối soát. Nếu sau thời gian này bạn vẫn chưa thấy kết quả, giao dịch sẽ được xử lý vào ngày làm việc kế tiếp.\nZalopay cam kết sẽ thông báo đến bạn ngay khi có kết quả. Zalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn.\nZalopay chân thành cảm ơn bạn đã tin tưởng."
   },
   {
-    "template_code": "TPL_E_FD_009_B1",
+    "template_code": "TPL_E_FD_009_CHAT_NEUTRAL",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "chat",
     "language": "vi",
@@ -1230,17 +1230,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch đang chờ đối soát với ngân hàng. Anh/chị vui lòng đợi khoảng 15 phút nhé. Nếu chưa thấy kết quả sẽ xử lý vào ngày làm việc kế tiếp ạ.\nZalopay sẽ thông báo khi có kết quả. Em mong anh/chị thông cảm ạ."
   },
   {
-    "template_code": "TPL_E_FD_009_B2",
+    "template_code": "TPL_E_FD_009_CHAT_CALMING",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nEm hiểu anh/chị đang mong muốn biết kết quả giao dịch. Giao dịch đang chờ đối soát với ngân hàng ạ.\nAnh/chị vui lòng đợi thêm khoảng 15 phút để hệ thống hoàn tất nhé. Nếu sau đó vẫn chưa có kết quả, giao dịch sẽ được xử lý vào ngày làm việc kế tiếp ạ.\nZalopay cam kết sẽ thông báo ngay khi có kết quả. Em rất mong anh/chị thông cảm ạ."
   },
   {
-    "template_code": "TPL_E_FD_009_C1",
+    "template_code": "TPL_E_FD_009_CALL_NEUTRAL",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "call",
     "language": "vi",
@@ -1250,17 +1250,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch của anh/chị đang chờ đối soát với ngân hàng ạ. Anh/chị vui lòng đợi thêm khoảng 15 phút nhé. Nếu sau thời gian này chưa thấy kết quả, giao dịch sẽ được xử lý vào ngày làm việc kế tiếp ạ.\nZalopay sẽ thông báo đến anh/chị khi có kết quả ạ. Em mong anh/chị thông cảm.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_009_C2",
+    "template_code": "TPL_E_FD_009_CALL_CALMING",
     "purpose": "Nạp/Rút Cake pending",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ ạ.\nEm hoàn toàn hiểu rằng anh/chị đang mong muốn biết kết quả giao dịch ạ. Hiện tại, giao dịch của anh/chị đang trong quá trình chờ đối soát với ngân hàng.\nEm khuyến nghị anh/chị vui lòng đợi thêm khoảng 15 phút để hệ thống hoàn tất đối soát nhé ạ. Nếu sau thời gian này anh/chị vẫn chưa thấy kết quả, giao dịch sẽ được xử lý vào ngày làm việc kế tiếp ạ.\nZalopay cam kết sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em rất mong anh/chị thông cảm và kiên nhẫn.\nEm chân thành cảm ơn anh/chị đã tin tưởng ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_010_A1",
+    "template_code": "TPL_E_FD_010_INAPP_NEUTRAL",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "inapp",
     "language": "vi",
@@ -1270,17 +1270,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã liên hệ.\nZalopay đang đối soát với ngân hàng Cake. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.\nZalopay sẽ thông báo đến bạn ngay khi có kết quả. Mong bạn thông cảm và kiên nhẫn chờ đợi.\nChân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_010_A2",
+    "template_code": "TPL_E_FD_010_INAPP_CALMING",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ và kiên nhẫn chờ đợi.\nZalopay hoàn toàn hiểu rằng bạn đang mong muốn nhận lại tiền hoàn. Hiện tại, Zalopay đang trong quá trình đối soát với ngân hàng Cake để xử lý vấn đề của bạn. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc.\nZalopay cam kết sẽ thông báo đến bạn ngay khi có kết quả. Zalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn trong thời gian chờ đợi.\nZalopay chân thành cảm ơn bạn đã tin tưởng và đồng hành."
   },
   {
-    "template_code": "TPL_E_FD_010_B1",
+    "template_code": "TPL_E_FD_010_CHAT_NEUTRAL",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "chat",
     "language": "vi",
@@ -1290,17 +1290,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nZalopay đang đối soát với ngân hàng Cake. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc ạ.\nZalopay sẽ thông báo ngay khi có kết quả. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi nhé."
   },
   {
-    "template_code": "TPL_E_FD_010_B2",
+    "template_code": "TPL_E_FD_010_CHAT_CALMING",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ và kiên nhẫn chờ đợi ạ.\nEm hiểu anh/chị đang mong muốn nhận lại tiền hoàn. Zalopay đang đối soát với Cake để xử lý vấn đề của anh/chị. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc ạ.\nZalopay cam kết sẽ thông báo ngay khi có kết quả. Em rất mong anh/chị thông cảm nhé.\nEm cảm ơn anh/chị đã tin tưởng ạ."
   },
   {
-    "template_code": "TPL_E_FD_010_C1",
+    "template_code": "TPL_E_FD_010_CALL_NEUTRAL",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "call",
     "language": "vi",
@@ -1310,17 +1310,17 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nZalopay đang đối soát với ngân hàng Cake ạ. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc.\nZalopay sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi nhé.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_010_C2",
+    "template_code": "TPL_E_FD_010_CALL_CALMING",
     "purpose": "Nạp Cake chưa hoàn tiền",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ và kiên nhẫn chờ đợi ạ.\nEm hoàn toàn hiểu rằng anh/chị đang mong muốn nhận lại tiền hoàn ạ. Hiện tại, Zalopay đang trong quá trình đối soát với ngân hàng Cake để xử lý vấn đề của anh/chị. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc ạ.\nZalopay cam kết sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em rất mong anh/chị thông cảm và kiên nhẫn trong thời gian chờ đợi nhé.\nEm chân thành cảm ơn anh/chị đã tin tưởng và đồng hành ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_011_A1",
+    "template_code": "TPL_E_FD_011_INAPP_NEUTRAL",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "inapp",
     "language": "vi",
@@ -1330,17 +1330,17 @@
     "template_body": "Chào bạn,\nCảm ơn bạn đã liên hệ.\nGiao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.\nZalopay sẽ thông báo đến bạn ngay khi có kết quả. Mong bạn thông cảm và kiên nhẫn chờ đợi.\nChân thành cảm ơn bạn."
   },
   {
-    "template_code": "TPL_E_FD_011_A2",
+    "template_code": "TPL_E_FD_011_INAPP_CALMING",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào bạn,\nZalopay chân thành cảm ơn bạn đã liên hệ.\nZalopay hoàn toàn hiểu rằng bạn đang muốn thực hiện giao dịch rút tiền. Tuy nhiên, giao dịch rút tiền trước đó của bạn đang trong quá trình chờ xử lý từ phía ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của bạn.\nThời gian dự kiến xử lý và hoàn tiền là 1-2 ngày làm việc. Sau khi giao dịch trước được hoàn tất, bạn có thể tiếp tục thực hiện giao dịch rút tiền mới.\nZalopay cam kết sẽ thông báo đến bạn ngay khi có kết quả. Zalopay rất mong nhận được sự thông cảm và kiên nhẫn từ bạn trong thời gian chờ đợi.\nZalopay chân thành cảm ơn bạn đã tin tưởng."
   },
   {
-    "template_code": "TPL_E_FD_011_B1",
+    "template_code": "TPL_E_FD_011_CHAT_NEUTRAL",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "chat",
     "language": "vi",
@@ -1350,17 +1350,17 @@
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo ạ. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc.\nZalopay sẽ thông báo ngay khi có kết quả. Em mong anh/chị thông cảm và chờ thêm nhé."
   },
   {
-    "template_code": "TPL_E_FD_011_B2",
+    "template_code": "TPL_E_FD_011_CHAT_CALMING",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Chào anh/chị ạ,\nEm cảm ơn anh/chị đã liên hệ ạ.\nEm hiểu anh/chị đang muốn rút tiền. Tuy nhiên, giao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của anh/chị ạ.\nThời gian dự kiến hoàn tiền: 1-2 ngày làm việc. Sau đó anh/chị có thể tiếp tục rút tiền nhé.\nZalopay cam kết sẽ thông báo ngay khi có kết quả. Em rất mong anh/chị thông cảm ạ."
   },
   {
-    "template_code": "TPL_E_FD_011_C1",
+    "template_code": "TPL_E_FD_011_CALL_NEUTRAL",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "call",
     "language": "vi",
@@ -1370,57 +1370,57 @@
     "template_body": "Dạ, em cảm ơn anh/chị đã liên hệ ạ.\nGiao dịch rút tiền trước đó của anh/chị đang chờ xử lý từ ngân hàng ạ, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo. Thời gian dự kiến hoàn tiền là 1-2 ngày làm việc ạ.\nZalopay sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em mong anh/chị thông cảm và kiên nhẫn chờ đợi thêm nhé.\nEm chân thành cảm ơn anh/chị ạ. Anh/chị còn điều gì cần em hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_011_C2",
+    "template_code": "TPL_E_FD_011_CALL_CALMING",
     "purpose": "Rút Cake pending không tạo GD mới",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ, em chân thành cảm ơn anh/chị đã liên hệ ạ.\nEm hoàn toàn hiểu rằng anh/chị đang muốn thực hiện giao dịch rút tiền ạ. Tuy nhiên, giao dịch rút tiền trước đó của anh/chị đang trong quá trình chờ xử lý từ phía ngân hàng, nên hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo để đảm bảo an toàn cho tài khoản của anh/chị ạ.\nThời gian dự kiến xử lý và hoàn tiền là 1-2 ngày làm việc ạ. Sau khi giao dịch trước được hoàn tất, anh/chị có thể tiếp tục thực hiện giao dịch rút tiền mới nhé.\nZalopay cam kết sẽ thông báo đến anh/chị ngay khi có kết quả ạ. Em rất mong anh/chị thông cảm và kiên nhẫn chờ đợi thêm.\nEm chân thành cảm ơn anh/chị đã tin tưởng ạ. Anh/chị còn thắc mắc gì em có thể hỗ trợ thêm không ạ?"
   },
   {
-    "template_code": "TPL_E_FD_012_A1",
+    "template_code": "TPL_E_FD_012_INAPP_NEUTRAL",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "inapp",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Zalopay – bạn",
     "emotion_mode": "neutral",
-    "template_body": ""
+    "template_body": null
   },
   {
-    "template_code": "TPL_E_FD_012_A2",
+    "template_code": "TPL_E_FD_012_INAPP_CALMING",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "inapp",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Zalopay – bạn",
-    "emotion_mode": "angry",
-    "template_body": ""
+    "emotion_mode": "calming",
+    "template_body": null
   },
   {
-    "template_code": "TPL_E_FD_012_B1",
+    "template_code": "TPL_E_FD_012_CHAT_NEUTRAL",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "neutral",
     "voice_style": "Em – Anh/Chị",
     "emotion_mode": "neutral",
-    "template_body": ""
+    "template_body": null
   },
   {
-    "template_code": "TPL_E_FD_012_B2",
+    "template_code": "TPL_E_FD_012_CHAT_CALMING",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Zalopay khuyến khích bạn liên hệ trực tiếp Cake để được hỗ trợ. Nếu gặp khó khăn, vui lòng phản hồi lại."
   },
   {
-    "template_code": "TPL_E_FD_012_C1",
+    "template_code": "TPL_E_FD_012_CALL_NEUTRAL",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "call",
     "language": "vi",
@@ -1430,47 +1430,47 @@
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "TPL_E_FD_012_C2",
+    "template_code": "TPL_E_FD_012_CALL_CALMING",
     "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Cake đáo hạn chưa update",
     "channel": "inapp",
     "language": "vi",
@@ -1480,57 +1480,57 @@
     "template_body": "Zalopay đang kiểm tra và đồng bộ lại trạng thái sổ tiết kiệm cho bạn. Vui lòng chờ phản hồi."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Cake đáo hạn chưa update",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Cake đáo hạn chưa update",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra log đăng ký",
     "channel": "inapp",
     "language": "vi",
@@ -1540,57 +1540,57 @@
     "template_body": "Để kiểm tra trạng thái đăng ký, vui lòng truy cập tool Thông tin tài khoản, mục Dịch vụ tài chính, tab FD."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra log đăng ký",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra log đăng ký",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra nạp/rút",
     "channel": "inapp",
     "language": "vi",
@@ -1600,57 +1600,57 @@
     "template_body": "Để kiểm tra giao dịch, vui lòng truy cập tool TPE và tra cứu theo UserID hoặc TransID."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra nạp/rút",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra nạp/rút",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra thông tin sổ",
     "channel": "inapp",
     "language": "vi",
@@ -1660,57 +1660,57 @@
     "template_body": "Để kiểm tra thông tin sổ, vui lòng truy cập tool Fixed Deposit và tra cứu theo UserID hoặc TransID."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra thông tin sổ",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "HD kiểm tra thông tin sổ",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1720,57 +1720,57 @@
     "template_body": "Tổng hạn mức tiền gửi: 100 triệu. Nạp tối thiểu 100k. Rút tối thiểu 2k, tối đa 110 triệu. OTP khi rút >5 triệu/ngày."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1780,57 +1780,57 @@
     "template_body": "Lãi suất rút trước hạn: 0.3%/năm. Giữ đến đáo hạn: nhận đúng lãi suất đã chọn khi mở sổ."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
-    "purpose": "",
-    "channel": "",
-    "language": "",
-    "tone": "",
-    "voice_style": "",
-    "emotion_mode": "",
-    "template_body": ""
+    "template_code": null,
+    "purpose": null,
+    "channel": null,
+    "language": null,
+    "tone": null,
+    "voice_style": null,
+    "emotion_mode": null,
+    "template_body": null
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức Cake",
     "channel": "inapp",
     "language": "vi",
@@ -1840,27 +1840,27 @@
     "template_body": "Nạp tối thiểu 100k, tối đa 100 triệu/GD. Rút một phần: ≥10% và ≤90% giá trị gói. Số dư còn lại ≥100k."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định hạn mức Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước Cake",
     "channel": "inapp",
     "language": "vi",
@@ -1870,27 +1870,27 @@
     "template_body": "Lãi suất rút trước hạn: 0.1%/năm. Giữ đến đáo hạn: nhận đúng lãi suất đã chọn khi mở sổ."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Quy định lãi suất rút trước Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1900,27 +1900,27 @@
     "template_body": "Vui lòng liên hệ CIMB hotline 1900969696 để đổi số điện thoại trên hợp đồng."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1930,27 +1930,27 @@
     "template_body": "Vui lòng rút hết tiền tiết kiệm, sau đó liên hệ CIMB hotline 1900969696 để đóng tài khoản."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP CIMB",
     "channel": "inapp",
     "language": "vi",
@@ -1960,27 +1960,27 @@
     "template_body": "Vui lòng liên hệ CIMB hotline 1900969696 để cập nhật lại số điện thoại, sau đó rút tiền lại."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP CIMB",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP CIMB",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT Cake",
     "channel": "inapp",
     "language": "vi",
@@ -1990,27 +1990,27 @@
     "template_body": "Vui lòng liên hệ Cake qua app Cake by VPBank để đổi số điện thoại."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK Cake",
     "channel": "inapp",
     "language": "vi",
@@ -2020,27 +2020,27 @@
     "template_body": "Vui lòng rút hết tiền tiết kiệm, sau đó liên hệ Cake qua app để đóng tài khoản."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đóng TKTK Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP Cake",
     "channel": "inapp",
     "language": "vi",
@@ -2050,23 +2050,23 @@
     "template_body": "Vui lòng liên hệ Cake qua app để cập nhật lại số điện thoại, sau đó rút tiền lại."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP Cake",
     "channel": "chat",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
   },
   {
-    "template_code": "",
+    "template_code": null,
     "purpose": "Đổi SĐT không nhận OTP Cake",
     "channel": "call",
     "language": "vi",
     "tone": "calming",
     "voice_style": "Em – Anh/Chị",
-    "emotion_mode": "angry",
+    "emotion_mode": "calming",
     "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
   }
 ]

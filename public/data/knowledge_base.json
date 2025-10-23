@@ -1,8 +1,4 @@
 {
-  "version": "2.0",
-  "generated_date": "2025-10-23",
-  "total_cases": 40,
-  "source_file": "D:\\AI Project\\DB_ZaloPay_CS.xlsx",
   "knowledge_extracts": [
     {
       "errorCode": "E_KM_001",
@@ -14,10 +10,10 @@
       "cause": "TnC nội bộ và TnC app không thống nhất\nTnC có điều kiện gây hiểu nhầm, từ ngữ không rõ nghĩa",
       "solution": "Nếu KH chỉ góp ý về mặt câu chữ không khiếu nại về quyền lợi, CS xin lỗi xoa dịu KH + chuyển case KM check và update lại TnC. ",
       "notes": "Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394",
-      "template_vi": "tên temp",
-      "sourceType": "",
-      "fileSOP": "",
-      "linkSOP": ""
+      "template_vi": "TPL_E_KM_001",
+      "sourceType": null,
+      "fileSOP": null,
+      "linkSOP": null
     },
     {
       "errorCode": "E_KM_002",
@@ -26,10 +22,10 @@
       "product": "Promotion",
       "feature": "Thể lệ CTKM",
       "severity": "L2 - Trung bình",
-      "cause": "TnC nội bộ và TnC app không thống nhất\nTnC có điều kiện gây hiểu nhầm, từ ngữ không rõ nghĩa làm ảnh hưởng đến quyền lợi nhận KM của KH",
+      "cause": "- TnC nội bộ và TnC app không thống nhất\n- TnC có điều kiện gây hiểu nhầm, từ ngữ không rõ nghĩa làm ảnh hưởng đến quyền lợi nhận KM của KH",
       "solution": "Nếu KH khiếu nại về TnC gây ảnh hưởng quyền lợi, CS cần note rõ nhu cầu KH cần hỗ trợ chuyển case KM check thêm với BPLQ",
-      "notes": "Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394\n\nKịch bản chuyển case:\nUID: \nTên CTKM:\nVấn đề KH: (CS note rõ về việc TnC không rõ ràng chỗ nào)\nNhu cầu: (CS note rõ cần hỗ trợ vấn đề gì: Chỉ giải quyết nội bộ hay cần giải quyết khiếu nại về quyền lợi của KH)",
-      "template_vi": "tên temp",
+      "notes": "Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394\n\nKịch bản chuyển case:\n- UID: \n- Tên CTKM:\n- Vấn đề KH: (CS note rõ về việc TnC không rõ ràng chỗ nào)\n- Nhu cầu: (CS note rõ cần hỗ trợ vấn đề gì? Chỉ giải quyết nội bộ hay cần giải quyết khiếu nại về quyền lợi của KH)",
+      "template_vi": "TPL_E_KM_002",
       "sourceType": "Internal SOP",
       "fileSOP": "Quy định chung xử lý ticket Khuyến mãi",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -43,8 +39,8 @@
       "severity": "L1 - Thấp",
       "cause": "KH thắc mắc về điều kiện trong thể lệ",
       "solution": "CS tra cứu và tư vấn theo file Promotion TNC",
-      "notes": "Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394\nNếu đã có Campaign code từ TransID khiếu nại, CS có thể xem thể lệ tại Tool Promotion TNC: https://support.zalopay.vn/ce/master/v4/apps/promotion_module/tnc-campaign",
-      "template_vi": "tên temp",
+      "notes": "Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394\n\nNếu đã có Campaign code từ TransID khiếu nại, CS có thể xem thể lệ tại Tool Promotion TNC: https://support.zalopay.vn/ce/master/v4/apps/promotion_module/tnc-campaign",
+      "template_vi": "TPL_E_KM_003",
       "sourceType": "Internal SOP",
       "fileSOP": "Quy định chung xử lý ticket Khuyến mãi",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -59,7 +55,7 @@
       "cause": "KH khiếu nại không nhận được ưu đãi, hướng dẫn kiểm tra",
       "solution": "Bước 1: CS cần xác định TnC liên quan trước. Link tổng hợp TnC: https://docs.google.com/spreadsheets/d/1kvoprjTNCPo4wPcD9qk5BoA-n7oG5Eup/edit?gid=2068169394#gid=2068169394\n\nBước 2: \nNếu sau khi kiểm tra nhưng chưa xác định được CTKM: CS phản hồi chưa rõ CTKM KH đang tham gia, cần xin thêm thông tin\nNếu đã xác định được CTKM:  CS phân loại theo loại CTKM và kiểm tra theo FAQ liên quan:\nCashback: https://sites.google.com/view/cs-faq-promotion-lending/quy-%C4%91%E1%BB%8Bnh-chung-khi-x%E1%BB%AD-l%C3%BD-ticket-khuy%E1%BA%BFn-m%C3%A3i/x%E1%BB%AD-l%C3%BD-khi%E1%BA%BFu-n%E1%BA%A1i-li%C3%AAn-quan-%C4%91%E1%BA%BFn-cashback\nVoucher: Tên link\nDirect Discount: Tên link\nReferral: Tên link\nLoyalty: Tên link",
       "notes": "CS cần thu thập: Tên CTKM, UserID, TransID, Hình ảnh liên quan",
-      "template_vi": "TPL_E_BL_001_A1",
+      "template_vi": "TPL_E_KM_004",
       "sourceType": "Internal SOP",
       "fileSOP": "Quy định chung xử lý ticket Khuyến mãi",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -72,9 +68,9 @@
       "feature": "Sử dụng KM",
       "severity": "L2 - Trung bình",
       "cause": "KH có voucher nhưng không dùng được hoặc không hiển thị để KH chọn",
-      "solution": "Bước 1: Kiểm tra Blacklist\nDùng UserID vào tool Promotion Abuse → Check rule A30 - Blacklist\nBước 2: Kiểm tra log phát voucher\nTruy cập CXM_Promotion_Lịch sử hoạt động\nTìm kiếm theo UserID + CampaignID\nLog thành công: Qua bước 3\nLog không thành công: Kiểm tra mã lỗi theo file Promotion TNC - Sheet_Bảng mã lỗi\nMã lỗi đúng → Phản hồi KH\nMã lỗi không đúng với mô tả/trạng thái tool → Chuyển group KM (kèm UserID, TransID, tên CTKM - CampaignID, log lịch sử)\nBước 3: Kiểm tra trạng thái voucher\nTruy cập CXM_Promotion_Thông tin voucher\nChưa cập nhật voucher: Chụp ảnh tool → Chuyển group KM\nĐã cập nhật voucher: Hướng dẫn KH kiểm tra lại app\nNếu KH vẫn khẳng định không có → Chuyển group KM",
+      "solution": "Bước 1: Kiểm tra Blacklist\nDùng UserID vào tool Promotion Abuse → Check rule A30 - Blacklist\n\nBước 2: Kiểm tra log phát voucher. Truy cập CXM_Promotion_Lịch sử hoạt động, tìm kiếm theo UserID + CampaignID\n\nB2.1 Log thành công: Qua bước 3\n\nB2.2 Log không thành công: Kiểm tra mã lỗi theo file Promotion TNC - Sheet_Bảng mã lỗi\n- Mã lỗi đúng → Phản hồi KH\n- Mã lỗi không đúng với mô tả/trạng thái tool → Chuyển group KM (kèm UserID, TransID, tên CTKM - CampaignID, log lịch sử)\n\nBước 3: Kiểm tra trạng thái voucher. Truy cập CXM_Promotion_Thông tin voucher:\n- Chưa cập nhật voucher: Chụp ảnh tool → Chuyển group KM\n- Đã cập nhật voucher: Hướng dẫn KH kiểm tra lại app\n- Nếu KH vẫn khẳng định không có → CS xin ảnh chụp voucher list tại app + Chuyển group KM",
       "notes": "Lưu ý: Thường voucher không áp dụng thanh toán VietQR\nThông tin cần cung cấp khi chuyển group KM (Hẹn KH chờ 3-5 ngày làm việc):\nUserID\nTransID (nếu có)\nHình ảnh lỗi (nếu có)\nLog trên tool Lịch sử hoạt động hoặc Thông tin voucher\nẢnh chụp toàn bộ màn hình tại mục “Ưu đãi của tôi” trên ứng dụng khách hàng (Dành cho trường hợp trên tool ghi nhận phát quà thành công nhưng khách hàng vẫn khẳng định trong ứng dụng khách hàng không có voucher, ảnh này là cần thiết để ghi nhận kiểm tra lỗi giao diện UX/UI cho khách hàng)",
-      "template_vi": "TPL_E_KM_004_A1",
+      "template_vi": "TPL_E_KM_004",
       "sourceType": "Internal SOP",
       "fileSOP": "Quy định chung xử lý ticket Khuyến mãi",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -87,9 +83,9 @@
       "feature": "Nhận khuyến mãi",
       "severity": "L2 - Trung bình",
       "cause": "KH thực hiện đúng nhưng không nhận ưu đãi Cashback",
-      "solution": "Bước 1: Kiểm tra Blacklist\nTruy cập tool Promotion Abuse\nNếu thuộc blacklist/rule A30 → Xử lý theo SOP khiếu nại blacklist\nBước 2: Xác định hình thức Cashback\nA. Cashback về tài khoản: Thông tin tài khoản > Sao kê tài khoản\nB. Cashback về MMF:\nTool User > Lịch sử GD > Tìm giao dịch nạp MMF > Dùng TransID vào Tool TPE\nHoặc: TPE > Lịch sử GD > Search UserID\nProduct Code = FS009 → Đã hoàn về MMF\nBước 3: Kiểm tra log CTKM\nPromotion > Lịch sử hoạt động > Chọn thời gian + Campaign ID > Tìm TransID\nCó log + mã lỗi: Tư vấn theo mã lỗi\nKhông có log/lỗi không rõ: Kiểm tra điều kiện CTKM\nKhông thỏa điều kiện → Tư vấn lại KH\nThỏa điều kiện nhưng chưa nhận → Chuyển Group Khuyến mãi (kèm UserID, TransID, hình ảnh tools, vấn đề)",
+      "solution": "Bước 1: Kiểm tra Blacklist. Truy cập tool Promotion Abuse\nNếu thuộc blacklist/rule A30 → Xử lý theo SOP khiếu nại blacklist\n\nBước 2: Xác định hình thức Cashback\n\nA. Cashback về tài khoản: Thông tin tài khoản > Sao kê tài khoản\n\nB. Cashback về MMF:\nTool User > Lịch sử GD > Tìm giao dịch nạp MMF > Dùng TransID vào Tool TPE\n\nHoặc: TPE > Lịch sử GD > Search UserID\nProduct Code = FS009 → Đã hoàn về MMF\n\nBước 3: Kiểm tra log CTKM\nPromotion > Lịch sử hoạt động > Chọn thời gian + Campaign ID > Tìm TransID\n\nBước 3.1 Có log + mã lỗi: Tư vấn theo mã lỗi\n\nBước 3.2 Không có log/lỗi không rõ: Kiểm tra điều kiện CTKM\n- Không thỏa điều kiện → Tư vấn lại KH\n- Thỏa điều kiện nhưng chưa nhận → Chuyển Group Khuyến mãi (kèm UserID, TransID, hình ảnh tools, vấn đề)",
       "notes": "Kịch bản ghi chú: Tên CTKM, UserID, TransID (nếu có), Trạng thái nhận KM, Nhu cầu hỗ trợ và Nội dung CS đã tư vấn",
-      "template_vi": "TPL_E_KM_004_A1",
+      "template_vi": "TPL_E_KM_004",
       "sourceType": "Internal SOP",
       "fileSOP": "Quy định chung xử lý ticket Khuyến mãi",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -102,9 +98,9 @@
       "feature": "Hoàn tiền",
       "severity": "L1 - Thấp",
       "cause": "Các chương trình hoàn tiền có điều kiện: Chương trình không áp dụng đồng thời với các voucher/ưu đãi khác.\nCS kiểm tra thấy giao dịch có áp dụng mã ưu đãi, voucher khác.",
-      "solution": "Nhận biết: Tại cột Mã voucher trong Tool TPE có thông tin khuyến mãi.\nCS từ chối theo thể lệ chương trình",
-      "notes": "Lưu ý: Có một số chương trình cashback vẫn kết hợp đồng thời nhiều loại ưu đãi, tuy nhiên CS cần kiểm tra rõ trong TnC có đề cập vấn đề này hay không? Nếu TnC ghi áp dụng đồng thời nhiều khuyến mãi và giao dịch KH thỏa điều kiện, CS cần ghi nhận kiểm tra thêm với team KM.",
-      "template_vi": "TPL_E_CB_001_A1",
+      "solution": "Nhận biết: Tại cột Mã voucher trong Tool TPE có thông tin khuyến mãi.\n\nCS từ chối theo thể lệ chương trình",
+      "notes": "Lưu ý: \n- Có một số chương trình cashback vẫn kết hợp đồng thời nhiều loại ưu đãi, tuy nhiên CS cần kiểm tra rõ trong TnC có đề cập vấn đề này hay không? \n- Nếu TnC ghi áp dụng đồng thời nhiều khuyến mãi và giao dịch KH thỏa điều kiện, CS cần ghi nhận kiểm tra thêm với team KM.",
+      "template_vi": "TPL_E_CB_001",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra KM Cashback",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -117,9 +113,9 @@
       "feature": "Hoàn tiền",
       "severity": "L2 - Trung bình",
       "cause": "KH hiểu nhầm cơ chế hoàn tiền của CTKM",
-      "solution": "Nếu tên CTKM ghi rõ \"Hoàn tiền lên đến [số tiền]\". CS tư vấn về cơ chế hoàn tiền cho KH theo quy định.\nNếu tên CTKM chỉ ghi \"Hoàn tiền [số tiền]\", ví dụ: Hoàn 10k khi thanh toán 100k. CS ghi nhận khiếu nại theo case TnC không rõ ràng.",
+      "solution": "Nếu tên CTKM ghi rõ \"Hoàn tiền lên đến [số tiền]\". CS tư vấn về cơ chế hoàn tiền cho KH theo quy định.\n\nNếu tên CTKM chỉ ghi \"Hoàn tiền [số tiền]\", ví dụ: Hoàn 10k khi thanh toán 100k. CS ghi nhận khiếu nại theo case TnC không rõ ràng.",
       "notes": "Lưu ý: CS không sử dụng từ \"hoàn tiền ngẫu nhiên\" trong suốt quá trình trao đổi với khách hàng",
-      "template_vi": "TPL_E_CB_002_A1",
+      "template_vi": "TPL_E_CB_002",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra KM Cashback",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -132,9 +128,9 @@
       "feature": "Tham gia CTKM",
       "severity": "L1 - Thấp",
       "cause": "Khách hàng bị từ chối tham gia chương trình do vi phạm rule A30/Greylist. ",
-      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nRisk Level: \"Medium\" hoặc \"Normal có nằm trong danh sách voucher trading\"\nĐiểm Net Profit: 0",
-      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. Kịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM, CSnote",
-      "template_vi": "TPL_E_BL_001_A1",
+      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \n\nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \nBước 5: Tool trả kết quả\n- Risk Level: \"Medium\" hoặc \"Normal có nằm trong danh sách voucher trading\"\n- Điểm Net Profit: 0",
+      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\n\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. \n\nKịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM, CSnote",
+      "template_vi": "TPL_E_BL_001",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -147,9 +143,9 @@
       "feature": "Tham gia CTKM",
       "severity": "L2 - Trung bình",
       "cause": "Khách hàng bị từ chối tham gia chương trình do vi phạm rule A30/Blacklist",
-      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nRisk Level: \"High\" hoặc \"Medium có nằm trong danh sách voucher trading\"\nĐiểm Net Profit: 0",
-      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. Kịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
-      "template_vi": "TPL_E_BL_001_A1",
+      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \nBước 5: Tool trả kết quả\n- Risk Level: \"High\" hoặc \"Medium có nằm trong danh sách voucher trading\"\n- Điểm Net Profit: 0",
+      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\n\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. \n\nKịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
+      "template_vi": "TPL_E_BL_001",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -162,9 +158,9 @@
       "feature": "Hiển thị CTKM",
       "severity": "L1 - Thấp",
       "cause": "Khách hàng bị hạn chế hiển thị, sử dụng khuyến mãi cho Greylist/Blacklist",
-      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nNếu KH thật sự hit rule blacklist nên CTKM không hiển thị: CS phản hồi theo temp quy định\nNếu KH thuộc Normal User nhưng CTKM không hiển thị: CS ghi nhận kiểm tra theo case lỗi ứng dụng.",
-      "notes": "Link SOP: Lỗi ứng dụng\nLink Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. Kịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
-      "template_vi": "TPL_E_BL_002_A1",
+      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nNếu KH thật sự hit rule blacklist nên CTKM không hiển thị: CS phản hồi theo temp quy định\n\nNếu KH thuộc Normal User nhưng CTKM không hiển thị: CS ghi nhận kiểm tra theo case lỗi ứng dụng.",
+      "notes": "Link SOP: Lỗi ứng dụng\n\nLink Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\n\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. \n\nKịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
+      "template_vi": "TPL_E_BL_002",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -177,9 +173,9 @@
       "feature": "Cảnh báo",
       "severity": "L2 - Trung bình",
       "cause": "Hệ thống gửi cảnh báo nhắc nhở KH về những hành vi sử dụng khuyến mãi không đúng mục đích",
-      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nTrường hợp KH chưa bị chuyển trạng thái Risk (Normal User):\nNếu KH chưa định danh: CS hướng dẫn KH định + phản hồi theo template cảnh báo\nNếu KH đã định danh: CS phản hồi theo template cảnh báo\n\nTrường hợp KH đã bị chuyển trạng thái Risk (Casual/Malicious): CS phản hồi theo temp blacklist",
-      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. Kịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
-      "template_vi": "",
+      "solution": "CS kiểm tra trạng thái blacklist trên tool Promotion Abuse. \n\nBước 1: Truy cập tool Thông tin tài khoản. \nBước 2: Tra cứu theo UserID/SĐT. \nBước 3: Kiểm tra mục Promotion Abuse - Risk Level. \nBước 4: Kiểm tra điểm Net Profit. \n\nTrường hợp KH chưa bị chuyển trạng thái Risk (Normal User):\n- Nếu KH chưa định danh: CS hướng dẫn KH định + phản hồi theo template cảnh báo\n- Nếu KH đã định danh: CS phản hồi theo template cảnh báo\n\nTrường hợp KH đã bị chuyển trạng thái Risk (Casual/Malicious): CS phản hồi theo temp blacklist",
+      "notes": "Link Tool: https://support.zalopay.vn/ce/master/v4/apps/ce_user_information\n\nTrường hợp KH gay gắt khiếu nại và có điểm Net Profit là 0 hoặc N/A, CS thu thập thông tin CTKM KH đang khiếu nại để ghi nhận chuyển KM check thêm với Risk. \n\nKịch bản chuyển case bao gồm: UserID, Log Promotion Abuse, Tên CTKM (nếu có), CSnote",
+      "template_vi": "TPL_E_BL_006",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -193,8 +189,8 @@
       "severity": "L2 - Trung bình",
       "cause": "Risk xác nhận đủ điều kiện",
       "solution": "CS phản hồi trạng thái risk của KH đã được cập nhật, tư vấn KH thực hiện đúng quy định sử dụng KM để tránh lặp lại tình huống tương tư",
-      "notes": "",
-      "template_vi": "TPL_E_BL_003_A1",
+      "notes": null,
+      "template_vi": "TPL_E_BL_003",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -208,8 +204,8 @@
       "severity": "L2 - Trung bình",
       "cause": "Risk xác nhận không đủ điều kiện",
       "solution": "CS phản hồi lại tình trạng tài khoản KH vẫn chưa đủ điều kiện để được mở khóa KM, CS tư vấn KH thực hiện thêm nhiều giao dịch organic để định kỳ hệ thống tái đánh giá cho KH",
-      "notes": "Lưu ý: Không có thời gian cụ thể khi nào hệ thống tái đánh giá, CS chỉ cần tư vấn chung chung là sẽ có đợt tái đánh giá nên KH cứ an tâm\nChú thích: Giao dịch organic là giao dịch thanh toán không sử dụng khuyến mãi",
-      "template_vi": "TPL_E_BL_004_A1",
+      "notes": "Lưu ý: Không có thời gian cụ thể khi nào hệ thống tái đánh giá, CS chỉ cần tư vấn chung chung là sẽ có đợt tái đánh giá nên KH cứ an tâm\n\nChú thích: Giao dịch organic là giao dịch thanh toán không sử dụng khuyến mãi",
+      "template_vi": "TPL_E_BL_004",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -223,8 +219,8 @@
       "severity": "L1 - Thấp",
       "cause": "KH muốn gỡ blacklist",
       "solution": "Khuyến khích tiếp tục sử dụng quy định, thực hiện nhiều giao dịch organic để định kỳ tái đánh giá cho KH.",
-      "notes": "Lưu ý: Không có thời gian cụ thể khi nào hệ thống tái đánh giá, CS chỉ cần tư vấn chung chung là sẽ có đợt tái đánh giá nên KH cứ an tâm\nChú thích: Giao dịch organic là giao dịch thanh toán không sử dụng khuyến mãi",
-      "template_vi": "TPL_E_BL_005_A1",
+      "notes": "Lưu ý: Không có thời gian cụ thể khi nào hệ thống tái đánh giá, CS chỉ cần tư vấn chung chung là sẽ có đợt tái đánh giá nên KH cứ an tâm\n\nChú thích: Giao dịch organic là giao dịch thanh toán không sử dụng khuyến mãi",
+      "template_vi": "TPL_E_BL_005",
       "sourceType": "Internal SOP",
       "fileSOP": "Kiểm tra trạng thái blacklist / Risk Level",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/quy-định-chung-khi-xử-lý-ticket-khuyến-mãi"
@@ -239,7 +235,7 @@
       "cause": "Thông tin không trùng khớp hoặc đã đăng ký Paylater trước:\nThông tin của khách hàng tại CIMB không trùng khớp với Zalopay\nKhách đã kiểm tra quyền truy cập vào Gửi tiết kiệm (FD) trước khi hoàn tất đăng ký sản phẩm Trả sau (Paylater) → Khi quay lại đăng ký FD sẽ gặp lỗi",
       "solution": "Kiểm tra lịch sử đăng ký Paylater\nĐã từng đăng ký (dù duyệt hay từ chối):\nTạo Jira Ticket → Assign PIC FD - HaiPH2 → Gắn tag Active Sprint\nPO cập nhật tình trạng hàng ngày\nCS thông báo KH khi có kết quả, KH sẽ đăng ký lại được sau khi xử lý. Thời gian xử lý tối đa: 1-3 ngày làm việc\n\nChưa từng đăng ký:\nTư vấn KH kiểm tra thông tin cá nhân tại Zalopay và ngân hàng CIMB có đồng bộ chưa\nĐã đồng bộ → Tạo Jira Ticket, assign PIC FD - HaiPH2\nChưa đồng bộ → Hướng dẫn KH liên hệ CIMB cập nhật thông tin trước khi đăng ký lại",
       "notes": "Contact: HaiPH2, Hotline: 1900969696",
-      "template_vi": "TPL_E_FD_001_A1",
+      "template_vi": "TPL_E_FD_001",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -254,7 +250,7 @@
       "cause": "KH đã đăng ký gửi tiết kiệm của CIMB, trạng thái hồ sơ vẫn đang “kiểm duyệt” (processing) và KH muốn hủy yêu cầu đăng ký.",
       "solution": "Bước 1: Hướng dẫn KH liên hệ trực tiếp\nCS tư vấn KH liên hệ CIMB qua hotline 1900 96 96 96 để yêu cầu hủy đăng ký TKTK\nBước 2: KH không thể liên hệ CIMB\nCS ghi nhận thông tin và chuyển case cho LV2:\n\nUserID\nHọ tên chủ tài khoản\nSố điện thoại\nSố CMND/CCCD\nNgày cấp\nLý do muốn hủy đăng ký TKTK\n\nBước 3: LV2 gửi mail đối tác\nTo: partnercare@cimb.com; ekyc.vn@cimb.com\nCc: HaiPH2\nNội dung: Nhờ hỗ trợ hủy đăng ký TKTK cho KH (đính kèm thông tin)\nThời gian phản hồi: 1-3 ngày làm việc",
       "notes": "Email: partnercare@cimb.com, CC: HaiPH2",
-      "template_vi": "TPL_E_FD_002_A1",
+      "template_vi": "TPL_E_FD_002",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -269,7 +265,7 @@
       "cause": "Cần đối soát thủ công với CIMB",
       "solution": "Kiểm tra TPE/BC. Trước 20h → T+1. Sau 20h → T+2. Quá hạn → chuyển OP (HienTTD)",
       "notes": "Contact OP: HienTTD",
-      "template_vi": "TPL_E_FD_003_A1",
+      "template_vi": "TPL_E_FD_003",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -284,7 +280,7 @@
       "cause": "Hệ thống khóa khi GD đang pending",
       "solution": "Thông báo KH chờ. Trước 8h tối → T+1. Sau 8h tối → T+2",
       "notes": "Ước lượng thời gian",
-      "template_vi": "TPL_E_FD_004_A1",
+      "template_vi": "TPL_E_FD_004",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -299,7 +295,7 @@
       "cause": "CIMB tạm khóa TKTT",
       "solution": "Hướng dẫn liên hệ CIMB 1900969696 mở khóa",
       "notes": "Hotline: 1900969696",
-      "template_vi": "TPL_E_FD_005_A1",
+      "template_vi": "TPL_E_FD_005",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -314,7 +310,7 @@
       "cause": "Quy định CIMB từ 01/07/2025 yêu cầu NFC",
       "solution": "Cách 1: NFC trên ZaloPay. Cách 2: NFC trên Octo CIMB. Nếu vẫn lỗi → chuyển LV2 check Dev",
       "notes": "~6000 UID chưa NFC, mã lỗi -5224",
-      "template_vi": "TPL_E_FD_006_A1, TPL_E_FD_007_A1",
+      "template_vi": "TPL_E_FD_006",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -329,7 +325,7 @@
       "cause": "Khi có thay đổi lãi suất từ ngân hàng CIMB, các gói tạo trước thời điểm thay đổi vẫn được hưởng lãi suất cũ. Tuy nhiên, có thể phát sinh sai lệch do hệ thống cập nhật lãi suất sớm hơn dự kiến.",
       "solution": "CS giải thích rằng thời điểm KH nạp tiền cận giờ chốt của CIMB, nên có thể bị ảnh hưởng do hệ thống cập nhật lãi suất sớm + hướng dẫn KH kiểm tra lại thời gian nạp tiền trên app.\n\nNếu KH vẫn thấy sai lệch, hướng dẫn KH liên hệ CIMB để được kiểm tra chi tiết.",
       "notes": "Giờ chốt thông thường: ~21h (Có thể chênh lệch tùy vào bank)",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -344,7 +340,7 @@
       "cause": "Cần chờ đối soát",
       "solution": "Chờ 15 phút. Sau đó đối soát T+1",
       "notes": "Thời gian chờ: 15 phút",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -359,7 +355,7 @@
       "cause": "Cần đối soát thủ công",
       "solution": "Kiểm tra TPE/BC. Trước 12h → T+1. Sau 12h → T+2. Quá hạn → chuyển OP",
       "notes": "Contact OP: HienTTD",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -374,7 +370,7 @@
       "cause": "Chờ đối soát",
       "solution": "Thông báo KH chờ. Trước 12h → T+1. Sau 12h → T+2",
       "notes": "Ước lượng thời gian",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -389,7 +385,7 @@
       "cause": "KH mất quyền truy cập",
       "solution": "Hướng dẫn liên hệ Cake trước. Nếu không được → gửi mail",
       "notes": "Ưu tiên KH liên hệ Cake",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -404,7 +400,7 @@
       "cause": "Thiếu đồng bộ dữ liệu",
       "solution": "Liên hệ DEV SonNT13 đồng bộ",
       "notes": "Contact: SonNT13",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -419,7 +415,7 @@
       "cause": "CS cần kiểm tra trạng thái đăng ký",
       "solution": "Vào tool Thông tin tài khoản, tab FD. Kiểm tra trạng thái và chi tiết",
       "notes": "Tra bảng mã lỗi nếu rejected",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -434,7 +430,7 @@
       "cause": "CS cần kiểm tra GD",
       "solution": "Truy cập tool TPE. Kiểm tra theo AppID (CIMB: 888, Cake: 8686, Rút: 186)",
       "notes": "Kiểm tra theo trạng thái",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -449,7 +445,7 @@
       "cause": "CS cần kiểm tra thông tin sổ",
       "solution": "Truy cập tool Fixed Deposit. Đọc loại GD, trạng thái GD, trạng thái sổ",
       "notes": "Không xác nhận hoàn tất khi BankTrans_Succeeded chưa cập nhật app",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -464,7 +460,7 @@
       "cause": "KH thắc mắc hạn mức",
       "solution": "Tổng hạn mức 100tr. Nạp min 100k. Rút min 2k max 110tr. OTP khi rút >5tr/ngày",
       "notes": "OTP >5tr/ngày",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -479,7 +475,7 @@
       "cause": "KH thắc mắc lãi suất",
       "solution": "Rút trước hạn: 0.3%/năm. Đáo hạn: lãi gốc. Tự động đáo hạn gốc + lãi",
       "notes": "Tự động đáo hạn gốc + lãi",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -494,7 +490,7 @@
       "cause": "KH thắc mắc hạn mức",
       "solution": "Nạp min 100k max 100tr. Rút một phần ≥10% ≤90%. Số dư còn lại ≥100k",
       "notes": "Số dư còn lại ≥100k",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -509,7 +505,7 @@
       "cause": "KH thắc mắc lãi suất",
       "solution": "Rút trước hạn: 0.1%/năm. Đáo hạn: lãi gốc. Tự động đáo hạn gốc + lãi",
       "notes": "Tự động đáo hạn gốc + lãi",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -524,7 +520,7 @@
       "cause": "KH muốn đổi SĐT",
       "solution": "Hướng dẫn liên hệ CIMB 1900969696",
       "notes": "Hotline: 1900969696",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -539,7 +535,7 @@
       "cause": "KH muốn đóng TK",
       "solution": "Rút hết tiền, sau đó liên hệ CIMB 1900969696",
       "notes": "Hotline: 1900969696",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -554,7 +550,7 @@
       "cause": "Đổi SĐT không nhận OTP",
       "solution": "Hướng dẫn liên hệ CIMB 1900969696 cập nhật SĐT",
       "notes": "Hotline: 1900969696",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -569,7 +565,7 @@
       "cause": "KH muốn đổi SĐT",
       "solution": "Hướng dẫn liên hệ Cake",
       "notes": "Liên hệ qua app Cake",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -584,7 +580,7 @@
       "cause": "KH muốn đóng TK",
       "solution": "Rút hết tiền, sau đó liên hệ Cake",
       "notes": "Liên hệ qua app Cake",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"
@@ -599,7 +595,7 @@
       "cause": "Đổi SĐT không nhận OTP",
       "solution": "Hướng dẫn liên hệ Cake cập nhật SĐT",
       "notes": "Liên hệ qua app Cake",
-      "template_vi": "",
+      "template_vi": "Chờ bổ sung temp",
       "sourceType": "Internal SOP",
       "fileSOP": "Gửi tiết kiệm (FD)",
       "linkSOP": "https://sites.google.com/view/cs-faq-promotion-lending/dịch-vụ-tài-chính/gửi-tiết-kiệm-fd"

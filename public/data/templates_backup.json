@@ -1,0 +1,1322 @@
+[
+  {
+    "template_code": "TPL_E_KM_001_A",
+    "purpose": "Không tham gia được CTKM do blacklist",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Chào bạn, Qua kiểm tra, hệ thống ghi nhận tài khoản của bạn không đủ điều kiện tham gia chương trình do phát hiện có các dấu hiệu sử dụng không phù hợp. Rất mong bạn thông cảm."
+  },
+  {
+    "template_code": "TPL_E_KM_001_B",
+    "purpose": "Không tham gia được CTKM do blacklist",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_KM_001_C",
+    "purpose": "Không tham gia được CTKM do blacklist",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_KM_002_A",
+    "purpose": "Thể lệ CTKM không rõ ràng",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đã ghi nhận và sẽ kiểm tra lại thể lệ chương trình. Vui lòng chờ phản hồi trong 1-2 ngày làm việc."
+  },
+  {
+    "template_code": "TPL_E_KM_002_B",
+    "purpose": "Thể lệ CTKM không rõ ràng",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_KM_002_C",
+    "purpose": "Thể lệ CTKM không rõ ràng",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_KM_003_A",
+    "purpose": "Thắc mắc thể lệ CTKM",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay sẽ tư vấn chi tiết về điều kiện chương trình cho bạn. Vui lòng chờ trong giây lát."
+  },
+  {
+    "template_code": "TPL_E_KM_003_B",
+    "purpose": "Thắc mắc thể lệ CTKM",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_KM_003_C",
+    "purpose": "Thắc mắc thể lệ CTKM",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_KM_004_A",
+    "purpose": "Không nhận được khuyến mãi",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang kiểm tra nguyên nhân bạn chưa nhận được ưu đãi. Vui lòng chờ phản hồi trong 1-3 ngày làm việc."
+  },
+  {
+    "template_code": "TPL_E_KM_004_B",
+    "purpose": "Không nhận được khuyến mãi",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_KM_004_C",
+    "purpose": "Không nhận được khuyến mãi",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_KM_005_A",
+    "purpose": "Không sử dụng được voucher",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang kiểm tra lý do voucher không sử dụng được. Lưu ý: Khuyến mãi ZaloPay không áp dụng cho VietQR."
+  },
+  {
+    "template_code": "TPL_E_KM_005_B",
+    "purpose": "Không sử dụng được voucher",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_KM_005_C",
+    "purpose": "Không sử dụng được voucher",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_CB_001_A",
+    "purpose": "GD có mã ưu đãi không hoàn Cashback",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Chương trình hoàn tiền không áp dụng đồng thời với các ưu đãi khác. Vì giao dịch của bạn có áp dụng mã ưu đãi nên không được hoàn tiền."
+  },
+  {
+    "template_code": "TPL_E_CB_001_B",
+    "purpose": "GD có mã ưu đãi không hoàn Cashback",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_CB_001_C",
+    "purpose": "GD có mã ưu đãi không hoàn Cashback",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_CB_002_A",
+    "purpose": "Nhầm lẫn Cashback về SDSL",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Cashback đã được hoàn về Số dư sinh lời của bạn. Vui lòng kiểm tra lại mục Số dư sinh lời."
+  },
+  {
+    "template_code": "TPL_E_CB_002_B",
+    "purpose": "Nhầm lẫn Cashback về SDSL",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_CB_002_C",
+    "purpose": "Nhầm lẫn Cashback về SDSL",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_CB_003_A",
+    "purpose": "Khiếu nại mệnh giá hoàn thấp",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Chào bạn, Với chương trình này, giải thưởng hoàn tiền có thể lên đến X VNĐ (số tiền hoàn có thể bằng hoặc thấp hơn). Zalopay xin lỗi bạn vì những hiểu lầm có thể có."
+  },
+  {
+    "template_code": "TPL_E_CB_003_B",
+    "purpose": "Khiếu nại mệnh giá hoàn thấp",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_CB_003_C",
+    "purpose": "Khiếu nại mệnh giá hoàn thấp",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_CB_004_A",
+    "purpose": "Kiểm tra Cashback về ZaloPay",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang kiểm tra giao dịch hoàn tiền của bạn. Vui lòng chờ phản hồi."
+  },
+  {
+    "template_code": "TPL_E_CB_004_B",
+    "purpose": "Kiểm tra Cashback về ZaloPay",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_CB_004_C",
+    "purpose": "Kiểm tra Cashback về ZaloPay",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_CB_005_A",
+    "purpose": "Kiểm tra Cashback về MMF",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang kiểm tra Cashback về Số dư sinh lời. Vui lòng chờ phản hồi."
+  },
+  {
+    "template_code": "TPL_E_CB_005_B",
+    "purpose": "Kiểm tra Cashback về MMF",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_CB_005_C",
+    "purpose": "Kiểm tra Cashback về MMF",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_001_A",
+    "purpose": "Normal User",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Tài khoản của bạn đang hoạt động bình thường và có thể tham gia các chương trình khuyến mãi."
+  },
+  {
+    "template_code": "TPL_E_BL_001_B",
+    "purpose": "Normal User",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_001_C",
+    "purpose": "Normal User",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_002_A",
+    "purpose": "Casual Abuser",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Qua kiểm tra, tài khoản của bạn bị hạn chế một số khuyến mãi. Vui lòng tiếp tục sử dụng ZaloPay hợp lệ để được đánh giá lại."
+  },
+  {
+    "template_code": "TPL_E_BL_002_B",
+    "purpose": "Casual Abuser",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_002_C",
+    "purpose": "Casual Abuser",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_003_A",
+    "purpose": "Malicious Abuser",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Qua kiểm tra, tài khoản của bạn không đủ điều kiện tham gia chương trình do phát hiện có các dấu hiệu sử dụng không phù hợp."
+  },
+  {
+    "template_code": "TPL_E_BL_003_B",
+    "purpose": "Malicious Abuser",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_003_C",
+    "purpose": "Malicious Abuser",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_004_A",
+    "purpose": "Không thấy CTKM trên app",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Chương trình khuyến mãi này chỉ áp dụng cho một nhóm khách hàng được lựa chọn ngẫu nhiên. Rất mong bạn thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_004_B",
+    "purpose": "Không thấy CTKM trên app",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_004_C",
+    "purpose": "Không thấy CTKM trên app",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_005_A",
+    "purpose": "Nhận cảnh báo blacklist",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Hệ thống bảo mật Zalopay ghi nhận tài khoản của bạn có hoạt động chưa phù hợp. Vui lòng tuân thủ thể lệ để tránh bị hạn chế."
+  },
+  {
+    "template_code": "TPL_E_BL_005_B",
+    "purpose": "Nhận cảnh báo blacklist",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_005_C",
+    "purpose": "Nhận cảnh báo blacklist",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_006_A",
+    "purpose": "Risk xác nhận đủ điều kiện",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Sau khi kiểm tra lại, Zalopay đã cập nhật đánh giá lại tài khoản của bạn. Hiện tại, bạn đã đủ điều kiện để tiếp tục tham gia chương trình khuyến mãi."
+  },
+  {
+    "template_code": "TPL_E_BL_006_B",
+    "purpose": "Risk xác nhận đủ điều kiện",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_006_C",
+    "purpose": "Risk xác nhận đủ điều kiện",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_007_A",
+    "purpose": "Risk xác nhận không đủ điều kiện",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Sau khi kiểm tra lại, rất tiếc tài khoản của bạn hiện vẫn không đáp ứng đủ điều kiện. Hệ thống sẽ tự động đánh giá lại trong các đợt tiếp theo."
+  },
+  {
+    "template_code": "TPL_E_BL_007_B",
+    "purpose": "Risk xác nhận không đủ điều kiện",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_007_C",
+    "purpose": "Risk xác nhận không đủ điều kiện",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_BL_008_A",
+    "purpose": "Hỏi cách gỡ blacklist",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Bạn hãy tiếp tục sử dụng Zalopay cho các giao dịch hằng ngày. Hệ thống sẽ tự động xem xét và cập nhật lại quyền lợi của bạn."
+  },
+  {
+    "template_code": "TPL_E_BL_008_B",
+    "purpose": "Hỏi cách gỡ blacklist",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_BL_008_C",
+    "purpose": "Hỏi cách gỡ blacklist",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_001_A",
+    "purpose": "Lỗi đồng nhất CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay rất tiếc vì bất tiện. Trường hợp của bạn đang được xử lý, vui lòng chờ theo hướng dẫn."
+  },
+  {
+    "template_code": "TPL_E_FD_001_B",
+    "purpose": "Lỗi đồng nhất CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_001_C",
+    "purpose": "Lỗi đồng nhất CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_002_A",
+    "purpose": "Thấy hợp đồng Paylater trong FD",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Hợp đồng mà bạn thấy là hợp đồng mở tài khoản thanh toán CASA tại CIMB, dùng chung cho cả Paylater và Gửi tiết kiệm."
+  },
+  {
+    "template_code": "TPL_E_FD_002_B",
+    "purpose": "Thấy hợp đồng Paylater trong FD",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_002_C",
+    "purpose": "Thấy hợp đồng Paylater trong FD",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_003_A",
+    "purpose": "Muốn hủy FD đang duyệt",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay rất tiếc vì bất tiện. Vui lòng liên hệ CIMB hotline 1900969696 hoặc chờ Zalopay hỗ trợ."
+  },
+  {
+    "template_code": "TPL_E_FD_003_B",
+    "purpose": "Muốn hủy FD đang duyệt",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_003_C",
+    "purpose": "Muốn hủy FD đang duyệt",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_004_A",
+    "purpose": "Nạp CIMB chưa hoàn tiền",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang đối soát với ngân hàng. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc."
+  },
+  {
+    "template_code": "TPL_E_FD_004_B",
+    "purpose": "Nạp CIMB chưa hoàn tiền",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_004_C",
+    "purpose": "Nạp CIMB chưa hoàn tiền",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_005_A",
+    "purpose": "Rút CIMB pending không tạo GD mới",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Giao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo."
+  },
+  {
+    "template_code": "TPL_E_FD_005_B",
+    "purpose": "Rút CIMB pending không tạo GD mới",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_005_C",
+    "purpose": "Rút CIMB pending không tạo GD mới",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_006_A",
+    "purpose": "CIMB bị khóa",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng liên hệ CIMB hotline 1900969696 để mở khóa tài khoản thanh toán trước."
+  },
+  {
+    "template_code": "TPL_E_FD_006_B",
+    "purpose": "CIMB bị khóa",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_006_C",
+    "purpose": "CIMB bị khóa",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_007_A",
+    "purpose": "Lỗi NFC",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng thực hiện xác thực CCCD (NFC) trên app ZaloPay hoặc Octo by CIMB để tiếp tục rút tiền."
+  },
+  {
+    "template_code": "TPL_E_FD_007_B",
+    "purpose": "Lỗi NFC",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_007_C",
+    "purpose": "Lỗi NFC",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_008_A",
+    "purpose": "Đổi lãi suất CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Do nạp tiền cận giờ chốt của CIMB, có thể bị ảnh hưởng bởi cập nhật lãi suất. Vui lòng liên hệ CIMB để kiểm tra."
+  },
+  {
+    "template_code": "TPL_E_FD_008_B",
+    "purpose": "Đổi lãi suất CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_008_C",
+    "purpose": "Đổi lãi suất CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_009_A",
+    "purpose": "Nạp Cake pending",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Giao dịch đang chờ đối soát với ngân hàng. Vui lòng đợi khoảng 15 phút, nếu chưa thấy kết quả sẽ xử lý vào ngày làm việc kế tiếp."
+  },
+  {
+    "template_code": "TPL_E_FD_009_B",
+    "purpose": "Nạp Cake pending",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_009_C",
+    "purpose": "Nạp Cake pending",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_010_A",
+    "purpose": "Nạp Cake chưa hoàn tiền",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang đối soát với ngân hàng. Thời gian dự kiến hoàn tiền: 1-2 ngày làm việc."
+  },
+  {
+    "template_code": "TPL_E_FD_010_B",
+    "purpose": "Nạp Cake chưa hoàn tiền",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_010_C",
+    "purpose": "Nạp Cake chưa hoàn tiền",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_011_A",
+    "purpose": "Rút Cake pending",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Giao dịch rút tiền trước đó đang chờ xử lý từ ngân hàng, hệ thống tạm thời chưa cho phép tạo giao dịch rút tiếp theo."
+  },
+  {
+    "template_code": "TPL_E_FD_011_B",
+    "purpose": "Rút Cake pending",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_011_C",
+    "purpose": "Rút Cake pending",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_012_A",
+    "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay khuyến khích bạn liên hệ trực tiếp Cake để được hỗ trợ. Nếu gặp khó khăn, vui lòng phản hồi lại."
+  },
+  {
+    "template_code": "TPL_E_FD_012_B",
+    "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_012_C",
+    "purpose": "Không đăng nhập ZaloPay muốn rút Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_013_A",
+    "purpose": "Cake đáo hạn chưa update",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Zalopay đang kiểm tra và đồng bộ lại trạng thái sổ tiết kiệm cho bạn. Vui lòng chờ phản hồi."
+  },
+  {
+    "template_code": "TPL_E_FD_013_B",
+    "purpose": "Cake đáo hạn chưa update",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_013_C",
+    "purpose": "Cake đáo hạn chưa update",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_014_A",
+    "purpose": "HD kiểm tra log đăng ký",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Để kiểm tra trạng thái đăng ký, vui lòng truy cập tool Thông tin tài khoản, mục Dịch vụ tài chính, tab FD."
+  },
+  {
+    "template_code": "TPL_E_FD_014_B",
+    "purpose": "HD kiểm tra log đăng ký",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_014_C",
+    "purpose": "HD kiểm tra log đăng ký",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_015_A",
+    "purpose": "HD kiểm tra nạp/rút",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Để kiểm tra giao dịch, vui lòng truy cập tool TPE và tra cứu theo UserID hoặc TransID."
+  },
+  {
+    "template_code": "TPL_E_FD_015_B",
+    "purpose": "HD kiểm tra nạp/rút",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_015_C",
+    "purpose": "HD kiểm tra nạp/rút",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_016_A",
+    "purpose": "HD kiểm tra thông tin sổ",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Để kiểm tra thông tin sổ, vui lòng truy cập tool Fixed Deposit và tra cứu theo UserID hoặc TransID."
+  },
+  {
+    "template_code": "TPL_E_FD_016_B",
+    "purpose": "HD kiểm tra thông tin sổ",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_016_C",
+    "purpose": "HD kiểm tra thông tin sổ",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_017_A",
+    "purpose": "Quy định hạn mức CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Tổng hạn mức tiền gửi: 100 triệu. Nạp tối thiểu 100k. Rút tối thiểu 2k, tối đa 110 triệu. OTP khi rút >5 triệu/ngày."
+  },
+  {
+    "template_code": "TPL_E_FD_017_B",
+    "purpose": "Quy định hạn mức CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_017_C",
+    "purpose": "Quy định hạn mức CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_018_A",
+    "purpose": "Quy định lãi suất rút trước CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Lãi suất rút trước hạn: 0.3%/năm. Giữ đến đáo hạn: nhận đúng lãi suất đã chọn khi mở sổ."
+  },
+  {
+    "template_code": "TPL_E_FD_018_B",
+    "purpose": "Quy định lãi suất rút trước CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_018_C",
+    "purpose": "Quy định lãi suất rút trước CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_019_A",
+    "purpose": "Quy định hạn mức Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Nạp tối thiểu 100k, tối đa 100 triệu/GD. Rút một phần: ≥10% và ≤90% giá trị gói. Số dư còn lại ≥100k."
+  },
+  {
+    "template_code": "TPL_E_FD_019_B",
+    "purpose": "Quy định hạn mức Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_019_C",
+    "purpose": "Quy định hạn mức Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_020_A",
+    "purpose": "Quy định lãi suất rút trước Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Lãi suất rút trước hạn: 0.1%/năm. Giữ đến đáo hạn: nhận đúng lãi suất đã chọn khi mở sổ."
+  },
+  {
+    "template_code": "TPL_E_FD_020_B",
+    "purpose": "Quy định lãi suất rút trước Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_020_C",
+    "purpose": "Quy định lãi suất rút trước Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_021_A",
+    "purpose": "Đổi SĐT CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng liên hệ CIMB hotline 1900969696 để đổi số điện thoại trên hợp đồng."
+  },
+  {
+    "template_code": "TPL_E_FD_021_B",
+    "purpose": "Đổi SĐT CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_021_C",
+    "purpose": "Đổi SĐT CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_022_A",
+    "purpose": "Đóng TKTK CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng rút hết tiền tiết kiệm, sau đó liên hệ CIMB hotline 1900969696 để đóng tài khoản."
+  },
+  {
+    "template_code": "TPL_E_FD_022_B",
+    "purpose": "Đóng TKTK CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_022_C",
+    "purpose": "Đóng TKTK CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_023_A",
+    "purpose": "Đổi SĐT không nhận OTP CIMB",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng liên hệ CIMB hotline 1900969696 để cập nhật lại số điện thoại, sau đó rút tiền lại."
+  },
+  {
+    "template_code": "TPL_E_FD_023_B",
+    "purpose": "Đổi SĐT không nhận OTP CIMB",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_023_C",
+    "purpose": "Đổi SĐT không nhận OTP CIMB",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_024_A",
+    "purpose": "Đổi SĐT Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng liên hệ Cake qua app Cake by VPBank để đổi số điện thoại."
+  },
+  {
+    "template_code": "TPL_E_FD_024_B",
+    "purpose": "Đổi SĐT Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_024_C",
+    "purpose": "Đổi SĐT Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_025_A",
+    "purpose": "Đóng TKTK Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng rút hết tiền tiết kiệm, sau đó liên hệ Cake qua app để đóng tài khoản."
+  },
+  {
+    "template_code": "TPL_E_FD_025_B",
+    "purpose": "Đóng TKTK Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_025_C",
+    "purpose": "Đóng TKTK Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  },
+  {
+    "template_code": "TPL_E_FD_026_A",
+    "purpose": "Đổi SĐT không nhận OTP Cake",
+    "channel": "inapp",
+    "language": "vi",
+    "tone": "neutral",
+    "voice_style": "Zalopay – bạn",
+    "emotion_mode": "neutral",
+    "template_body": "Vui lòng liên hệ Cake qua app để cập nhật lại số điện thoại, sau đó rút tiền lại."
+  },
+  {
+    "template_code": "TPL_E_FD_026_B",
+    "purpose": "Đổi SĐT không nhận OTP Cake",
+    "channel": "chat",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Em rất xin lỗi anh/chị vì trải nghiệm chưa tốt ạ. Em đã ghi nhận và sẽ theo sát để hỗ trợ anh/chị sớm nhất có thể."
+  },
+  {
+    "template_code": "TPL_E_FD_026_C",
+    "purpose": "Đổi SĐT không nhận OTP Cake",
+    "channel": "call",
+    "language": "vi",
+    "tone": "calming",
+    "voice_style": "Em – Anh/Chị",
+    "emotion_mode": "angry",
+    "template_body": "Dạ em xin lỗi anh/chị ạ. Em ghi nhận và sẽ theo dõi để hỗ trợ anh/chị sớm nhất có thể, mong anh/chị thông cảm."
+  }
+]

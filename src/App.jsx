@@ -512,9 +512,20 @@ const App = () => {
             </div>
 
             <div className="space-y-4 mb-6">
-              <p className="text-gray-700 font-medium">🔍 Nguyên nhân: {result.cause || 'N/A'}</p>
-              <p className="text-green-700 font-medium">✅ Hướng xử lý: {result.solution || 'N/A'}</p>
-              {result.notes && <p className="text-red-700 font-medium">📌 Lưu ý: {result.notes}</p>}
+              <div className="text-gray-700">
+                <span className="font-bold">🔍 Nguyên nhân:</span>
+                <p className="whitespace-pre-wrap mt-1 ml-6">{result.cause || 'N/A'}</p>
+              </div>
+              <div className="text-green-700">
+                <span className="font-bold">✅ Hướng xử lý:</span>
+                <p className="whitespace-pre-wrap mt-1 ml-6">{result.solution || 'N/A'}</p>
+              </div>
+              {result.notes && (
+                <div className="text-red-700">
+                  <span className="font-bold">📌 Lưu ý:</span>
+                  <p className="whitespace-pre-wrap mt-1 ml-6">{result.notes}</p>
+                </div>
+              )}
             </div>
 
             <div className="mb-4">
