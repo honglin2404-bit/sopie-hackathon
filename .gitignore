@@ -1,40 +1,39 @@
-# dependencies
-node_modules
-/.pnp
-.pnp.js
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
 
-# testing
-/coverage
-
-# production
-/build
-/dist
-
-# misc
-.DS_Store
+# Environment variables
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyc
+# Build outputs
+.next/
+out/
+build/
+dist/
 
 # Logs
+*.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# Database
-DB_ZaloPay_CS.xlsx
-
-# Test files
-test_openai.py
+# OS files
+.DS_Store
+Thumbs.db
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# Python virtual environment
+venv/
+env/
+ENV/
+
+# Local database
+*.db
+*.sqlite
