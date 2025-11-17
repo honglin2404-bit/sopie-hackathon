@@ -37,7 +37,10 @@ export default function Home() {
     // 1. Lấy URL backend từ biến môi trường
     // 2. Nếu không có (chạy local), thì dùng localhost:5000
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
-    // -----------------------
+    
+    // 2.1: THÊM DÒNG LOG ĐỂ KIỂM TRA
+    console.log("Đang gọi backend tại:", backendUrl);
+    // ----------------------------
 
     try {
       // 3. Sử dụng biến backendUrl
