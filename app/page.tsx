@@ -13,10 +13,8 @@ export default function Home() {
   const [activeHxlTabs, setActiveHxlTabs] = useState<{[key: string]: 'cs1' | 'cs2'}>({})
   const [selectedSop, setSelectedSop] = useState<any | null>(null)
 
-  // --- TÍNH NĂNG MỚI (GỢI Ý THÊM) ---
   // State để quản lý tab nào đang active trong phần "Gợi ý thêm"
   const [activeSuggestionTab, setActiveSuggestionTab] = useState('All')
-  // ------------------------------------
 
   const handleSearch = async () => {
     if (!query.trim()) {
@@ -24,9 +22,6 @@ export default function Home() {
       return
     }
 
-    // SỬA LỖI LOGIC:
-    // 1. Thay đổi giới hạn từ > 10 thành > 5 (để khớp với gợi ý 1-5 từ)
-    // 2. Cập nhật lại thông báo lỗi
     if (searchType === 'keyword' && query.trim().split(' ').length > 5) {
       setError('Bạn đang ở chế độ tra cứu bằng từ khóa. Xin vui lòng nhập từ khóa hoặc bật chế độ tra cứu AI')
       return
@@ -36,17 +31,23 @@ export default function Home() {
     setError('')
     setResults([])
     setSelectedSop(null) 
-    setActiveSuggestionTab('All') // Reset tab khi search
+    setActiveSuggestionTab('All') 
+
+    // --- SỬA LỖI DEPLOY ---
+    // 1. Lấy URL backend từ biến môi trường
+    // 2. Nếu không có (chạy local), thì dùng localhost:5000
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    // -----------------------
 
     try {
-      const response = await fetch('http://localhost:5000/api/search', {
+      // 3. Sử dụng biến backendUrl
+      const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: query,
           domain: domain === 'all' ? null : domain,
           type: searchType === 'ai' ? 'semantic' : 'keyword',
-          // SỬA LẠI: Lấy 25 kết quả để có thể chia ra Top 5 + Gợi ý thêm
           limit: 25 
         }),
       })
@@ -76,7 +77,6 @@ export default function Home() {
     }
   }
 
-  // --- TÍNH NĂNG MỚI (USE CASE 4) ---
   // Component Modal (Giữ nguyên, không đổi)
   const SopDetailModal = () => {
     if (!selectedSop) return null
@@ -353,7 +353,7 @@ export default function Home() {
                 <ul className="list-disc list-inside mt-2 text-sm">
                   <li>Thử mô tả chi tiết hơn vấn đề</li>
                   <li>Kiểm tra lại domain filter</li>
-                  <li>Liên hệ Shift Lead nếu cần hỗít hỗ</li>
+                  <li>Liên hệ Shift Lead nếu cần hỗ trợ</li>
                 </ul>
               )}
             </div>
