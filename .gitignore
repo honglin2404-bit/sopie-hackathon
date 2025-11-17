@@ -1,39 +1,48 @@
-# Dependencies
+Dependencies
+
 node_modules/
-__pycache__/
+pycache/
 *.pyc
 *.pyo
+package-lock.json
 
-# Environment variables
+Environment variables
+
 .env
 .env.local
 .env.*.local
 
-# Build outputs
+Build outputs
+
 .next/
 out/
 build/
 dist/
 
-# Logs
-*.log
-npm-debug.log*
+Logs
 
-# OS files
+.log
+npm-debug.log
+
+OS files
+
 .DS_Store
 Thumbs.db
 
-# IDE
+IDE
+
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Python virtual environment
+Python virtual environment
+
 venv/
 env/
 ENV/
 
-# Local database
+Local database
+
 *.db
 *.sqlite
