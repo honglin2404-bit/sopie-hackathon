@@ -40,7 +40,13 @@ export default function Home() {
     // --- SỬA LỖI DEPLOY ---
     // 1. Lấy URL backend từ biến môi trường
     // 2. Nếu không có (chạy local), thì dùng localhost:5000
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    // const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    
+    // THAY THẾ BẰNG LOGIC MỚI (theo yêu cầu của bạn):
+    // Kiểm tra URL trình duyệt để quyết định backend
+    const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://sopie-search-tool.onrender.com';
     
     // 2.1: THÊM DÒNG LOG ĐỂ KIỂM TRA
     console.log("Đang gọi backend tại:", backendUrl);
