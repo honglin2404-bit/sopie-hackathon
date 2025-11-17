@@ -3,6 +3,10 @@
 import { useState, useMemo } from 'react'
 
 export default function Home() {
+  // --- THÊM DÒNG NÀY ĐỂ DEBUG BUILD MỚI ---
+  console.log("VERCEL BUILD MỚI NHẤT ĐÃ CHẠY!");
+  // ------------------------------------------
+
   const [query, setQuery] = useState('')
   const [domain, setDomain] = useState('all')
   const [searchType, setSearchType] = useState('ai')
