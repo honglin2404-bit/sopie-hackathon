@@ -1,201 +1,146 @@
-# SOPie Backend v2.0 
-"""
-SOPie Backend API v2.0
-Updated for new database structure with 21 columns + Semantic Search
-"""
-
+# SOPie Backend v2.0 (Updated for Google Sheet Sync)
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import json
-import numpy as np
-from datetime import datetime
 import logging
 from dotenv import load_dotenv
+from supabase import create_client, Client
+from openai import OpenAI
 
-# Load environment variables
+# Load environment
 load_dotenv()
-
-# Initialize Flask app
 app = Flask(__name__)
-CORS(app)
 
-# Setup logging
+# --- CORS Configuration ---
+# Cho phép cả Vercel và localhost gọi API
+frontend_url = "https://sopie-search-tool.vercel.app"
+CORS(app, resources={
+    r"/api/*": {"origins": [frontend_url, "http://localhost:3000"]},
+    r"/health": {"origins": "*"}
+})
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# --- SỬA LỖI DEPLOY ---
-# Lấy key từ biến môi trường, không hardcode
+# --- Config Clients ---
 SUPABASE_URL = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
-SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY') # Dùng Service Key
+SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
 OPENAI_KEY = os.getenv('OPENAI_API_KEY')
 
-if not SUPABASE_URL or not SUPABASE_KEY or not OPENAI_KEY:
-    logger.critical("!!! LỖI NGHIÊM TRỌNG: Thiếu một trong các biến môi trường (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY) !!!")
+if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
+    logger.critical("Missing environment variables!")
 
-# Import Supabase client
-try:
-    from supabase import create_client, Client
-    # Khởi tạo client với Service Key
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-    logger.info("Supabase client initialized successfully (using Service Key)")
-except ImportError:
-    logger.warning("Supabase client not available, using requests")
-    supabase = None
-    import requests
-# -------------------------
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+openai_client = OpenAI(api_key=OPENAI_KEY)
 
-# ============= HELPER FUNCTIONS =============
-
-def search_sops_by_keywords(query, domain_filter=None, limit=5):
-    """
-    Search SOPs using keywords and optional domain filter
-    """
+# ============= HELPER: Embedding =============
+def generate_embedding(text):
     try:
-        # Build the query
-        if supabase:
-            # Use Supabase client
-            query_builder = supabase.table('sops').select(
-                'id, title, domain, product, feature, cause, '
-                'solution_l1, solution_l2, keywords_primary, keywords_secondary, '
-                'check_tool_guideline, check_tools_name, check_tools_url, '
-                'template_app_mail, template_call_chat, link_sop, notes'
-            )
-            
-            # Apply domain filter if specified
-            if domain_filter:
-                query_builder = query_builder.eq('domain', domain_filter)
-            
-            # Apply text search on multiple fields
-            search_query = f"%{query}%"
-            query_builder = query_builder.or_(
-                f"title.ilike.{search_query},"
-                f"keywords_primary.ilike.{search_query},"
-                f"keywords_secondary.ilike.{search_query},"
-                f"cause.ilike.{search_query},"
-                f"solution_l1.ilike.{search_query}"
-            )
-            
-            # Limit results
-            query_builder = query_builder.limit(limit)
-            
-            # Execute query
-            response = query_builder.execute()
-            return response.data
-            
-        else:
-            # Fallback (sẽ không chạy nếu Supabase init đúng)
-            logger.warning("Supabase client not available, fallback to requests")
-            headers = {
-                "apikey": SUPABASE_KEY, # Dùng key đã load
-                "Authorization": f"Bearer {SUPABASE_KEY}"
-            }
-            # ... (Phần requests giữ nguyên, nhưng sẽ ít dùng)
-            
-    except Exception as e:
-        logger.error(f"Error in search_sops_by_keywords: {e}")
-        return []
-
-def search_by_embedding(query_text, domain_filter=None, limit=5):
-    """
-    Search using embeddings (TRUE semantic search with OpenAI)
-    """
-    try:
-        from openai import OpenAI
-        
-        if not OPENAI_KEY:
-            logger.warning("OpenAI API key not found, falling back to keyword search")
-            return search_sops_by_keywords(query_text, domain_filter, limit)
-        
-        # Generate embedding for query
-        client = OpenAI(api_key=OPENAI_KEY)
-        
-        response = client.embeddings.create(
+        response = openai_client.embeddings.create(
             model="text-embedding-3-small",
-            input=query_text,
+            input=text,
             encoding_format="float"
         )
-        query_embedding = response.data[0].embedding
+        return response.data[0].embedding
+    except Exception as e:
+        logger.error(f"Embedding error: {e}")
+        return None
+
+def create_searchable_text(sop):
+    # Kết hợp các trường quan trọng để AI hiểu
+    parts = [
+        str(sop.get('title', '')),
+        str(sop.get('cause', '')),
+        str(sop.get('solution_l1', '')),
+        str(sop.get('keywords_primary', '')), # Nếu có
+        str(sop.get('keywords_secondary', '')) # Nếu có
+    ]
+    return " ".join(parts)
+
+# ============= API: SYNC (Nhận từ GG Sheet) =============
+@app.route('/api/sync-sops', methods=['POST'])
+def sync_sops():
+    """
+    Endpoint nhận data từ Google Sheet và update vào Supabase
+    """
+    try:
+        data = request.json
+        sops_list = data.get('sops', [])
         
-        logger.info(f"Generated embedding for query: {query_text}")
+        if not sops_list:
+            return jsonify({'error': 'No data provided'}), 400
+            
+        logger.info(f"Received {len(sops_list)} SOPs to sync...")
         
-        # Search using pgvector via RPC
-        if supabase:
-            # Build RPC params FIRST
-            rpc_params = {
-                'query_embedding': query_embedding,
-                'match_threshold': 0.3,
-                'match_count': limit
+        count = 0
+        for item in sops_list:
+            # 1. Upsert SOP vào bảng 'sops'
+            # Chỉ lấy các trường có trong DB schema mới
+            sop_record = {
+                'id': str(item.get('id')),
+                'title': item.get('title'),
+                'domain': item.get('domain'),
+                'product': item.get('product'),
+                'feature': item.get('feature'),
+                'cause': item.get('cause'),
+                'check_tool_guideline': item.get('check_tool_guideline'),
+                'check_tools_name': item.get('check_tools_name'),
+                'check_tools_url': item.get('check_tools_url'),
+                'solution_l1': item.get('solution_l1'),
+                'solution_l2': item.get('solution_l2'),
+                'notes': item.get('notes'),
+                'template_app_mail': item.get('template_app_mail'),
+                'template_call_chat': item.get('template_call_chat'),
+                'link_sop': item.get('link_sop'),
+                'last_updated': item.get('last_updated'),
+                # Giữ lại keywords nếu sheet có, ko thì để trống
+                'keywords_primary': item.get('keywords_primary', ''),
+                'keywords_secondary': item.get('keywords_secondary', '')
             }
             
-            if domain_filter:
-                rpc_params['domain_filter'] = domain_filter
+            # Upsert (Insert hoặc Update nếu ID đã tồn tại)
+            supabase.table('sops').upsert(sop_record).execute()
             
-            # THEN log
-            logger.info(f"Calling match_sops RPC with domain_filter={domain_filter}")
-            logger.info(f"RPC params keys: {list(rpc_params.keys())}")
+            # 2. Tạo và Upsert Embedding
+            search_text = create_searchable_text(item)
+            embedding = generate_embedding(search_text)
             
-            # Call the match_sops function
-            response = supabase.rpc('match_sops', rpc_params).execute()
-            
-            if response.data and len(response.data) > 0:
-                logger.info(f"Found {len(response.data)} semantic search results")
+            if embedding:
+                # Kiểm tra xem embedding đã có chưa
+                existing = supabase.table('sop_embeddings').select('id').eq('sop_id', sop_record['id']).execute()
                 
-                # Format results
-                results = []
-                for row in response.data:
-                    results.append({
-                        'id': row['id'],
-                        'title': row['title'],
-                        'domain': row['domain'],
-                        'product': row.get('product'),
-                        'feature': row.get('feature'),
-                        'cause': row.get('cause'),
-                        'solution_l1': row.get('solution_l1'),
-                        'solution_l2': row.get('solution_l2'),
-                        'keywords_primary': row.get('keywords_primary'),
-                        'keywords_secondary': row.get('keywords_secondary'),
-                        'check_tool_guideline': row.get('check_tool_guideline'),
-                        'check_tools_name': row.get('check_tools_name'),
-                        'check_tools_url': row.get('check_tools_url'),
-                        'template_app_mail': row.get('template_app_mail'),
-                        'template_call_chat': row.get('template_call_chat'),
-                        'link_sop': row.get('link_sop'),
-                        'notes': row.get('notes'),
-                        'similarity': row.get('similarity', 0)
-                    })
+                embedding_record = {
+                    'sop_id': sop_record['id'],
+                    'content': search_text,
+                    'embedding': embedding
+                }
                 
-                return results
-            else:
-                logger.warning("No semantic search results, falling back to keyword")
-                return search_sops_by_keywords(query_text, domain_filter, limit)
-        else:
-            logger.warning("Supabase client not available")
-            return search_sops_by_keywords(query_text, domain_filter, limit)
+                if existing.data:
+                    supabase.table('sop_embeddings').update(embedding_record).eq('sop_id', sop_record['id']).execute()
+                else:
+                    supabase.table('sop_embeddings').insert(embedding_record).execute()
             
+            count += 1
+            
+        return jsonify({'success': True, 'count': count})
+        
     except Exception as e:
-        logger.error(f"Error in search_by_embedding: {e}", exc_info=True)
-        # Fallback to keyword search
-        return search_sops_by_keywords(query_text, domain_filter, limit)
+        logger.error(f"Sync error: {e}")
+        return jsonify({'error': str(e)}), 500
 
-def format_sop_response(sop):
-    """
-    Format SOP data for API response
-    """
+# ============= API: SEARCH (Updated) =============
+def format_response(sop):
+    # Map đúng tên cột mới
     return {
         'id': sop.get('id'),
         'title': sop.get('title'),
         'domain': sop.get('domain'),
-        'product': sop.get('product'),
-        'feature': sop.get('feature'),
+        # 'product' & 'feature' có thể dùng để filter sau này
         'cause': sop.get('cause'),
         'solution': {
             'level1': sop.get('solution_l1'),
             'level2': sop.get('solution_l2')
-        },
-        'keywords': {
-            'primary': sop.get('keywords_primary'),
-            'secondary': sop.get('keywords_secondary')
         },
         'check_tools': {
             'guideline': sop.get('check_tool_guideline'),
@@ -208,70 +153,63 @@ def format_sop_response(sop):
         },
         'link': sop.get('link_sop'),
         'notes': sop.get('notes'),
-        'relevance_score': sop.get('similarity', 0.95) # Dùng similarity nếu là semantic search
+        'last_updated': sop.get('last_updated'), # Thêm trường này
+        'relevance_score': sop.get('similarity', 0.95)
     }
-
-# ============= API ENDPOINTS =============
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({
-        'status': 'healthy',
-        'version': '2.0',
-        'database': 'connected' if supabase else 'using requests',
-        'timestamp': datetime.now().isoformat()
-    })
 
 @app.route('/api/search', methods=['POST'])
 def search():
-    """
-    Main search endpoint
-    Supports both keyword and semantic search
-    """
     try:
         data = request.json
         query = data.get('query', '')
         domain = data.get('domain', None)
         search_type = data.get('type', 'keyword')
-        limit = data.get('limit', 5)
+        limit = data.get('limit', 25)
         
-        if not query:
-            return jsonify({'error': 'Query is required'}), 400
+        if not query: return jsonify({'error': 'Query required'}), 400
         
-        logger.info(f"Search request - Query: {query}, Domain: {domain}, Type: {search_type}")
+        results = []
         
-        # Perform search based on type
+        # 1. Semantic Search
         if search_type == 'semantic':
-            results = search_by_embedding(query, domain, limit)
-        else:
-            results = search_sops_by_keywords(query, domain, limit)
+            embedding = generate_embedding(query)
+            if embedding:
+                rpc_params = {
+                    'query_embedding': embedding,
+                    'match_threshold': 0.3,
+                    'match_count': limit
+                }
+                if domain: rpc_params['domain_filter'] = domain
+                
+                rpc_res = supabase.rpc('match_sops', rpc_params).execute()
+                results = rpc_res.data
         
-        # Format results
-        formatted_results = [format_sop_response(sop) for sop in results]
-        
+        # 2. Keyword Search (Fallback hoặc khi user chọn)
+        else: 
+            builder = supabase.table('sops').select('*')
+            if domain: builder = builder.eq('domain', domain)
+            
+            # Tìm kiếm đơn giản trên các cột text
+            search_str = f"%{query}%"
+            builder = builder.or_(f"title.ilike.{search_str},cause.ilike.{search_str}")
+            builder = builder.limit(limit)
+            
+            res = builder.execute()
+            results = res.data
+
         return jsonify({
             'success': True,
-            'query': query,
-            'domain': domain,
-            'type': search_type,
-            'count': len(formatted_results),
-            'results': formatted_results
+            'results': [format_response(r) for r in results]
         })
-        
+
     except Exception as e:
-        logger.error(f"Error in search endpoint: {e}")
+        logger.error(f"Search error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# Các endpoints còn lại (get_all_sops, get_sop_by_id, ...) giữ nguyên
-# ... (Giữ nguyên các hàm @app.route('/api/sops'), ...)
-# ... (Giữ nguyên các hàm @app.route('/api/domains'), ...)
-# ... (Giữ nguyên các hàm @app.route('/api/stats'), ...)
-
-# ============= MAIN =============
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'healthy'})
 
 if __name__ == '__main__':
-    # Railway sẽ tự động gán PORT qua biến môi trường
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False) # Tắt debug mode khi deploy
-    logger.info(f"SOPie Backend v2.0 running on port {port}")
+    app.run(host='0.0.0.0', port=port)
