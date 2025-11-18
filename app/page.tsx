@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 
 export default function Home() {
-  console.log("VERCEL BUILD MOI NHAT DA CHAY!");
+  console.log("VERCEL BUILD - VERSION 2025-11-18");
 
   const [query, setQuery] = useState('')
   const [domain, setDomain] = useState('all')
@@ -33,7 +33,7 @@ export default function Home() {
     setSelectedSop(null) 
     setActiveSuggestionTab('All') 
 
-    // === FIX BACKEND URL - LOGIC MOI ===
+    // === FIX BACKEND URL - LOGIC DETECT HOSTNAME ===
     const isLocalhost = typeof window !== 'undefined' && 
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
@@ -46,7 +46,7 @@ export default function Home() {
     console.log("Is localhost:", isLocalhost);
     console.log("Backend URL:", backendUrl);
     console.log("================================");
-    // ===================================
+    // ===============================================
 
     try {
       console.log("Fetching:", `${backendUrl}/api/search`);
@@ -373,7 +373,7 @@ export default function Home() {
                 Top {top5Results.length} Ket qua hang dau
               </h3>
               <div className="space-y-4">
-                {top5Results.map((r, index) => (
+                {top5Results.map((r) => (
                   <SopSummaryCard key={r.id} r={r} isTopMatch={true} />
                 ))}
               </div>
