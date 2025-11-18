@@ -3,7 +3,7 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key"
+    "NEXT_PUBLIC_SUPABASE_URL": "https://xmoamdwyklvoffzfaoym.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhtb2FtZHd5a2x2b2ZmemZhb3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNzQ2NjgsImV4cCI6MjA3ODc1MDY2OH0.RYL5Hi_34sI_51T2k-gRZ6Ipzi-JklnXx8e2m1sHWv4"
   }
 }
