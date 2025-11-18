@@ -46,3 +46,4 @@ Local database
 
 *.db
 *.sqlite
+.vercel
