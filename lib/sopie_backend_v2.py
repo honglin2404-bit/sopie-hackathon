@@ -76,7 +76,6 @@ def sync_sops():
         count = 0
         for item in sops_list:
             # 1. Upsert SOP vào bảng 'sops'
-            # Chỉ lấy các trường có trong DB schema mới
             sop_record = {
                 'id': str(item.get('id')),
                 'title': item.get('title'),
@@ -94,28 +93,24 @@ def sync_sops():
                 'template_call_chat': item.get('template_call_chat'),
                 'link_sop': item.get('link_sop'),
                 'last_updated': item.get('last_updated'),
-                # Giữ lại keywords nếu sheet có, ko thì để trống
                 'keywords_primary': item.get('keywords_primary', ''),
                 'keywords_secondary': item.get('keywords_secondary', '')
             }
             
-            # Upsert (Insert hoặc Update nếu ID đã tồn tại)
+            # Upsert vào database
             supabase.table('sops').upsert(sop_record).execute()
             
-            # 2. Tạo và Upsert Embedding
+            # 2. Tạo và Upsert Embedding (Tự động tạo AI Vector)
             search_text = create_searchable_text(item)
             embedding = generate_embedding(search_text)
             
             if embedding:
-                # Kiểm tra xem embedding đã có chưa
                 existing = supabase.table('sop_embeddings').select('id').eq('sop_id', sop_record['id']).execute()
-                
                 embedding_record = {
                     'sop_id': sop_record['id'],
                     'content': search_text,
                     'embedding': embedding
                 }
-                
                 if existing.data:
                     supabase.table('sop_embeddings').update(embedding_record).eq('sop_id', sop_record['id']).execute()
                 else:
@@ -129,14 +124,12 @@ def sync_sops():
         logger.error(f"Sync error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ============= API: SEARCH (Updated) =============
+# ============= API: SEARCH =============
 def format_response(sop):
-    # Map đúng tên cột mới
     return {
         'id': sop.get('id'),
         'title': sop.get('title'),
         'domain': sop.get('domain'),
-        # 'product' & 'feature' có thể dùng để filter sau này
         'cause': sop.get('cause'),
         'solution': {
             'level1': sop.get('solution_l1'),
@@ -153,7 +146,7 @@ def format_response(sop):
         },
         'link': sop.get('link_sop'),
         'notes': sop.get('notes'),
-        'last_updated': sop.get('last_updated'), # Thêm trường này
+        'last_updated': sop.get('last_updated'), 
         'relevance_score': sop.get('similarity', 0.95)
     }
 
@@ -169,8 +162,6 @@ def search():
         if not query: return jsonify({'error': 'Query required'}), 400
         
         results = []
-        
-        # 1. Semantic Search
         if search_type == 'semantic':
             embedding = generate_embedding(query)
             if embedding:
@@ -180,20 +171,14 @@ def search():
                     'match_count': limit
                 }
                 if domain: rpc_params['domain_filter'] = domain
-                
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
-        
-        # 2. Keyword Search (Fallback hoặc khi user chọn)
         else: 
             builder = supabase.table('sops').select('*')
             if domain: builder = builder.eq('domain', domain)
-            
-            # Tìm kiếm đơn giản trên các cột text
             search_str = f"%{query}%"
             builder = builder.or_(f"title.ilike.{search_str},cause.ilike.{search_str}")
             builder = builder.limit(limit)
-            
             res = builder.execute()
             results = res.data
 
