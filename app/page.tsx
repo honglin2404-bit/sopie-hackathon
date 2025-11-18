@@ -88,7 +88,7 @@ export default function Home() {
     }
   }
 
-  // Component Modal (Giữ nguyên, không đổi)
+  // Component Modal - ĐÃ SỬA 2 VẤN ĐỀ
   const SopDetailModal = () => {
     if (!selectedSop) return null
     const r = selectedSop
@@ -122,23 +122,43 @@ export default function Home() {
           {r.cause && (
             <div className="mb-4 p-4 bg-red-50 rounded-xl border-l-4 border-red-500">
               <strong className="text-red-700 block mb-2">⚠️ Nguyên nhân:</strong>
-              <p className="text-gray-800 leading-relaxed">{r.cause}</p>
+              <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{r.cause}</p>
             </div>
           )}
           
-          {/* 3. Check Tool */}
+          {/* 3. Check Tool - ĐÃ SỬA: Text xuống dòng + Nhiều links */}
           {r.check_tools && r.check_tools.guideline && (
             <div className="mb-4 p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500">
               <strong className="text-blue-700 block mb-2">🔧 Check Tool:</strong>
-              <p className="text-gray-800 mb-2">{r.check_tools.guideline}</p>
-              {r.check_tools.name && (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-700">Tool: {r.check_tools.name}</span>
-                  {r.check_tools.url && (
-                    <a href={r.check_tools.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
-                      🔗 Link
-                    </a>
-                  )}
+              {/* FIX 1: Thêm whitespace-pre-wrap break-words */}
+              <p className="text-gray-800 mb-3 whitespace-pre-wrap break-words leading-relaxed">
+                {r.check_tools.guideline}
+              </p>
+              
+              {/* FIX 2: Hiển thị nhiều links */}
+              {r.check_tools.name && r.check_tools.url && (
+                <div className="flex flex-wrap gap-3 mt-2">
+                  {(() => {
+                    // Split names và URLs bằng dấu phẩy
+                    const names = r.check_tools.name.split(',').map((n: string) => n.trim()).filter(Boolean)
+                    const urls = r.check_tools.url.split(',').map((u: string) => u.trim()).filter(Boolean)
+                    
+                    // Render từng cặp name-url
+                    return names.map((name: string, index: number) => {
+                      const url = urls[index] || urls[0] // Fallback to first URL if mismatch
+                      return (
+                        <a
+                          key={index}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          🔗 {name}
+                        </a>
+                      )
+                    })
+                  })()}
                 </div>
               )}
             </div>
@@ -187,7 +207,7 @@ export default function Home() {
           {r.templates && r.templates.email && (
             <details className="mb-3">
               <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
-                📧 Template Email/App
+                📧 Template App/Mail dành cho CS1
               </summary>
               <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
                 {r.templates.email}
@@ -197,7 +217,7 @@ export default function Home() {
           {r.templates && r.templates.chat && (
             <details className="mb-3">
               <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
-                💬 Template Call/Chat
+                💬 Template Call/Chat dành cho CS1
               </summary>
               <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
                 {r.templates.chat}
@@ -328,13 +348,13 @@ export default function Home() {
               onChange={(e) => setDomain(e.target.value)}
               className="px-5 py-4 border-2 border-gray-300 rounded-xl bg-white min-w-[200px] font-medium"
             >
-              <option value="all">🔷 Tất cả</option>
-              <option value="Account">👤 Tài khoản</option>
-              <option value="General">💳 Thanh toán</option>
-              <option value="Lending">📱 Ứng dụng</option>
-              <option value="Merchant">🏪 Merchant</option>
-              <option value="Promotion">🎁 Khuyến Mãi</option>
-              <option value="Travelling">✈️ DVTC</option>
+              <option value="all">Tất cả</option>
+              <option value="Account">Tài khoản</option>
+              <option value="Payment">Thanh toán</option>
+              <option value="Application">Ứng dụng</option>
+              <option value="Merchant">Đối tác</option>
+              <option value="Lending">DVTC</option>
+              <option value="Travel">OTA</option>
             </select>
             <input
               type="text"
