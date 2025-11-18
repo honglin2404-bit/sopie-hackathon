@@ -44,9 +44,7 @@ export default function Home() {
     
     // THAY THẾ BẰNG LOGIC MỚI (theo yêu cầu của bạn):
     // Kiểm tra URL trình duyệt để quyết định backend
-    const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-      ? 'http://localhost:5000'
-      : 'https://sopie-search-tool.onrender.com';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
     
     // 2.1: THÊM DÒNG LOG ĐỂ KIỂM TRA
     console.log("Đang gọi backend tại:", backendUrl);
