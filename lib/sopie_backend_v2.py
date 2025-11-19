@@ -1,4 +1,3 @@
-# SOPie Backend v2.0 (Updated for Google Sheet Sync)
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
@@ -13,10 +12,11 @@ load_dotenv()
 app = Flask(__name__)
 
 # --- CORS Configuration ---
-# Cho phép cả Vercel và localhost gọi API
+# Cho phép cả Vercel và localhost:3001 gọi API
 frontend_url = "https://sopie-search-tool.vercel.app"
 CORS(app, resources={
-    r"/api/*": {"origins": [frontend_url, "http://localhost:3000"]},
+    # Chỉ giữ lại cổng 3001 cho Localhost
+    r"/api/*": {"origins": [frontend_url, "http://localhost:3001"]},
     r"/health": {"origins": "*"}
 })
 
@@ -147,7 +147,8 @@ def format_response(sop):
         'link': sop.get('link_sop'),
         'notes': sop.get('notes'),
         'last_updated': sop.get('last_updated'), 
-        'relevance_score': sop.get('similarity', 0.95)
+        # Đã điều chỉnh: Dùng giá trị mặc định 0.5 cho Key Search (nếu similarity không tồn tại)
+        'relevance_score': sop.get('similarity', 0.5) 
     }
 
 @app.route('/api/search', methods=['POST'])

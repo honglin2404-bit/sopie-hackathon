@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin", "vietnamese"] });
 
 export const metadata: Metadata = {
   title: "FAQ Search Tool - CS ZBrain powered by SOPie",
-  description: "AI-powered SOP search for ZaloPay CS Team",
+  description: "AI-powered SOP search for Zalopay CS Team",
 };
 
 export default function RootLayout({
