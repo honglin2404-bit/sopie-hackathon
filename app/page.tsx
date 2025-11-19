@@ -139,7 +139,7 @@ export default function Home() {
     // --- KẾT THÚC LOGIC KẾT NỐI BACKEND THẬT ---
   }
 
-  // Component Modal (ĐÃ SỬA LỖI CÚ PHÁP)
+  // Component Modal (ĐÃ KHÔI PHỤC ĐẦY ĐỦ CÁC KHỐI THÔNG TIN)
   const SopDetailModal = () => {
     if (!selectedSop) return null
     const r = selectedSop
@@ -161,6 +161,7 @@ export default function Home() {
             </svg>
           </button>
           
+          {/* 1. Title */}
           <div className="flex justify-between items-start mb-4">
             <h3 className="text-2xl font-bold text-gray-900 flex-1 pr-4">{r.title}</h3>
             <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold whitespace-nowrap">
@@ -168,13 +169,52 @@ export default function Home() {
             </span>
           </div>
 
+          {/* 2. Nguyên nhân */}
           {r.cause && (
             <div className="mb-4 p-4 bg-red-50 rounded-xl border-l-4 border-red-500">
               <strong className="text-red-700 block mb-2">⚠️ Nguyên nhân:</strong>
               <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{r.cause}</p>
             </div>
           )}
+
+          {/* 3. Tab Hướng dẫn kiểm tra tool */}
+          {r.check_tools && r.check_tools.guideline && (
+            <div className="mb-4 p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+              <strong className="text-blue-700 block mb-2">🔧 Hướng dẫn kiểm tra tool:</strong>
+              <p className="text-gray-800 mb-3 whitespace-pre-wrap break-words leading-relaxed">
+                {r.check_tools.guideline}
+              </p>
+              
+              {r.check_tools.name && r.check_tools.url && (
+                <div className="flex flex-wrap gap-3 mt-2">
+                  {(() => {
+                    // Split names và URLs bằng dấu phẩy
+                    const names = r.check_tools.name.split(',').map((n: string) => n.trim()).filter(Boolean)
+                    const urls = r.check_tools.url.split(',').map((u: string) => u.trim()).filter(Boolean)
+                    
+                    // Render từng cặp name-url
+                    return names.map((name: string, index: number) => {
+                      // Fallback to first URL if mismatch, đảm bảo luôn có link
+                      const url = urls[index] || urls[0]
+                      return (
+                        <a
+                          key={index}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          🔗 {name}
+                        </a>
+                      )
+                    })
+                  })()}
+                </div>
+              )}
+            </div>
+          )}
           
+          {/* 4. Tab Hướng xử lý (HXL CS1 / HXL CS2) */}
           {(r.solution?.level1 || r.solution?.level2) && (
             <div className="mb-4">
               <strong className="text-green-700 block mb-3 text-base">✅ Hướng xử lý:</strong>
@@ -205,9 +245,44 @@ export default function Home() {
             </div>
           )}
 
+          {/* 5. Khối Lưu ý (Notes) */}
+          {r.notes && (
+            <div className="mb-4 p-4 bg-yellow-50 rounded-xl border-l-4 border-yellow-500">
+              <strong className="text-yellow-700 block mb-2">📝 Lưu ý:</strong>
+              <p className="text-gray-800 leading-relaxed whitespace-pre-line">{r.notes}</p>
+            </div>
+          )}
+
+          {/* 6. Template Phản hồi dành cho CS1 */}
+          {r.templates && (r.templates.email || r.templates.chat) && (
+            <>
+              {r.templates.email && (
+                <details className="mb-3">
+                  <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
+                    📧 Template App/Mail dành cho CS1
+                  </summary>
+                  <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
+                    {r.templates.email}
+                  </div>
+                </details>
+              )}
+              {r.templates.chat && (
+                <details className="mb-3">
+                  <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
+                    💬 Template Call/Chat dành cho CS1
+                  </summary>
+                  <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
+                    {r.templates.chat}
+                  </div>
+                </details>
+              )}
+            </>
+          )}
+
+          {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
             {r.link ? (
-              <a // THẺ MỞ <a> ĐÃ ĐƯỢC THÊM LẠI
+              <a 
                 href={r.link}
                 target="_blank"
                 rel="noopener noreferrer"
