@@ -293,7 +293,7 @@ export default function Home() {
               {/* HIỂN THỊ CSWRITELAB KHI Ở CS2 */}
               {activeHxlLevel === 'cs2' && (
                 <div className="p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500">
-                  <strong className="text-blue-700 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
+                  <strong className="text-blue-700 block mb-2">💡 Soạn thảo phản hồi dành cho CS2:</strong>
                   <p className="text-gray-800 leading-relaxed mb-3">
                     Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với <a
                       href={csWriteLabLink}
