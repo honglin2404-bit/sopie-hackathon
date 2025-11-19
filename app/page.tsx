@@ -143,6 +143,13 @@ export default function Home() {
   const SopDetailModal = () => {
     if (!selectedSop) return null
     const r = selectedSop
+
+    // Biến kiểm tra tab HXL nào đang hoạt động
+    const activeHxlLevel = activeHxlTabs[r.id] || 'cs1';
+    
+    // Link CSWriteLab tĩnh
+    const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
+
     return (
       <div 
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
@@ -221,24 +228,24 @@ export default function Home() {
               <div className="flex gap-2 mb-3 border-b border-gray-200">
                 <button
                   onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs1'})}
-                  className={activeHxlTabs[r.id] === 'cs1' ? 'px-4 py-2 font-semibold text-green-700 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700'}
+                  className={activeHxlLevel === 'cs1' ? 'px-4 py-2 font-semibold text-green-700 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700'}
                 >
                   HXL CS1
                 </button>
                 {r.solution?.level2 && (
                   <button
                     onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs2'})}
-                    className={activeHxlTabs[r.id] === 'cs2' ? 'px-4 py-2 font-semibold text-green-700 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700'}
+                    className={activeHxlLevel === 'cs2' ? 'px-4 py-2 font-semibold text-green-700 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700'}
                   >
                     HXL CS2
                   </button>
                 )}
               </div>
               <div className="p-4 bg-green-50 rounded-xl border-l-4 border-green-500">
-                {activeHxlTabs[r.id] === 'cs1' && r.solution?.level1 && (
+                {activeHxlLevel === 'cs1' && r.solution?.level1 && (
                   <p className="text-gray-800 leading-relaxed whitespace-pre-line">{r.solution.level1}</p>
                 )}
-                {activeHxlTabs[r.id] === 'cs2' && r.solution?.level2 && (
+                {activeHxlLevel === 'cs2' && r.solution?.level2 && (
                   <p className="text-gray-800 leading-relaxed whitespace-pre-line">{r.solution.level2}</p>
                 )}
               </div>
@@ -253,31 +260,55 @@ export default function Home() {
             </div>
           )}
 
-          {/* 6. Template Phản hồi dành cho CS1 */}
-          {r.templates && (r.templates.email || r.templates.chat) && (
-            <>
-              {r.templates.email && (
-                <details className="mb-3">
-                  <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
-                    📧 Template App/Mail dành cho CS1
-                  </summary>
-                  <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
-                    {r.templates.email}
-                  </div>
-                </details>
+          {/* 6. Template Phản hồi / Gợi ý CSWriteLab */}
+          {(r.templates && (r.templates.email || r.templates.chat)) || activeHxlLevel === 'cs2' ? (
+            <div className="mb-4">
+              {/* HIỂN THỊ TEMPLATE CS1 */}
+              {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
+                <>
+                  <strong className="text-gray-700 block mb-3 text-base">Gợi ý phản hồi dành cho CS1:</strong>
+                  {r.templates.email && (
+                    <details className="mb-3">
+                      <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
+                        📧 Template App/Mail
+                      </summary>
+                      <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
+                        {r.templates.email}
+                      </div>
+                    </details>
+                  )}
+                  {r.templates.chat && (
+                    <details className="mb-3">
+                      <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
+                        💬 Template Call/Chat
+                      </summary>
+                      <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
+                        {r.templates.chat}
+                      </div>
+                    </details>
+                  )}
+                </>
               )}
-              {r.templates.chat && (
-                <details className="mb-3">
-                  <summary className="cursor-pointer font-semibold text-gray-700 hover:text-blue-600 p-3 bg-gray-50 rounded-lg">
-                    💬 Template Call/Chat dành cho CS1
-                  </summary>
-                  <div className="mt-2 p-4 bg-white border-2 border-gray-200 rounded-lg text-sm text-gray-800 whitespace-pre-line">
-                    {r.templates.chat}
-                  </div>
-                </details>
+
+              {/* HIỂN THỊ CSWRITELAB KHI Ở CS2 */}
+              {activeHxlLevel === 'cs2' && (
+                <div className="p-4 bg-blue-50 rounded-xl border-l-4 border-blue-500">
+                  <strong className="text-blue-700 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
+                  <p className="text-gray-800 leading-relaxed mb-3">
+                    Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với <a
+                      href={csWriteLabLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 font-semibold hover:text-blue-800 underline transition-colors"
+                    >
+                      CSWriteLab ✍️
+                    </a>
+                  </p>
+                </div>
               )}
-            </>
-          )}
+            </div>
+          ) : null}
+
 
           {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
