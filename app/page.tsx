@@ -301,7 +301,7 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="text-blue-600 font-semibold hover:text-blue-800 underline transition-colors"
                     >
-                      CSWriteLab ✍️
+                      CSWriteLab
                     </a>
                   </p>
                 </div>
