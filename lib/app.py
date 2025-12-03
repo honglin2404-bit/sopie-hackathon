@@ -149,7 +149,7 @@ def format_response(sop):
         'last_updated': sop.get('last_updated')
     }
 
-# ============= API: SYNC (ĐÃ SỬA LỖI LOGIC) =============
+# ============= API: SYNC =============
 @app.route('/api/sync-sops', methods=['POST'])
 def sync_sops():
     """
@@ -197,7 +197,7 @@ def sync_sops():
                 'embedding': embedding 
             }
             
-            # 3. Upsert vào bảng 'sops' (Không dùng bảng phụ nữa)
+            # 3. Upsert vào bảng 'sops'
             supabase.table('sops').upsert(sop_record).execute()
             count += 1
             
@@ -208,7 +208,7 @@ def sync_sops():
         logger.error(f"Sync error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ============= API: SEARCH =============
+# ============= API: SEARCH (ĐÃ CẬP NHẬT KEY SEARCH) =============
 @app.route('/api/search', methods=['POST'])
 def search():
     try:
@@ -224,16 +224,15 @@ def search():
         results = []
         similarity_default = 0.5
         
-        # 1. SEMANTIC SEARCH
+        # 1. SEMANTIC SEARCH (AI)
         if search_type == 'semantic':
             embedding = generate_embedding(query)
             if embedding:
                 rpc_params = {
                     'query_embedding': embedding,
-                    'match_threshold': 0.3, # Ngưỡng tối thiểu để lấy kết quả
+                    'match_threshold': 0.3,
                     'match_count': limit
                 }
-                # Nếu có filter domain thì thêm vào params
                 if domain: 
                     rpc_params['domain_filter'] = domain
                 
@@ -241,17 +240,18 @@ def search():
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
                 
-        # 2. KEYWORD SEARCH (Fallback hoặc Explicit)
+        # 2. KEYWORD SEARCH (Đã nâng cấp dùng SQL Function)
         else: 
-            builder = supabase.table('sops').select('*')
+            # Gọi hàm RPC 'kw_sops' (SQL) thay vì query bằng Python
+            rpc_params = {
+                'query_text': query,
+                'match_count': limit
+            }
             if domain: 
-                builder = builder.eq('domain', domain)
+                rpc_params['domain_filter'] = domain
             
-            search_str = f"%{query}%"
-            # Tìm trong title HOẶC cause
-            builder = builder.or_(f"title.ilike.{search_str},cause.ilike.{search_str}")
-            builder = builder.limit(limit)
-            res = builder.execute()
+            # Thực thi hàm tìm kiếm từ khóa dưới database
+            res = supabase.rpc('kw_sops', rpc_params).execute()
             results = res.data
 
         # 3. Tính toán điểm số cuối cùng (Re-ranking)
