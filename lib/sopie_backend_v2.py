@@ -33,58 +33,50 @@ if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
-# ============= 🧠 CẤU HÌNH FALLBACK RULES (DATA TỪ BẠN CUNG CẤP) =============
+# ============= 🧠 CẤU HÌNH FALLBACK RULES (DETECT INTENT) =============
 FALLBACK_RULES = [
-    # 1. Cập nhật Số điện thoại
     {
         "keywords": ["đổi số điện thoại", "thay đổi sđt", "số điện thoại mới", "đổi sđt", "cập nhật sđt", "sđt cũ", "mất sim"],
         "context_name": "thay đổi số điện thoại",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/taikhoan/thay-doi-tttk/changephone-%C4%91%E1%BB%95i-s%E1%BB%91-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-c%C3%B3kh%C3%B4ng-c%C3%B3-tkts",
         "link_label": "Quy trình Đổi SĐT"
     },
-    # 2. Hỗ trợ Chủ Sim
     {
         "keywords": ["chủ sim", "chính chủ", "xác thực sim", "sim chính chủ"],
         "context_name": "hỗ trợ chủ sim",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/taikhoan/thay-doi-tttk/h%E1%BB%97-tr%E1%BB%A3-ch%E1%BB%A7-sim",
         "link_label": "Quy trình Hỗ trợ Chủ Sim"
     },
-    # 3. Định danh / KYC
     {
         "keywords": ["định danh", "kyc", "xác thực tài khoản", "nâng cấp tài khoản", "chưa định danh"],
         "context_name": "định danh tài khoản (KYC)",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/taikhoan/dinh-danh-tai-khoan",
         "link_label": "Quy trình Định danh Tài khoản"
     },
-    # 4. Sinh trắc học / NFC
     {
         "keywords": ["nfc", "sinh trắc học", "cccd gắn chip", "quét nfc", "xác thực khuôn mặt"],
         "context_name": "cập nhật sinh trắc học NFC",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/taikhoan/dinh-danh-tai-khoan/c%E1%BA%ADp-nh%E1%BA%ADt-sinh-tr%E1%BA%AFc-h%E1%BB%8Dc-nfc",
         "link_label": "Hướng dẫn Cập nhật NFC"
     },
-    # 5. Thông tư 40 (Thuế)
     {
         "keywords": ["tt40", "thông tư 40", "thuế", "đóng thuế", "nghĩa vụ thuế"],
         "context_name": "thông tư 40",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/taikhoan/an-toan-va-bao-mat/th%C3%B4ng-t%C6%B0-40",
         "link_label": "Quy định Thông tư 40"
     },
-    # 6. Cashback / Hoàn tiền
     {
         "keywords": ["cashback", "hoàn tiền", "không nhận được tiền", "tiền hoàn", "trả thưởng"],
         "context_name": "khiếu nại Cashback",
         "link": "https://sites.google.com/view/cs-faq-promotion-lending/quy-%C4%91%E1%BB%8Bnh-chung-khi-x%E1%BB%AD-l%C3%BD-ticket-khuy%E1%BA%BFn-m%C3%A3i/x%E1%BB%AD-l%C3%BD-khi%E1%BA%BFu-n%E1%BA%A1i-li%C3%AAn-quan-%C4%91%E1%BA%BFn-cashback",
         "link_label": "Quy trình Xử lý Cashback"
     },
-    # 7. Voucher / Khuyến mãi
     {
         "keywords": ["voucher", "mã giảm giá", "ưu đãi", "coupon", "không dùng được voucher", "lỗi voucher"],
         "context_name": "khiếu nại Voucher",
         "link": "https://sites.google.com/view/faqcallcenter/trang-ch%E1%BB%A7/KM/ti%E1%BA%BFp-nh%E1%BA%ADn-y%C3%AAu-c%E1%BA%A7u-khi%E1%BA%BFu-n%E1%BA%A1i-v%E1%BB%81-ctkm/voucher",
         "link_label": "Quy trình Xử lý Voucher"
     },
-    # 8. Blacklist / A30
     {
         "keywords": ["blacklist", "a30", "khóa tài khoản", "bị chặn", "gian lận", "vi phạm"],
         "context_name": "kiểm tra Blacklist/A30",
@@ -93,7 +85,6 @@ FALLBACK_RULES = [
     }
 ]
 
-# Rule mặc định
 DEFAULT_FALLBACK = {
     "context_name": "vấn đề bạn đang gặp phải",
     "link": "https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-l%C3%A0m-vi%E1%BB%87c",
@@ -104,8 +95,6 @@ DEFAULT_FALLBACK = {
 
 def get_fallback_suggestion(query_text):
     query_lower = query_text.lower()
-    
-    # Ưu tiên tìm rule khớp
     for rule in FALLBACK_RULES:
         for keyword in rule["keywords"]:
             if keyword in query_lower:
@@ -115,8 +104,6 @@ def get_fallback_suggestion(query_text):
                     "link": rule["link"],
                     "link_label": rule["link_label"]
                 }
-    
-    # Mặc định
     return {
         "found": False,
         "context_name": DEFAULT_FALLBACK["context_name"],
@@ -148,48 +135,77 @@ def create_searchable_text(sop):
     ]
     return " ".join(parts)
 
+# ============= SCORE CALCULATION (UPDATED LOGIC) =============
 def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, search_type='semantic'):
     final_score = 0.0
+    
+    # Chuẩn bị dữ liệu
     query_lower = query_text.lower().strip() if query_text else ""
+    # Tách từ khóa (ví dụ: "hạn mức lỗi" -> ["hạn", "mức", "lỗi"])
     query_tokens = [w for w in query_lower.split() if len(w) > 1]
     
     title_lower = str(sop.get('title', '')).lower()
     feature_lower = str(sop.get('feature', '')).lower()
     keywords = (str(sop.get('keywords_primary', '')) + " " + str(sop.get('keywords_secondary', ''))).lower()
     cause_lower = str(sop.get('cause', '')).lower()
+    
+    # Context đầy đủ để tìm kiếm
     full_context = f"{title_lower} {feature_lower} {keywords} {cause_lower}"
 
+    # --- 1. KEYWORD SEARCH MODE ---
     if search_type == 'keyword':
+        # Base Score hạ xuống 0.85 để dành 1.0 cho case match tuyệt đối
         base_score = 0.85 
+        
+        # Case A: Strict Match (Khớp y chang nguyên văn câu query) -> 100%
         if query_lower in full_context:
             final_score = 1.0
         else:
+            # Case B: Token Match (Khớp các từ rời rạc)
             match_bonus = 0.0
             if query_tokens:
                 matched_count = 0
                 for token in query_tokens:
-                    if token in full_context: matched_count += 1
+                    if token in full_context:
+                        matched_count += 1
+                
                 match_ratio = matched_count / len(query_tokens)
-                if match_ratio >= 0.8: match_bonus = 0.05
-                elif match_ratio == 1.0: match_bonus = 0.10
+                
+                # Nếu khớp tất cả các từ (dù không đúng thứ tự) -> 95%
+                if match_ratio == 1.0:
+                    match_bonus = 0.10 # 0.85 + 0.10 = 0.95
+                # Nếu khớp > 75% số từ -> 90%
+                elif match_ratio >= 0.75:
+                    match_bonus = 0.05 # 0.85 + 0.05 = 0.90
+            
             final_score = base_score + match_bonus
+
+    # --- 2. AI SEMANTIC SEARCH MODE ---
     else:
+        # Base AI Score
         if similarity is None: similarity = 0.5
         min_threshold = 0.3
         rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
         final_score = max(0.60, min(1.0, rescaled))
         
+        # Hybrid Boost: Nếu AI tìm ra + Có khớp từ khóa -> Bơm điểm
         if query_tokens:
             matched_count = 0
             for token in query_tokens:
                 if token in full_context: matched_count += 1
+            
             match_ratio = matched_count / len(query_tokens)
-            if match_ratio >= 0.7: final_score += 0.20
-            elif match_ratio >= 0.5: final_score += 0.10
+            
+            if match_ratio >= 0.7:
+                final_score += 0.20 # Bơm mạnh nếu khớp nhiều từ
+            elif match_ratio >= 0.5:
+                final_score += 0.10
 
+    # --- 3. Domain Bonus ---
     if domain_filter and sop.get('domain') == domain_filter:
         final_score += 0.05
 
+    # Clamp max 1.0
     return round(max(0.60, min(1.0, final_score)), 2)
 
 def format_response(sop):
@@ -249,6 +265,7 @@ def sync_sops():
 # ============= API: SEARCH =============
 @app.route('/api/search', methods=['POST'])
 def search():
+    print("========== DEBUG: TUNED SCORING RUNNING ==========", flush=True)
     try:
         data = request.json
         query = data.get('query', '')
@@ -285,8 +302,6 @@ def search():
         sorted_results = sorted(formatted_results, key=lambda x: x['relevance_score'], reverse=True)
         
         response_data = {'success': True, 'results': sorted_results}
-        
-        # Nếu không có kết quả -> Trả về Suggestion
         if not sorted_results:
             suggestion = get_fallback_suggestion(query)
             response_data['suggestion'] = suggestion
@@ -299,7 +314,7 @@ def search():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'healthy', 'message': 'SOPie Backend FINAL is running'})
+    return jsonify({'status': 'healthy', 'message': 'SOPie Backend TUNED is running'})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

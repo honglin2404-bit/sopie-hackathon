@@ -346,6 +346,7 @@ export default function Home() {
               {results.length > 0 ? (
                 <>
                   <div className="flex items-center justify-between mb-6">
+                    {/* Updated Header: Shows count of HIGH CONFIDENCE results */}
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {topDisplayResults.length} kết quả phù hợp</h2>
                     <span className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
                   </div>
@@ -353,13 +354,14 @@ export default function Home() {
                   {/* TOP RESULTS (>= 80%) */}
                   {topDisplayResults.length > 0 ? (
                     <div className="mb-12">
+                      {/* Updated Sub-header: Removed (>= 80%) text */}
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả hàng đầu</h3>
                       <div className="space-y-4">
                         {topDisplayResults.map((r) => <SopSummaryCard key={r.id} r={r} isTopMatch={true} onClick={() => setSelectedSop(r)} />)}
                       </div>
                     </div>
                   ) : (
-                    <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-yellow-800 dark:text-yellow-200">⚠️ Chưa tìm thấy kết quả khớp chính xác cao (trên 80%). Dưới đây là các gợi ý liên quan nhất:</div>
+                    <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-yellow-800 dark:text-yellow-200">⚠️ Chưa tìm thấy kết quả phù hợp. Dưới đây là các gợi ý liên quan nhất:</div>
                   )}
 
                   {/* SUGGESTIONS */}
