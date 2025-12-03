@@ -153,7 +153,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [hasSearched, setHasSearched] = useState(false) 
-  const [backendSuggestion, setBackendSuggestion] = useState<any>(null) // State mới: Gợi ý từ Backend
+  const [backendSuggestion, setBackendSuggestion] = useState<any>(null)
   
   const [activeHxlTabs, setActiveHxlTabs] = useState<{[key: string]: 'cs1' | 'cs2'}>({})
   const [selectedSop, setSelectedSop] = useState<any | null>(null)
@@ -198,10 +198,7 @@ export default function Home() {
       if (data.success) {
         setResults(data.results)
         setHasSearched(true)
-        // Lưu Suggestion từ Backend vào State
-        if (data.suggestion) {
-            setBackendSuggestion(data.suggestion)
-        }
+        if (data.suggestion) setBackendSuggestion(data.suggestion)
         
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
         data.results.forEach((r: any) => { defaultTabs[r.id] = 'cs1' })
@@ -216,11 +213,15 @@ export default function Home() {
     }
   }
 
+  // LOGIC PHÂN LOẠI KẾT QUẢ
   const highConfidenceResults = useMemo(() => results.filter(r => r.relevance_score >= 0.80), [results])
   const topDisplayResults = highConfidenceResults.slice(0, 5)
+  
+  // UPDATE: Giới hạn danh sách gợi ý xuống tối đa 10 SOP
   const suggestionResults = useMemo(() => {
     const shownIds = new Set(topDisplayResults.map(r => r.id))
-    return results.filter(r => !shownIds.has(r.id))
+    // Lọc bỏ các SOP đã hiện ở top, sau đó cắt lấy 10 kết quả đầu tiên
+    return results.filter(r => !shownIds.has(r.id)).slice(0, 10)
   }, [results, topDisplayResults])
 
   const suggestionDomains = useMemo(() => {
@@ -234,7 +235,7 @@ export default function Home() {
     return suggestionResults.filter(r => r.domain === activeSuggestionTab)
   }, [suggestionResults, activeSuggestionTab])
 
-  // --- UI NO RESULTS (HIỂN THỊ DYNAMIC DỰA TRÊN BACKEND SUGGESTION) ---
+  // UI NO RESULTS
   const NoResultsUI = () => (
     <div className="p-6 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-xl animate-fade-in">
         <div className="flex flex-col gap-4">
@@ -245,7 +246,6 @@ export default function Home() {
                         Không tìm thấy SOP cụ thể cho: <span className="text-blue-600 dark:text-blue-400">"{query}"</span>
                     </h3>
                     
-                    {/* HIỂN THỊ GỢI Ý TỪ BACKEND */}
                     <div className="mb-4 text-gray-700 dark:text-gray-300">
                         {backendSuggestion && backendSuggestion.found ? (
                             <>
@@ -280,6 +280,29 @@ export default function Home() {
     </div>
   )
 
+  // UI SUGGESTION BOX
+  const SuggestionBox = () => (
+    <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-yellow-800 dark:text-yellow-200 animate-fade-in">
+        <div className="flex flex-col gap-2">
+            <div>⚠️ Chưa tìm thấy kết quả khớp chính xác cao (trên 80%). Dưới đây là các gợi ý liên quan nhất:</div>
+            
+            {backendSuggestion && backendSuggestion.found && (
+                <div className="mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-800">
+                    Bạn có thể tham khảo quy trình liên quan:
+                    <a 
+                        href={backendSuggestion.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="ml-2 inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
+                    >
+                        🔗 {backendSuggestion.link_label}
+                    </a>
+                </div>
+            )}
+        </div>
+    </div>
+  )
+
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300">
@@ -293,9 +316,7 @@ export default function Home() {
               </div>
               
               <div className="flex items-center gap-3">
-                {/* NÚT TOGGLE DARK MODE */}
                 <button onClick={toggleDarkMode} className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-sm" title="Toggle Dark Mode">{isDarkMode ? '🌞' : '🌙'}</button>
-
                 <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
                   <button onClick={() => setSearchType('ai')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🤖 AI Search</button>
                   <button onClick={() => setSearchType('keyword')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🔑 Key Search</button>
@@ -346,7 +367,6 @@ export default function Home() {
               {results.length > 0 ? (
                 <>
                   <div className="flex items-center justify-between mb-6">
-                    {/* Updated Header: Shows count of HIGH CONFIDENCE results */}
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {topDisplayResults.length} kết quả phù hợp</h2>
                     <span className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
                   </div>
@@ -354,17 +374,17 @@ export default function Home() {
                   {/* TOP RESULTS (>= 80%) */}
                   {topDisplayResults.length > 0 ? (
                     <div className="mb-12">
-                      {/* Updated Sub-header: Removed (>= 80%) text */}
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả hàng đầu</h3>
                       <div className="space-y-4">
                         {topDisplayResults.map((r) => <SopSummaryCard key={r.id} r={r} isTopMatch={true} onClick={() => setSelectedSop(r)} />)}
                       </div>
                     </div>
                   ) : (
-                    <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-yellow-800 dark:text-yellow-200">⚠️ Chưa tìm thấy kết quả phù hợp. Dưới đây là các gợi ý liên quan nhất:</div>
+                    // Component SuggestionBox (UI màu vàng) khi không có kết quả tốt
+                    <SuggestionBox />
                   )}
 
-                  {/* SUGGESTIONS */}
+                  {/* SUGGESTIONS (Cắt còn tối đa 10 kết quả) */}
                   {suggestionResults.length > 0 && (
                     <div>
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600 inline-block pr-8">📑 Gợi ý thêm ({suggestionResults.length} SOPs)</h3>
@@ -381,7 +401,7 @@ export default function Home() {
                   )}
                 </>
               ) : (
-                // --- KHI KHÔNG TÌM THẤY KẾT QUẢ (0 RESULTS) ---
+                // Component NoResultsUI khi danh sách rỗng
                 <NoResultsUI />
               )}
             </div>

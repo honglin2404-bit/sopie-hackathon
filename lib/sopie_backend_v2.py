@@ -33,7 +33,7 @@ if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
-# ============= 🧠 CẤU HÌNH FALLBACK RULES (DETECT INTENT) =============
+# ============= 🧠 CẤU HÌNH FALLBACK RULES =============
 FALLBACK_RULES = [
     {
         "keywords": ["đổi số điện thoại", "thay đổi sđt", "số điện thoại mới", "đổi sđt", "cập nhật sđt", "sđt cũ", "mất sim"],
@@ -135,78 +135,63 @@ def create_searchable_text(sop):
     ]
     return " ".join(parts)
 
-# ============= SCORE CALCULATION (UPDATED LOGIC) =============
+# ============= SCORE CALCULATION =============
 def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, search_type='semantic'):
     final_score = 0.0
-    
-    # Chuẩn bị dữ liệu
     query_lower = query_text.lower().strip() if query_text else ""
-    # Tách từ khóa (ví dụ: "hạn mức lỗi" -> ["hạn", "mức", "lỗi"])
     query_tokens = [w for w in query_lower.split() if len(w) > 1]
     
     title_lower = str(sop.get('title', '')).lower()
     feature_lower = str(sop.get('feature', '')).lower()
     keywords = (str(sop.get('keywords_primary', '')) + " " + str(sop.get('keywords_secondary', ''))).lower()
     cause_lower = str(sop.get('cause', '')).lower()
-    
-    # Context đầy đủ để tìm kiếm
     full_context = f"{title_lower} {feature_lower} {keywords} {cause_lower}"
 
     # --- 1. KEYWORD SEARCH MODE ---
     if search_type == 'keyword':
-        # Base Score hạ xuống 0.85 để dành 1.0 cho case match tuyệt đối
         base_score = 0.85 
-        
-        # Case A: Strict Match (Khớp y chang nguyên văn câu query) -> 100%
         if query_lower in full_context:
             final_score = 1.0
         else:
-            # Case B: Token Match (Khớp các từ rời rạc)
             match_bonus = 0.0
             if query_tokens:
                 matched_count = 0
                 for token in query_tokens:
-                    if token in full_context:
-                        matched_count += 1
-                
+                    if token in full_context: matched_count += 1
                 match_ratio = matched_count / len(query_tokens)
-                
-                # Nếu khớp tất cả các từ (dù không đúng thứ tự) -> 95%
-                if match_ratio == 1.0:
-                    match_bonus = 0.10 # 0.85 + 0.10 = 0.95
-                # Nếu khớp > 75% số từ -> 90%
-                elif match_ratio >= 0.75:
-                    match_bonus = 0.05 # 0.85 + 0.05 = 0.90
-            
+                if match_ratio == 1.0: match_bonus = 0.10
+                elif match_ratio >= 0.75: match_bonus = 0.05
             final_score = base_score + match_bonus
 
     # --- 2. AI SEMANTIC SEARCH MODE ---
     else:
-        # Base AI Score
         if similarity is None: similarity = 0.5
-        min_threshold = 0.3
-        rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
-        final_score = max(0.60, min(1.0, rescaled))
         
-        # Hybrid Boost: Nếu AI tìm ra + Có khớp từ khóa -> Bơm điểm
-        if query_tokens:
+        # UPDATE: Nâng threshold lên 0.4 (Lọc kỹ hơn)
+        min_threshold = 0.4 
+        
+        # Rescale lại thang điểm: [0.4 -> 1.0] thành [0.60 -> 1.0]
+        if similarity < min_threshold:
+            rescaled = 0.0 # Bỏ qua nếu dưới sàn
+        else:
+            rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
+            
+        final_score = max(0.0, min(1.0, rescaled))
+        
+        # Hybrid Boost
+        if final_score > 0 and query_tokens:
             matched_count = 0
             for token in query_tokens:
                 if token in full_context: matched_count += 1
-            
             match_ratio = matched_count / len(query_tokens)
-            
-            if match_ratio >= 0.7:
-                final_score += 0.20 # Bơm mạnh nếu khớp nhiều từ
-            elif match_ratio >= 0.5:
-                final_score += 0.10
+            if match_ratio >= 0.7: final_score += 0.20
+            elif match_ratio >= 0.5: final_score += 0.10
 
     # --- 3. Domain Bonus ---
-    if domain_filter and sop.get('domain') == domain_filter:
+    if final_score > 0 and domain_filter and sop.get('domain') == domain_filter:
         final_score += 0.05
 
-    # Clamp max 1.0
-    return round(max(0.60, min(1.0, final_score)), 2)
+    return round(max(0.0, min(1.0, final_score)), 2)
 
 def format_response(sop):
     return {
@@ -265,7 +250,7 @@ def sync_sops():
 # ============= API: SEARCH =============
 @app.route('/api/search', methods=['POST'])
 def search():
-    print("========== DEBUG: TUNED SCORING RUNNING ==========", flush=True)
+    print("========== DEBUG: THRESHOLD 0.4 RUNNING ==========", flush=True)
     try:
         data = request.json
         query = data.get('query', '')
@@ -281,7 +266,8 @@ def search():
         if search_type == 'semantic':
             embedding = generate_embedding(query)
             if embedding:
-                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.3, 'match_count': limit}
+                # UPDATE: Nâng threshold tìm kiếm vector lên 0.4
+                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.4, 'match_count': limit}
                 if domain: rpc_params['domain_filter'] = domain
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
@@ -295,14 +281,17 @@ def search():
         for r in results:
             similarity = r.get('similarity', similarity_default)
             final_score = calculate_final_score(similarity, r, query, domain, search_type)
-            formatted = format_response(r)
-            formatted['relevance_score'] = final_score
-            formatted_results.append(formatted)
+            # Chỉ lấy các kết quả có điểm > 0 sau khi tính toán lại
+            if final_score > 0:
+                formatted = format_response(r)
+                formatted['relevance_score'] = final_score
+                formatted_results.append(formatted)
         
         sorted_results = sorted(formatted_results, key=lambda x: x['relevance_score'], reverse=True)
-        
         response_data = {'success': True, 'results': sorted_results}
-        if not sorted_results:
+        
+        top_score = sorted_results[0]['relevance_score'] if sorted_results else 0
+        if not sorted_results or top_score < 0.8:
             suggestion = get_fallback_suggestion(query)
             response_data['suggestion'] = suggestion
 
@@ -314,7 +303,7 @@ def search():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'healthy', 'message': 'SOPie Backend TUNED is running'})
+    return jsonify({'status': 'healthy', 'message': 'SOPie Backend THRESHOLD 0.4 is running'})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
