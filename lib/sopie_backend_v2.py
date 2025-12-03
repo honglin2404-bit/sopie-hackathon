@@ -12,7 +12,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # --- CORS Configuration ---
-# Cấu hình cho phép Frontend gọi API
+# Cho phép Frontend gọi API
 frontend_url = "https://sopie-search-tool.vercel.app"
 CORS(app, resources={
     r"/api/*": {"origins": [frontend_url, "http://localhost:3001"]},
@@ -28,23 +28,18 @@ SUPABASE_URL = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
 SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
 OPENAI_KEY = os.getenv('OPENAI_API_KEY')
 
-# Kiểm tra biến môi trường quan trọng
 if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
     logger.critical("Missing environment variables! Check .env or Render configs.")
 
-# Khởi tạo Supabase và OpenAI Client
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
 # ============= HELPER: Embedding =============
 def generate_embedding(text):
-    """
-    Tạo vector embedding từ text sử dụng OpenAI
-    """
+    """Tạo vector embedding từ text sử dụng OpenAI"""
     try:
         if not text or not text.strip():
             return None
-            
         response = openai_client.embeddings.create(
             model="text-embedding-3-small",
             input=text,
@@ -56,9 +51,7 @@ def generate_embedding(text):
         return None
 
 def create_searchable_text(sop):
-    """
-    Gộp các trường thông tin quan trọng thành 1 chuỗi để AI đọc
-    """
+    """Gộp các trường quan trọng thành 1 chuỗi để AI đọc"""
     parts = [
         str(sop.get('title', '')),
         str(sop.get('cause', '')),
@@ -70,13 +63,10 @@ def create_searchable_text(sop):
 
 # ============= HELPER: Calculate Final Score =============
 def calculate_final_score(similarity, sop, query_text=None, domain_filter=None):
-    """
-    Tính điểm Relevance Score (Semantic Score + Keyword Bonus + Domain Bonus)
-    """
-    # 1. Rescale similarity từ [0.3, 1.0] -> [0.60, 1.0]
+    """Tính điểm Relevance Score (Semantic Score + Keyword Bonus + Domain Bonus)"""
+    # 1. Rescale similarity
     min_threshold = 0.3
     max_similarity = 1.0
-    
     rescaled = ((similarity - min_threshold) / (max_similarity - min_threshold)) * 0.40 + 0.60
     rescaled = max(0.60, min(1.0, rescaled))
     
@@ -86,7 +76,6 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None):
         query_lower = query_text.lower().strip()
         title_lower = str(sop.get('title', '')).lower()
         cause_lower = str(sop.get('cause', '')).lower()
-        
         primary_kw = str(sop.get('keywords_primary', '')).lower()
         secondary_kw = str(sop.get('keywords_secondary', '')).lower()
         
@@ -94,15 +83,13 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None):
         if primary_kw and len(primary_kw) > 2:
             primary_list = [k.strip() for k in primary_kw.split(',') if k.strip()]
             for kw in primary_list:
-                if kw in query_lower:
-                    keyword_bonus += 0.05
+                if kw in query_lower: keyword_bonus += 0.05
         
         # Check secondary keywords
         if secondary_kw and len(secondary_kw) > 2:
             secondary_list = [k.strip() for k in secondary_kw.split(',') if k.strip()]
             for kw in secondary_list:
-                if kw in query_lower:
-                    keyword_bonus += 0.03
+                if kw in query_lower: keyword_bonus += 0.03
         
         # Check important terms hardcoded
         important_terms = [
@@ -110,7 +97,6 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None):
             'appid', 'nạp điện thoại', 'chuyển khoản', 'hoàn tiền',
             'liên kết', 'ngân hàng', 'thẻ', 'ví'
         ]
-        
         for term in important_terms:
             if term in query_lower and (term in title_lower or term in cause_lower):
                 keyword_bonus += 0.02
@@ -126,6 +112,7 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None):
     return round(max(0.60, min(1.0, final_score)), 2)
 
 def format_response(sop):
+    """Format kết quả trả về cho Frontend"""
     return {
         'id': sop.get('id'),
         'title': sop.get('title'),
@@ -149,12 +136,10 @@ def format_response(sop):
         'last_updated': sop.get('last_updated')
     }
 
-# ============= API: SYNC =============
+# ============= API: SYNC (FINAL VERSION) =============
 @app.route('/api/sync-sops', methods=['POST'])
 def sync_sops():
-    """
-    Nhận data từ Google Sheet -> Tạo Embedding -> Lưu tất cả vào bảng 'sops'
-    """
+    """Nhận data -> Tạo Embedding -> Lưu vào bảng 'sops'"""
     try:
         data = request.json
         sops_list = data.get('sops', [])
@@ -166,14 +151,11 @@ def sync_sops():
         
         count = 0
         for item in sops_list:
-            # 1. Tạo searchable text và embedding ngay lập tức
+            # 1. Tạo embedding
             search_text = create_searchable_text(item)
             embedding = generate_embedding(search_text)
             
-            if not embedding:
-                logger.warning(f"Warning: Could not generate embedding for ID {item.get('id')}")
-            
-            # 2. Tạo record đầy đủ (bao gồm cả embedding)
+            # 2. Tạo record (Lưu embedding trực tiếp vào sops)
             sop_record = {
                 'id': str(item.get('id')),
                 'title': item.get('title'),
@@ -193,11 +175,10 @@ def sync_sops():
                 'last_updated': item.get('last_updated'),
                 'keywords_primary': item.get('keywords_primary', ''),
                 'keywords_secondary': item.get('keywords_secondary', ''),
-                # QUAN TRỌNG: Lưu embedding trực tiếp vào bảng sops
                 'embedding': embedding 
             }
             
-            # 3. Upsert vào bảng 'sops'
+            # 3. Upsert
             supabase.table('sops').upsert(sop_record).execute()
             count += 1
             
@@ -208,9 +189,12 @@ def sync_sops():
         logger.error(f"Sync error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ============= API: SEARCH (ĐÃ CẬP NHẬT KEY SEARCH) =============
+# ============= API: SEARCH (FINAL VERSION - SQL POWERED) =============
 @app.route('/api/search', methods=['POST'])
 def search():
+    # Dòng này để chứng minh code mới đã chạy trên Render Logs
+    print("========== DEBUG: FINAL VERSION IS RUNNING ==========", flush=True)
+    
     try:
         data = request.json
         query = data.get('query', '')
@@ -236,13 +220,13 @@ def search():
                 if domain: 
                     rpc_params['domain_filter'] = domain
                 
-                # Gọi hàm RPC 'match_sops' trong Supabase
+                # Gọi hàm SQL match_sops
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
                 
-        # 2. KEYWORD SEARCH (Đã nâng cấp dùng SQL Function)
+        # 2. KEYWORD SEARCH (SQL ILIKE)
         else: 
-            # Gọi hàm RPC 'kw_sops' (SQL) thay vì query bằng Python
+            # Gọi hàm SQL kw_sops (Đây là tính năng mới sửa lỗi tiếng Việt)
             rpc_params = {
                 'query_text': query,
                 'match_count': limit
@@ -250,11 +234,10 @@ def search():
             if domain: 
                 rpc_params['domain_filter'] = domain
             
-            # Thực thi hàm tìm kiếm từ khóa dưới database
             res = supabase.rpc('kw_sops', rpc_params).execute()
             results = res.data
 
-        # 3. Tính toán điểm số cuối cùng (Re-ranking)
+        # 3. Re-ranking & Formatting
         formatted_results = []
         for r in results:
             similarity = r.get('similarity', similarity_default)
@@ -264,7 +247,6 @@ def search():
             formatted['relevance_score'] = final_score
             formatted_results.append(formatted)
 
-        # Trả về kết quả đã sort theo điểm số giảm dần
         return jsonify({
             'success': True,
             'results': sorted(formatted_results, key=lambda x: x['relevance_score'], reverse=True)
@@ -276,7 +258,7 @@ def search():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'healthy', 'message': 'SOPie Backend V2 is running'})
+    return jsonify({'status': 'healthy', 'message': 'SOPie Backend FINAL is running'})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
