@@ -318,9 +318,7 @@ export default function Home() {
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()} 
                 className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors" 
               />
-              <button onClick={handleSearch} disabled={loading} className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}>
-                {loading ? '🔄 ...' : '🔍 Tìm kiếm'}
-              </button>
+              <button onClick={handleSearch} disabled={loading} className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}>{loading ? '🔄 ...' : '🔍 Tìm kiếm'}</button>
             </div>
             
             {searchType === 'keyword' && <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 transition-colors">💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.</p>}
@@ -335,14 +333,15 @@ export default function Home() {
           {!loading && results.length > 0 && (
             <div className="mt-8 animate-slide-up">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2>
+                {/* Thay đổi: Hiển thị số lượng kết quả phù hợp (>= 80%) */}
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {topDisplayResults.length} kết quả phù hợp</h2>
                 <span className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
               </div>
 
               {/* TOP RESULTS (>= 80%) */}
               {topDisplayResults.length > 0 ? (
                 <div className="mb-12">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả tốt nhất (&ge; 80%)</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả hàng đầu</h3>
                   <div className="space-y-4">
                     {topDisplayResults.map((r) => <SopSummaryCard key={r.id} r={r} isTopMatch={true} onClick={() => setSelectedSop(r)} />)}
                   </div>
