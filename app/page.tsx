@@ -232,7 +232,8 @@ export default function Home() {
   const topDisplayResults = highConfidenceResults.slice(0, 5)
   const suggestionResults = useMemo(() => {
     const shownIds = new Set(topDisplayResults.map(r => r.id))
-    return results.filter(r => !shownIds.has(r.id))
+    // ĐÃ THÊM LẠI: Giới hạn gợi ý tối đa 10 kết quả
+    return results.filter(r => !shownIds.has(r.id)).slice(0, 10)
   }, [results, topDisplayResults])
 
   const suggestionDomains = useMemo(() => {
@@ -299,14 +300,18 @@ export default function Home() {
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">FAQ Search Tool</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">powered by SOPie</p>
               </div>
+              
               <div className="flex items-center gap-3">
+                {/* NÚT TOGGLE DARK MODE */}
                 <button onClick={toggleDarkMode} className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-sm" title="Toggle Dark Mode">{isDarkMode ? '🌞' : '🌙'}</button>
+
                 <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
                   <button onClick={() => setSearchType('ai')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🤖 AI Search</button>
                   <button onClick={() => setSearchType('keyword')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🔑 Key Search</button>
                 </div>
               </div>
             </div>
+
             <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <div className="flex flex-wrap justify-between gap-3"> 
                   {LINKS.map((link, index) => (
