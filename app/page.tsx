@@ -4,14 +4,18 @@ import React, { useState, useMemo, useEffect } from 'react'
 
 // --- HELPER FUNCTIONS & CONSTANTS ---
 
+// Hàm format ngày tháng từ YYYY-MM-DD sang DD/MM/YYYY
 const formatDate = (dateString: string) => {
   try {
     const parts = dateString.split('-');
     if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  } catch (e) { }
+  } catch (e) {
+    // Silent fail
+  }
   return dateString;
 };
 
+// Dữ liệu các nút Quick Buttons
 const LINKS = [
   { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-l%C3%A0m-vi%E1%BB%87c', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60' },
   { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/1bEZ0VmD8BF5q85oF4RAMmxVUVil6IBV5/edit?gid=1267671571#gid=1267671571', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60' },
@@ -22,16 +26,19 @@ const LINKS = [
 
 // --- SUB-COMPONENTS ---
 
+// 1. Thẻ tóm tắt kết quả tìm kiếm
 const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch?: boolean, onClick: () => void }) => (
   <div 
-    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600 dark:border-blue-500'}`}
+    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 
+    ${isTopMatch ? 'border-yellow-500' : 'border-blue-600 dark:border-blue-500'}`}
     onClick={onClick}
   >
     <div className="flex justify-between items-start mb-3">
       <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>
         {isTopMatch && '⭐ '} {r.title}
       </h3>
-      <span className={`px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap ${isTopMatch ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'}`}>
+      <span className={`px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap 
+        ${isTopMatch ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'}`}>
         {r.domain}
       </span>
     </div>
@@ -47,6 +54,7 @@ const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch
   </div>
 )
 
+// 2. Modal chi tiết
 const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop: any, onClose: () => void, activeHxlTabs: any, setActiveHxlTabs: any }) => {
   if (!sop) return null;
   const activeHxlLevel = activeHxlTabs[sop.id] || 'cs1';
@@ -58,16 +66,19 @@ const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
+        
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex-1 pr-4">{sop.title}</h3>
           <span className="px-4 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm font-semibold whitespace-nowrap">{sop.domain}</span>
         </div>
+
         {sop.cause && (
           <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500">
             <strong className="text-red-700 dark:text-red-400 block mb-2">⚠️ Nguyên nhân:</strong>
             <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{sop.cause}</p>
           </div>
         )}
+
         {sop.check_tools && sop.check_tools.guideline && (
           <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
             <strong className="text-blue-700 dark:text-blue-400 block mb-2">🔧 Hướng dẫn kiểm tra tool:</strong>
@@ -85,6 +96,7 @@ const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop
             )}
           </div>
         )}
+        
         {(sop.solution?.level1 || sop.solution?.level2) && (
           <div className="mb-4">
             <strong className="text-green-700 dark:text-green-400 block mb-3 text-base">✅ Hướng xử lý:</strong>
@@ -99,12 +111,14 @@ const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop
             </div>
           </div>
         )}
+
         {sop.notes && (
           <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500">
             <strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong>
             <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{sop.notes}</p>
           </div>
         )}
+
         {(sop.templates && (sop.templates.email || sop.templates.chat)) || activeHxlLevel === 'cs2' ? (
           <div className="mb-4">
             {activeHxlLevel === 'cs1' && (sop.templates.email || sop.templates.chat) && (
@@ -134,6 +148,7 @@ const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop
             )}
           </div>
         ) : null}
+
         <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
           {sop.link ? <a href={sop.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow transition-all">📄 Xem SOP gốc</a> : <div></div>}
           <span className="text-xs text-gray-400 font-medium whitespace-nowrap">Relevance: {Math.round(sop.relevance_score * 100)}%</span>
@@ -213,15 +228,11 @@ export default function Home() {
     }
   }
 
-  // LOGIC PHÂN LOẠI KẾT QUẢ
   const highConfidenceResults = useMemo(() => results.filter(r => r.relevance_score >= 0.80), [results])
   const topDisplayResults = highConfidenceResults.slice(0, 5)
-  
-  // UPDATE: Giới hạn danh sách gợi ý xuống tối đa 10 SOP
   const suggestionResults = useMemo(() => {
     const shownIds = new Set(topDisplayResults.map(r => r.id))
-    // Lọc bỏ các SOP đã hiện ở top, sau đó cắt lấy 10 kết quả đầu tiên
-    return results.filter(r => !shownIds.has(r.id)).slice(0, 10)
+    return results.filter(r => !shownIds.has(r.id))
   }, [results, topDisplayResults])
 
   const suggestionDomains = useMemo(() => {
@@ -235,73 +246,47 @@ export default function Home() {
     return suggestionResults.filter(r => r.domain === activeSuggestionTab)
   }, [suggestionResults, activeSuggestionTab])
 
-  // UI NO RESULTS
-  const NoResultsUI = () => (
-    <div className="p-6 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-xl animate-fade-in">
+  // --- UI SUGGESTION BOX (RED THEME & GREEN BUTTON) ---
+  const SuggestionBox = () => (
+    <div className="mb-8 p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-800 dark:text-red-200 animate-fade-in shadow-sm">
         <div className="flex flex-col gap-4">
             <div className="flex items-start gap-3">
-                <div className="text-2xl">🤔</div>
+                <div className="text-2xl">⚠️</div>
                 <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-2">
-                        Không tìm thấy SOP cụ thể cho: <span className="text-blue-600 dark:text-blue-400">"{query}"</span>
+                    {/* UPDATED TITLE */}
+                    <h3 className="font-bold text-lg mb-2">
+                        Chưa tìm thấy kết quả phù hợp. Bạn cần:
                     </h3>
                     
-                    <div className="mb-4 text-gray-700 dark:text-gray-300">
-                        {backendSuggestion && backendSuggestion.found ? (
-                            <>
-                                Không tìm thấy nội dung liên quan về vấn đề <strong>{backendSuggestion.context_name}</strong>. 
-                                Bạn có thể tham khảo quy trình tổng quan tại:
-                            </>
-                        ) : (
-                            <>Bạn có thể tham khảo quy trình làm việc chung tại:</>
-                        )}
-                        
-                        <a 
-                            href={backendSuggestion?.link || "https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-l%C3%A0m-vi%E1%BB%87c"} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="ml-2 inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
-                        >
-                            🔗 {backendSuggestion?.link_label || "Quy trình tổng quan SOP"}
-                        </a>
-                    </div>
-
-                    <div className="h-px bg-yellow-200 dark:bg-yellow-800 my-3"></div>
-
-                    <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Hoặc bạn hãy thử:</p>
-                    <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-1">
-                        <li>Mô tả chi tiết hơn vấn đề (ví dụ: thêm mã lỗi, tên màn hình...)</li>
-                        <li>Kiểm tra lại <strong>Domain Filter</strong> xem có đang lọc nhầm không</li>
-                        <li>Liên hệ <strong>QC Team</strong> để được hỗ trợ thêm nếu vấn đề mới phát sinh</li>
+                    {/* LIST OF ACTIONS */}
+                    <ul className="list-disc list-inside text-sm space-y-1 ml-1 mb-4">
+                        <li>Kiểm tra lại bộ lọc domain kiến thức</li>
+                        <li>Thay đổi cách mô tả vấn đề và thử lại</li>
+                        <li>Liên hệ QC để được hỗ trợ thêm</li>
                     </ul>
+
+                    {/* FALLBACK LINK WITH GREEN BUTTON */}
+                    {backendSuggestion && backendSuggestion.found && (
+                        <div className="pt-3 border-t border-red-200 dark:border-red-800 flex flex-wrap items-center gap-2">
+                            <span className="font-medium">Hoặc bạn có thể tham khảo SOP tổng:</span>
+                            <a 
+                                href={backendSuggestion.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="inline-flex items-center gap-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-lg transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                            >
+                                🔗 {backendSuggestion.link_label}
+                            </a>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     </div>
   )
 
-  // UI SUGGESTION BOX
-  const SuggestionBox = () => (
-    <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-yellow-800 dark:text-yellow-200 animate-fade-in">
-        <div className="flex flex-col gap-2">
-            <div>⚠️ Chưa tìm thấy kết quả khớp chính xác cao (trên 80%). Dưới đây là các gợi ý liên quan nhất:</div>
-            
-            {backendSuggestion && backendSuggestion.found && (
-                <div className="mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-800">
-                    Bạn có thể tham khảo quy trình liên quan:
-                    <a 
-                        href={backendSuggestion.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="ml-2 inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
-                    >
-                        🔗 {backendSuggestion.link_label}
-                    </a>
-                </div>
-            )}
-        </div>
-    </div>
-  )
+  // UI NO RESULTS (USING THE SAME SUGGESTION BOX STYLE FOR CONSISTENCY)
+  const NoResultsUI = () => <SuggestionBox />
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
@@ -314,7 +299,6 @@ export default function Home() {
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">FAQ Search Tool</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">powered by SOPie</p>
               </div>
-              
               <div className="flex items-center gap-3">
                 <button onClick={toggleDarkMode} className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-sm" title="Toggle Dark Mode">{isDarkMode ? '🌞' : '🌙'}</button>
                 <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
@@ -323,7 +307,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
             <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               <div className="flex flex-wrap justify-between gap-3"> 
                   {LINKS.map((link, index) => (
@@ -380,11 +363,11 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    // Component SuggestionBox (UI màu vàng) khi không có kết quả tốt
+                    // Component SuggestionBox (Giao diện Đỏ Mới)
                     <SuggestionBox />
                   )}
 
-                  {/* SUGGESTIONS (Cắt còn tối đa 10 kết quả) */}
+                  {/* SUGGESTIONS */}
                   {suggestionResults.length > 0 && (
                     <div>
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600 inline-block pr-8">📑 Gợi ý thêm ({suggestionResults.length} SOPs)</h3>
@@ -401,7 +384,7 @@ export default function Home() {
                   )}
                 </>
               ) : (
-                // Component NoResultsUI khi danh sách rỗng
+                // Component NoResultsUI (Dùng chung SuggestionBox)
                 <NoResultsUI />
               )}
             </div>
