@@ -4,23 +4,27 @@ import React, { useState, useMemo, useEffect } from 'react'
 
 // --- HELPER FUNCTIONS & CONSTANTS ---
 
+// Hàm format ngày tháng từ YYYY-MM-DD sang DD/MM/YYYY
 const formatDate = (dateString: string) => {
   try {
     const parts = dateString.split('-');
     if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  } catch (e) {}
+  } catch (e) {
+    // Silent fail
+  }
   return dateString;
 };
 
+// Dữ liệu các nút Quick Buttons
 const LINKS = [
   { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60' },
-  { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/188wM0i_BL7TvfyNytbV8nVtqWg08DvsC_fOCtchPb44/edit?usp=sharing', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60' },
+  { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60' },
   { label: 'Báo lỗi SOP', icon: '🐞', url: 'https://forms.gle/Hbjuzu7RwdhscNfW9', styleClass: 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60' },
   { label: 'Đề xuất SOP', icon: '✨', url: 'https://forms.gle/rXZvHgfuLHMYQ7Wn6', styleClass: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:hover:bg-purple-900/60' },
   { label: 'CSWriteLab', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:hover:bg-orange-900/60' }
 ]
 
-// --- NEW COMPONENT: NOTIFICATION POPUP ---
+// --- TOAST NOTIFICATION COMPONENT (NEW) ---
 
 const NotificationPopup = () => {
   const [noti, setNoti] = useState<{show: boolean, msg: string, id: number | null}>({
@@ -29,7 +33,7 @@ const NotificationPopup = () => {
     id: null
   });
 
-  const SHEET_URL = "https://docs.google.com/spreadsheets/d/188wM0i_BL7TvfyNytbV8nVtqWg08DvsC_fOCtchPb44/edit#gid=0";
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0";
 
   useEffect(() => {
     const checkNewNoti = async () => {
@@ -54,7 +58,7 @@ const NotificationPopup = () => {
     };
 
     checkNewNoti();
-    const interval = setInterval(checkNewNoti, 30000); // Check mỗi 30s
+    const interval = setInterval(checkNewNoti, 30000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -68,32 +72,29 @@ const NotificationPopup = () => {
   if (!noti.show) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[999] bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm border-2 border-blue-400 animate-in fade-in zoom-in duration-300">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🔔</div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Thông báo mới từ QC</h3>
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl text-left mb-6 border border-blue-100 dark:border-blue-800">
-            <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed">
-              {noti.msg}
+    <div className="fixed bottom-6 right-6 z-[100] animate-in slide-in-from-right-full duration-500">
+      <div className="bg-white dark:bg-gray-800 w-85 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-600"></span>
+              </span>
+              <h3 className="font-bold text-blue-700 dark:text-blue-400 text-xs uppercase tracking-widest">Tin mới từ QC</h3>
+            </div>
+            <button onClick={() => handleClose(false)} className="text-gray-400 hover:text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-4 border border-blue-100 dark:border-blue-800/50">
+            <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed italic">
+              "{noti.msg}"
             </p>
           </div>
-          
-          <div className="flex gap-3">
-            <button 
-              onClick={() => handleClose(true)}
-              className="flex-1 py-2.5 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-            >
-              Bỏ qua
-            </button>
-            <a 
-              href={SHEET_URL}
-              target="_blank"
-              onClick={() => handleClose(true)}
-              className="flex-1 py-2.5 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95"
-            >
-              Xem ngay
-            </a>
+          <div className="flex gap-2">
+            <button onClick={() => handleClose(true)} className="flex-1 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors border border-gray-200 dark:border-gray-600">Bỏ qua</button>
+            <a href={SHEET_URL} target="_blank" onClick={() => handleClose(true)} className="flex-1 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-center shadow-md transition-all active:scale-95 flex items-center justify-center gap-1">Xem ngay 🚀</a>
           </div>
         </div>
       </div>
@@ -103,6 +104,7 @@ const NotificationPopup = () => {
 
 // --- SUB-COMPONENTS ---
 
+// 1. Thẻ tóm tắt kết quả tìm kiếm
 const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch?: boolean, onClick: () => void }) => (
   <div 
     className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 
@@ -130,6 +132,7 @@ const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch
   </div>
 )
 
+// 2. Modal chi tiết
 const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop: any, onClose: () => void, activeHxlTabs: any, setActiveHxlTabs: any }) => {
   if (!sop) return null;
   const activeHxlLevel = activeHxlTabs[sop.id] || 'cs1';
@@ -356,9 +359,10 @@ export default function Home() {
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
-      <NotificationPopup /> {/* Thêm Popup thông báo mới tại đây */}
+      <NotificationPopup />
       
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300">
+        {/* HEADER */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-6 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
@@ -370,8 +374,8 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <button onClick={toggleDarkMode} className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-sm" title="Toggle Dark Mode">{isDarkMode ? '🌞' : '🌙'}</button>
                 <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
-                  <button onClick={() => setSearchType('ai')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🤖 AI Search</button>
-                  <button onClick={() => setSearchType('keyword')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🔑 Key Search</button>
+                  <button onClick={() => setSearchType('ai')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 shadow' : 'text-gray-500'}`}>🤖 AI Search</button>
+                  <button onClick={() => setSearchType('keyword')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 shadow' : 'text-gray-500'}`}>🔑 Key Search</button>
                 </div>
               </div>
             </div>
@@ -388,6 +392,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* SEARCH BAR & RESULTS */}
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300">
             <div className="flex flex-col md:flex-row gap-3 mb-4">
@@ -422,6 +427,7 @@ export default function Home() {
                     <span className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
                   </div>
 
+                  {/* TOP RESULTS (>= 80%) */}
                   {topDisplayResults.length > 0 ? (
                     <div className="mb-12">
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả hàng đầu</h3>
@@ -433,6 +439,7 @@ export default function Home() {
                     <SuggestionBox />
                   )}
 
+                  {/* SUGGESTIONS */}
                   {suggestionResults.length > 0 && (
                     <div>
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600 inline-block pr-8">📑 Gợi ý thêm ({suggestionResults.length} SOPs)</h3>
