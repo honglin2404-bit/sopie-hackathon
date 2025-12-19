@@ -4,18 +4,14 @@ import React, { useState, useMemo, useEffect } from 'react'
 
 // --- HELPER FUNCTIONS & CONSTANTS ---
 
-// Hàm format ngày tháng từ YYYY-MM-DD sang DD/MM/YYYY
 const formatDate = (dateString: string) => {
   try {
     const parts = dateString.split('-');
     if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  } catch (e) {
-    // Silent fail
-  }
+  } catch (e) {}
   return dateString;
 };
 
-// Dữ liệu các nút Quick Buttons
 const LINKS = [
   { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60' },
   { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/188wM0i_BL7TvfyNytbV8nVtqWg08DvsC_fOCtchPb44/edit?usp=sharing', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60' },
@@ -24,9 +20,89 @@ const LINKS = [
   { label: 'CSWriteLab', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:hover:bg-orange-900/60' }
 ]
 
+// --- NEW COMPONENT: NOTIFICATION POPUP ---
+
+const NotificationPopup = () => {
+  const [noti, setNoti] = useState<{show: boolean, msg: string, id: number | null}>({
+    show: false,
+    msg: '',
+    id: null
+  });
+
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/188wM0i_BL7TvfyNytbV8nVtqWg08DvsC_fOCtchPb44/edit#gid=0";
+
+  useEffect(() => {
+    const checkNewNoti = async () => {
+      try {
+        const backendUrl = 'https://sopie-search-tool.onrender.com';
+        const res = await fetch(`${backendUrl}/api/get-latest-noti`);
+        const data = await res.json();
+
+        if (data.success && data.noti) {
+          const lastSeenId = localStorage.getItem('sopie_last_noti_id');
+          if (data.noti.id.toString() !== lastSeenId) {
+            setNoti({
+              show: true,
+              msg: data.noti.message,
+              id: data.noti.id
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Lỗi kiểm tra thông báo:", error);
+      }
+    };
+
+    checkNewNoti();
+    const interval = setInterval(checkNewNoti, 30000); // Check mỗi 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleClose = (markAsRead: boolean) => {
+    if (markAsRead && noti.id) {
+      localStorage.setItem('sopie_last_noti_id', noti.id.toString());
+    }
+    setNoti({ ...noti, show: false });
+  };
+
+  if (!noti.show) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-[999] bg-black/40 backdrop-blur-sm p-4">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm border-2 border-blue-400 animate-in fade-in zoom-in duration-300">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🔔</div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Thông báo mới từ QC</h3>
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl text-left mb-6 border border-blue-100 dark:border-blue-800">
+            <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed">
+              {noti.msg}
+            </p>
+          </div>
+          
+          <div className="flex gap-3">
+            <button 
+              onClick={() => handleClose(true)}
+              className="flex-1 py-2.5 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+            >
+              Bỏ qua
+            </button>
+            <a 
+              href={SHEET_URL}
+              target="_blank"
+              onClick={() => handleClose(true)}
+              className="flex-1 py-2.5 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-center shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95"
+            >
+              Xem ngay
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- SUB-COMPONENTS ---
 
-// 1. Thẻ tóm tắt kết quả tìm kiếm
 const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch?: boolean, onClick: () => void }) => (
   <div 
     className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 
@@ -54,7 +130,6 @@ const SopSummaryCard = ({ r, isTopMatch = false, onClick }: { r: any, isTopMatch
   </div>
 )
 
-// 2. Modal chi tiết
 const SopDetailModal = ({ sop, onClose, activeHxlTabs, setActiveHxlTabs }: { sop: any, onClose: () => void, activeHxlTabs: any, setActiveHxlTabs: any }) => {
   if (!sop) return null;
   const activeHxlLevel = activeHxlTabs[sop.id] || 'cs1';
@@ -232,7 +307,6 @@ export default function Home() {
   const topDisplayResults = highConfidenceResults.slice(0, 5)
   const suggestionResults = useMemo(() => {
     const shownIds = new Set(topDisplayResults.map(r => r.id))
-    // ĐÃ THÊM LẠI: Giới hạn gợi ý tối đa 10 kết quả
     return results.filter(r => !shownIds.has(r.id)).slice(0, 10)
   }, [results, topDisplayResults])
 
@@ -247,26 +321,18 @@ export default function Home() {
     return suggestionResults.filter(r => r.domain === activeSuggestionTab)
   }, [suggestionResults, activeSuggestionTab])
 
-  // --- UI SUGGESTION BOX (RED THEME & GREEN BUTTON) ---
   const SuggestionBox = () => (
     <div className="mb-8 p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-800 dark:text-red-200 animate-fade-in shadow-sm">
         <div className="flex flex-col gap-4">
             <div className="flex items-start gap-3">
                 <div className="text-2xl">⚠️</div>
                 <div className="flex-1">
-                    {/* UPDATED TITLE */}
-                    <h3 className="font-bold text-lg mb-2">
-                        Chưa tìm thấy kết quả phù hợp. Bạn cần:
-                    </h3>
-                    
-                    {/* LIST OF ACTIONS */}
+                    <h3 className="font-bold text-lg mb-2">Chưa tìm thấy kết quả phù hợp. Bạn cần:</h3>
                     <ul className="list-disc list-inside text-sm space-y-1 ml-1 mb-4">
                         <li>Kiểm tra lại bộ lọc domain kiến thức</li>
                         <li>Thay đổi cách mô tả vấn đề và thử lại</li>
                         <li>Liên hệ QC để được hỗ trợ thêm</li>
                     </ul>
-
-                    {/* FALLBACK LINK WITH GREEN BUTTON */}
                     {backendSuggestion && backendSuggestion.found && (
                         <div className="pt-3 border-t border-red-200 dark:border-red-800 flex flex-wrap items-center gap-2">
                             <span className="font-medium">Hoặc bạn có thể tham khảo SOP tổng:</span>
@@ -286,13 +352,13 @@ export default function Home() {
     </div>
   )
 
-  // UI NO RESULTS (USING THE SAME SUGGESTION BOX STYLE FOR CONSISTENCY)
   const NoResultsUI = () => <SuggestionBox />
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
+      <NotificationPopup /> {/* Thêm Popup thông báo mới tại đây */}
+      
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300">
-        {/* HEADER */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-6 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
@@ -302,9 +368,7 @@ export default function Home() {
               </div>
               
               <div className="flex items-center gap-3">
-                {/* NÚT TOGGLE DARK MODE */}
                 <button onClick={toggleDarkMode} className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-sm" title="Toggle Dark Mode">{isDarkMode ? '🌞' : '🌙'}</button>
-
                 <div className="flex gap-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
                   <button onClick={() => setSearchType('ai')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🤖 AI Search</button>
                   <button onClick={() => setSearchType('keyword')} className={`py-2 px-4 rounded-lg font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'}`}>🔑 Key Search</button>
@@ -324,7 +388,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* SEARCH BAR & RESULTS */}
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300">
             <div className="flex flex-col md:flex-row gap-3 mb-4">
@@ -359,7 +422,6 @@ export default function Home() {
                     <span className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
                   </div>
 
-                  {/* TOP RESULTS (>= 80%) */}
                   {topDisplayResults.length > 0 ? (
                     <div className="mb-12">
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {topDisplayResults.length} Kết quả hàng đầu</h3>
@@ -368,11 +430,9 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    // Component SuggestionBox (Giao diện Đỏ Mới)
                     <SuggestionBox />
                   )}
 
-                  {/* SUGGESTIONS */}
                   {suggestionResults.length > 0 && (
                     <div>
                       <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600 inline-block pr-8">📑 Gợi ý thêm ({suggestionResults.length} SOPs)</h3>
@@ -389,7 +449,6 @@ export default function Home() {
                   )}
                 </>
               ) : (
-                // Component NoResultsUI (Dùng chung SuggestionBox)
                 <NoResultsUI />
               )}
             </div>
