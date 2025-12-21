@@ -48,8 +48,7 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   return (
     <div className="fixed left-6 top-[280px] z-[200] flex flex-col gap-4 w-80 pointer-events-none font-sans">
       {notifications.map((n) => (
-        // Đã fix: Xóa bỏ 'duration-500' để tránh conflict với 'duration-300' ở cuối
-        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors duration-300">
+        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors">
           <div className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -95,13 +94,13 @@ const LINKS = [
   { 
     label: 'SOPie Index', 
     icon: '📚', 
-    url: 'https://sites.google.com/view/cs-faq-chung/home',
+    url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung',
     styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300'
   },
   {
     label: 'Bảng tin SOP',
     icon: '📅',
-    url: 'https://docs.google.com/spreadsheets/d/1bEZ0VmD8BF5q85oF4RAMmxVUVil6IBV5/edit?gid=1267671571#gid=1267671571',
+    url: 'https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0',
     styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300'
   },
   { 
@@ -188,7 +187,7 @@ export default function Home() {
           query: query,
           domain: domain === 'all' ? null : domain,
           type: searchType === 'ai' ? 'semantic' : 'keyword',
-          limit: 30 
+          limit: 10 // ĐÃ FIX: Limit 10 ngay từ request để tối ưu
         }),
       })
 
@@ -220,8 +219,16 @@ export default function Home() {
     }
   }
 
-  // Logic kiểm tra độ tin cậy kết quả (trên 80%)
-  const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
+  // --- LOGIC: LỌC + SẮP XẾP + GIỚI HẠN 10 ---
+  const validResults = useMemo(() => {
+    return results
+      .filter(r => r.relevance_score >= 0.8) // Chỉ lấy >= 80%
+      .sort((a, b) => b.relevance_score - a.relevance_score) // Sắp xếp từ cao xuống thấp
+      .slice(0, 10); // Đảm bảo chỉ lấy tối đa 10 kết quả
+  }, [results]);
+  
+  // Biến kiểm tra xem có kết quả nào đạt chuẩn hiển thị không
+  const hasHighConfidence = validResults.length > 0;
 
   const SopDetailModal = () => {
     if (!selectedSop) return null
@@ -400,8 +407,8 @@ export default function Home() {
     )
   }
 
-  const top5Results = results.slice(0, 5)
-  const moreSuggestions = results.slice(5)
+  const top5Results = validResults.slice(0, 5)
+  const moreSuggestions = validResults.slice(5)
 
   const suggestionDomains = useMemo(() => {
     const domainCounts: {[key: string]: number} = {}
@@ -545,7 +552,7 @@ export default function Home() {
             </p>
           )}
 
-          {/* --- FALLBACK SUGGESTION UI (Bổ sung mới) --- */}
+          {/* --- FALLBACK SUGGESTION UI (Hiển thị khi KHÔNG có kết quả >= 80%) --- */}
           {hasSearched && !hasHighConfidence && !loading && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
@@ -555,20 +562,18 @@ export default function Home() {
                   <ul className="list-disc list-inside text-sm space-y-2 font-medium opacity-90">
                     <li>Mô tả lại vấn đề một cách chi tiết hơn</li>
                     <li>Điều chỉnh lại bộ lọc kiến thức</li>
-                    {backendSuggestion?.link ? (
-                        <li className="list-none pt-2">
-                           Tham khảo thêm tại: 
+                    {backendSuggestion?.link && (
+                        <li className="list-none pt-2 flex items-center gap-2">
+                           <span>Tham khảo thêm tại:</span>
                            <a 
                              href={backendSuggestion.link} 
                              target="_blank" 
                              rel="noopener noreferrer" 
-                             className="ml-2 inline-flex items-center gap-1 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black shadow-sm hover:scale-105 transition-all"
+                             className="inline-flex items-center gap-1 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black shadow-sm hover:scale-105 transition-all"
                            >
                              🔗 {backendSuggestion.label || 'Link gợi ý'}
                            </a>
                         </li>
-                    ) : (
-                        <li className="list-none pt-2 italic text-xs">Tham khảo thêm tại các Quick Buttons phía trên.</li>
                     )}
                   </ul>
                   <p className="text-xs font-bold uppercase tracking-wide pt-2 border-t border-amber-200 dark:border-amber-800/50">
@@ -598,11 +603,11 @@ export default function Home() {
           )}
         </div>
 
-        {/* Results Display */}
-        {!loading && results.length > 0 && (
+        {/* Results Display - CHỈ HIỂN THỊ KHI CÓ KẾT QUẢ >= 80% */}
+        {!loading && hasHighConfidence && (
           <div className="mt-8 animate-slide-up">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {validResults.length} kết quả</h2>
               <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium border border-gray-200 dark:border-gray-700">
                 {searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}
               </span>
