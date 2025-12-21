@@ -15,12 +15,13 @@ const formatDate = (dateString: string) => {
 const LINKS = [
   { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60' },
   { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60' },
+  { label: 'Theo dõi Issue', icon: '📋', url: 'https://docs.google.com/spreadsheets/d/1xUWGBiw9tBnZqrxjt4enL_oZ7LsU8QiWKhJOS5FbwrU/edit?gid=0#gid=0', styleClass: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-300 dark:hover:bg-cyan-900/60' },
   { label: 'Báo lỗi SOP', icon: '🐞', url: 'https://forms.gle/Hbjuzu7RwdhscNfW9', styleClass: 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300 dark:hover:bg-red-900/60' },
   { label: 'Đề xuất SOP', icon: '✨', url: 'https://forms.gle/rXZvHgfuLHMYQ7Wn6', styleClass: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:hover:bg-purple-900/60' },
   { label: 'CSWriteLab', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:hover:bg-orange-900/60' }
 ]
 
-// --- NEW NOTIFICATION SYSTEM (LEFT SIDE BUBBLES) ---
+// --- NOTIFICATION SYSTEM (LEFT SIDE BUBBLES) ---
 
 const NotificationSystem = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -38,20 +39,26 @@ const NotificationSystem = () => {
 
         if (data.success && data.noti) {
           const newId = data.noti.id;
+          const lastSeenId = localStorage.getItem('sopie_last_noti_id');
+
+          const now = new Date();
+          const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+          
+          const originalMsg = data.noti.message;
+          const formattedMsg = originalMsg.replace("Vừa có tin cập nhật liên quan đến:", "Vừa có cập nhật mới liên quan đến sản phẩm/quy trình:");
+
+          // Logic cho lần đầu load trang: Hiện tin mới nhất nếu chưa đọc
           if (isFirstLoad.current) {
+            if (lastSeenId !== newId.toString()) {
+              setNotifications([{ ...data.noti, message: formattedMsg, displayTime: timeStr }]);
+            }
             lastIdRef.current = newId;
             isFirstLoad.current = false;
             return;
           }
 
+          // Logic real-time khi đang online
           if (lastIdRef.current !== null && newId > lastIdRef.current) {
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
-            // Format lại nội dung tin nhắn theo yêu cầu
-            const originalMsg = data.noti.message;
-            const formattedMsg = originalMsg.replace("Vừa có tin cập nhật liên quan đến:", "Vừa có cập nhật mới liên quan đến sản phẩm/quy trình:");
-
             setNotifications(prev => [{ ...data.noti, message: formattedMsg, displayTime: timeStr }, ...prev]);
             lastIdRef.current = newId;
           }
@@ -64,15 +71,15 @@ const NotificationSystem = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const removeNoti = (id: number) => {
+  const handleCloseNoti = (id: number) => {
+    localStorage.setItem('sopie_last_noti_id', id.toString());
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
   if (notifications.length === 0) return null;
 
   return (
-    // Vị trí: Bên trái, ngang hàng vùng trống cạnh Search Bar (Dưới header khoảng 280px)
-    <div className="fixed left-6 top-[260px] z-[100] flex flex-col gap-4 w-80 pointer-events-none">
+    <div className="fixed left-6 top-[280px] z-[100] flex flex-col gap-4 w-85 pointer-events-none">
       {notifications.map((n) => (
         <div 
           key={n.id} 
@@ -81,7 +88,7 @@ const NotificationSystem = () => {
           <div className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-lg">📰</span>
+                <span className="text-lg">!*</span>
                 <h3 className="font-bold text-blue-700 dark:text-blue-400 text-sm uppercase tracking-tight">Cập nhật tin mới</h3>
                 <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
               </div>
@@ -99,16 +106,16 @@ const NotificationSystem = () => {
               </span>
               <div className="flex gap-2">
                 <button 
-                  onClick={() => removeNoti(n.id)}
-                  className="px-3 py-1 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => handleCloseNoti(n.id)}
+                  className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors border border-gray-200 dark:border-gray-600"
                 >
                   Bỏ qua
                 </button>
                 <a 
                   href={SHEET_URL}
                   target="_blank"
-                  onClick={() => removeNoti(n.id)}
-                  className="px-3 py-1 text-[11px] font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition-all active:scale-95"
+                  onClick={() => handleCloseNoti(n.id)}
+                  className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition-all active:scale-95"
                 >
                   Xem ngay
                 </a>
@@ -213,7 +220,6 @@ export default function Home() {
   const [backendSuggestion, setBackendSuggestion] = useState<any>(null)
   const [activeHxlTabs, setActiveHxlTabs] = useState<{[key: string]: 'cs1' | 'cs2'}>({})
   const [selectedSop, setSelectedSop] = useState<any | null>(null)
-  const [activeSuggestionTab, setActiveSuggestionTab] = useState('All')
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
@@ -274,7 +280,6 @@ export default function Home() {
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
-      {/* HỆ THỐNG THÔNG BÁO BONG BÓNG BÊN TRÁI */}
       <NotificationSystem />
       
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300">
@@ -293,9 +298,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
+            {/* QUICK BUTTONS GRID - PHÂN BỔ ĐỀU */}
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {LINKS.map((link, i) => (
-                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium shadow-sm transition-all ${link.styleClass}`}>
+                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-bold shadow-sm transition-all text-[13px] text-center ${link.styleClass}`}>
                   <span>{link.icon}</span><span>{link.label}</span>
                 </a>
               ))}
