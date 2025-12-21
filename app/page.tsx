@@ -1,27 +1,9 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 
-// --- HELPER FUNCTIONS ---
-const formatDate = (dateString: string) => {
-  try {
-    const parts = dateString.split('-');
-    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  } catch (e) {}
-  return dateString;
-};
-
-const LINKS = [
-  { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300' },
-  { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300' },
-  { label: 'Theo dõi Issue', icon: '📋', url: 'https://docs.google.com/spreadsheets/d/1xUWGBiw9tBnZqrxjt4enL_oZ7LsU8QiWKhJOS5FbwrU/edit?gid=0#gid=0', styleClass: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-300' },
-  { label: 'Báo lỗi SOP', icon: '🐞', url: 'https://forms.gle/Hbjuzu7RwdhscNfW9', styleClass: 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300' },
-  { label: 'Đề xuất SOP', icon: '✨', url: 'https://forms.gle/rXZvHgfuLHMYQ7Wn6', styleClass: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-300' },
-  { label: 'CSWriteLab AI', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-500 text-white hover:bg-orange-600 shadow-md scale-105 transition-all' }
-]
-
-// --- NOTIFICATION SYSTEM ---
-const NotificationSystem = () => {
+// --- NOTIFICATION SYSTEM COMPONENT ---
+const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const lastIdRef = useRef<number | null>(null);
   const isFirstLoad = useRef(true);
@@ -64,9 +46,10 @@ const NotificationSystem = () => {
 
   if (notifications.length === 0) return null;
   return (
-    <div className="fixed left-6 top-[280px] z-[200] flex flex-col gap-4 w-85 pointer-events-none font-sans">
+    <div className="fixed left-6 top-[280px] z-[200] flex flex-col gap-4 w-80 pointer-events-none font-sans">
       {notifications.map((n) => (
-        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white">
+        // Đã fix: Xóa bỏ 'duration-500' để tránh conflict với 'duration-300' ở cuối
+        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors duration-300">
           <div className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -74,7 +57,7 @@ const NotificationSystem = () => {
                 <h3 className="font-bold text-blue-700 dark:text-blue-400 text-sm uppercase">Cập nhật tin mới</h3>
                 <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
               </div>
-              <button onClick={() => handleCloseNoti(n.id)} className="text-gray-400 hover:text-red-500">✕</button>
+              <button onClick={() => handleCloseNoti(n.id)} className="text-gray-400 hover:text-red-500 transition-colors">✕</button>
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-3 border border-blue-100 dark:border-blue-800/50">
               <p className="text-xs whitespace-pre-line leading-relaxed italic font-medium">
@@ -84,7 +67,7 @@ const NotificationSystem = () => {
             <div className="flex items-center justify-between mt-2">
               <span className="text-[10px] text-gray-400 font-medium italic">Lúc: {n.displayTime}</span>
               <div className="flex gap-2">
-                <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Bỏ qua</button>
+                <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Bỏ qua</button>
                 <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all">Xem ngay</a>
               </div>
             </div>
@@ -95,247 +78,583 @@ const NotificationSystem = () => {
   );
 };
 
-// --- MAIN PAGE ---
+// --- HELPER FUNCTIONS ---
+const formatDate = (dateString: string) => {
+  try {
+    const parts = dateString.split('-'); // YYYY-MM-DD
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+  } catch (e) {
+    console.error("Lỗi format ngày:", e);
+  }
+  return dateString;
+};
+
+const LINKS = [
+  { 
+    label: 'SOPie Index', 
+    icon: '📚', 
+    url: 'https://sites.google.com/view/cs-faq-chung/home',
+    styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300'
+  },
+  {
+    label: 'Bảng tin SOP',
+    icon: '📅',
+    url: 'https://docs.google.com/spreadsheets/d/1bEZ0VmD8BF5q85oF4RAMmxVUVil6IBV5/edit?gid=1267671571#gid=1267671571',
+    styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300'
+  },
+  { 
+    label: 'Theo dõi Issue', 
+    icon: '📋', 
+    url: 'https://docs.google.com/spreadsheets/d/1xUWGBiw9tBnZqrxjt4enL_oZ7LsU8QiWKhJOS5FbwrU/edit?gid=0#gid=0', 
+    styleClass: 'bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-300' 
+  },
+  { 
+    label: 'Báo lỗi SOP', 
+    icon: '🐞', 
+    url: 'https://forms.gle/Hbjuzu7RwdhscNfW9',
+    styleClass: 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/40 dark:text-red-300'
+  },
+  { 
+    label: 'Đề xuất SOP', 
+    icon: '✨', 
+    url: 'https://forms.gle/rXZvHgfuLHMYQ7Wn6',
+    styleClass: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-300'
+  },
+  {
+    label: 'CSWriteLab', 
+    icon: '✍️', 
+    url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab',
+    styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300'
+  }
+]
+
 export default function Home() {
-  const [query, setQuery] = useState('');
-  const [domain, setDomain] = useState('all');
-  const [searchType, setSearchType] = useState('ai');
-  const [results, setResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [query, setQuery] = useState('')
+  const [domain, setDomain] = useState('all')
+  const [searchType, setSearchType] = useState('ai')
+  const [results, setResults] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  
+  // Bổ sung state để quản lý Suggestion
   const [hasSearched, setHasSearched] = useState(false);
-  const [activeHxlTabs, setActiveHxlTabs] = useState<any>({});
-  const [selectedSop, setSelectedSop] = useState<any | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [backendSuggestion, setBackendSuggestion] = useState<any>(null);
 
-  useEffect(() => { 
+  const [activeHxlTabs, setActiveHxlTabs] = useState<{[key: string]: 'cs1' | 'cs2'}>({})
+  const [selectedSop, setSelectedSop] = useState<any | null>(null)
+  const [activeSuggestionTab, setActiveSuggestionTab] = useState('All')
+
+  // Load dark mode preference from localStorage
+  useEffect(() => {
     const savedMode = localStorage.getItem('sopie_dark_mode') === 'true';
-    setIsDarkMode(savedMode);
+    setDarkMode(savedMode);
   }, []);
 
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('sopie_dark_mode', String(newMode));
-  }
+  // Save dark mode preference
+  useEffect(() => {
+    localStorage.setItem('sopie_dark_mode', darkMode.toString());
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
-    setLoading(true); setResults([]); setHasSearched(false); setBackendSuggestion(null);
+    if (!query.trim()) {
+      setError('Vui lòng nhập câu hỏi')
+      return
+    }
+
+    if (searchType === 'keyword' && query.trim().split(' ').length > 5) {
+      setError('Bạn đang ở chế độ tra cứu bằng từ khóa. Xin vui lòng nhập từ khóa hoặc bật chế độ tra cứu AI')
+      return
+    }
+
+    setLoading(true); setError(''); setResults([]); setHasSearched(false); setBackendSuggestion(null); setSelectedSop(null); setActiveSuggestionTab('All'); 
+
+    const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://sopie-search-tool.onrender.com';
+    
     try {
-      const response = await fetch('https://sopie-search-tool.onrender.com/api/search', {
+      const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 30 }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setResults(data.results); setHasSearched(true);
-        if (data.suggestion) setBackendSuggestion(data.suggestion);
-        const tabs: any = {}; data.results.forEach((r: any) => tabs[r.id] = 'cs1'); setActiveHxlTabs(tabs);
-      }
-    } catch (e) {} finally { setLoading(false); }
-  };
+        body: JSON.stringify({
+          query: query,
+          domain: domain === 'all' ? null : domain,
+          type: searchType === 'ai' ? 'semantic' : 'keyword',
+          limit: 30 
+        }),
+      })
 
-  // --- UI SUB-COMPONENTS ---
-  const SopSummaryCard = ({ r, isTopMatch = false }: { r: any, isTopMatch?: boolean }) => (
-    <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500 ring-2 ring-yellow-50 dark:ring-yellow-900/10' : 'border-blue-600'}`} onClick={() => setSelectedSop(r)}>
-      <div className="flex justify-between items-start mb-3">
-        <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>{isTopMatch && '⭐ '} {r.title}</h3>
-        <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold whitespace-nowrap">{r.domain}</span>
-      </div>
-      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-        {r.cause ? `⚠️ Nguyên nhân: ${r.cause}` : (r.solution_l1 || "Nhấp để xem chi tiết hướng xử lý...")}
-      </p>
-      <div className="flex justify-between items-center text-sm text-gray-400">
-        <span className="text-[11px] italic font-sans">Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}</span>
-        <span className="font-bold text-blue-600 dark:text-blue-400 font-sans">⚡ {Math.round(r.relevance_score * 100)}% Match</span>
-      </div>
-    </div>
-  );
+      const data = await response.json()
+      if (data.success) {
+        setHasSearched(true);
+        if (data.suggestion) setBackendSuggestion(data.suggestion);
+
+        if (data.results.length === 0 && !data.suggestion) {
+          setError('Không tìm thấy SOP phù hợp. Vui lòng thử lại với từ khóa chi tiết hơn hoặc kiểm tra lại domain filter.')
+        } else {
+          setError('') 
+        }
+        
+        setResults(data.results)
+        const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
+        data.results.forEach((r: any) => {
+          defaultTabs[r.id] = 'cs1' 
+        })
+        setActiveHxlTabs(defaultTabs)
+      } else {
+        setError('Lỗi kết nối API. Vui lòng kiểm tra status của backend server.')
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setError('Không thể kết nối backend. Vui lòng kiểm tra server hoặc Network/CORS.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Logic kiểm tra độ tin cậy kết quả (trên 80%)
+  const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
   const SopDetailModal = () => {
-    if (!selectedSop) return null;
-    const r = selectedSop;
+    if (!selectedSop) return null
+    const r = selectedSop
     const activeHxlLevel = activeHxlTabs[r.id] || 'cs1';
     const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
 
     return (
-      <div className="fixed inset-0 z-[250] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setSelectedSop(null)}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative animate-in zoom-in-95 duration-200 text-gray-900 dark:text-white font-sans" onClick={(e) => e.stopPropagation()}>
-          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">✕</button>
+      <div 
+        className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm"
+        onClick={() => setSelectedSop(null)}
+      >
+        <div 
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors duration-300 border border-gray-100 dark:border-gray-700"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button 
+            onClick={() => setSelectedSop(null)}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
           
-          <div className="flex justify-between items-start mb-6 border-b pb-4 dark:border-gray-700">
-            <div className="pr-6">
-               <h3 className="text-2xl font-bold mb-1">{r.title}</h3>
-               <p className="text-xs text-gray-400 font-bold uppercase tracking-wide">{r.product} {r.feature ? `> ${r.feature}` : ''}</p>
-            </div>
-            <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full font-bold whitespace-nowrap">{r.domain}</span>
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex-1 pr-4">{r.title}</h3>
+            <span className="px-4 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold whitespace-nowrap">
+              {r.domain}
+            </span>
           </div>
 
-          {/* 1. NGUYÊN NHÂN (RED) */}
           {r.cause && (
             <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500">
-              <strong className="text-red-700 dark:text-red-400 block mb-1 font-bold">⚠️ Nguyên nhân:</strong>
-              <p className="text-gray-800 dark:text-gray-200 italic leading-relaxed whitespace-pre-wrap">{r.cause}</p>
+              <strong className="text-red-700 dark:text-red-400 block mb-2">⚠️ Nguyên nhân:</strong>
+              <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{r.cause}</p>
             </div>
           )}
 
-          {/* 2. TOOL KIỂM TRA (BLUE) */}
-          {r.check_tool_guideline && (
+          {r.check_tools && r.check_tools.guideline && (
             <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
-              <strong className="text-blue-700 dark:text-blue-400 block mb-2 font-bold uppercase text-xs">🔧 Hướng dẫn kiểm tra Tool:</strong>
-              <p className="text-gray-800 dark:text-gray-200 text-sm mb-3 whitespace-pre-line leading-relaxed">{r.check_tool_guideline}</p>
-              {r.check_tools_name && r.check_tools_url && (
-                <div className="flex flex-wrap gap-2">
-                  {r.check_tools_name.split(',').map((name: string, idx: number) => (
-                    <a key={idx} href={r.check_tools_url.split(',')[idx]?.trim()} target="_blank" rel="noopener noreferrer" className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-100 rounded-lg text-xs font-bold hover:bg-blue-200">🔗 {name.trim()}</a>
-                  ))}
+              <strong className="text-blue-700 dark:text-blue-400 block mb-2">🔧 Hướng dẫn kiểm tra tool:</strong>
+              <p className="text-gray-800 dark:text-gray-200 mb-3 whitespace-pre-wrap break-words leading-relaxed">
+                {r.check_tools.guideline}
+              </p>
+              
+              {r.check_tools.name && r.check_tools.url && (
+                <div className="flex flex-wrap gap-3 mt-2">
+                  {(() => {
+                    const names = r.check_tools.name.split(',').map((n: string) => n.trim()).filter(Boolean)
+                    const urls = r.check_tools.url.split(',').map((u: string) => u.trim()).filter(Boolean)
+                    return names.map((name: string, index: number) => {
+                      const url = urls[index] || urls[0]
+                      return (
+                        <a
+                          key={index}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/60 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-lg text-sm font-medium transition-colors border border-blue-200 dark:border-blue-700"
+                        >
+                          🔗 {name}
+                        </a>
+                      )
+                    })
+                  })()}
                 </div>
               )}
             </div>
           )}
-
-          {/* 3. HƯỚNG XỬ LÝ (GREEN) */}
-          <div className="mb-6">
-            <div className="flex gap-2 mb-3 border-b border-gray-200 dark:border-gray-700 font-bold">
-              <button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs1'})} className={`px-4 py-2 transition-all ${activeHxlLevel === 'cs1' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}>HXL CS1</button>
-              {r.solution_l2 && <button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs2'})} className={`px-4 py-2 transition-all ${activeHxlLevel === 'cs2' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}>HXL CS2</button>}
+          
+          {(r.solution?.level1 || r.solution?.level2) && (
+            <div className="mb-4">
+              <strong className="text-green-700 dark:text-green-400 block mb-3 text-base">✅ Hướng xử lý:</strong>
+              <div className="flex gap-2 mb-3 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs1'})}
+                  className={activeHxlLevel === 'cs1' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}
+                >
+                  HXL CS1
+                </button>
+                {r.solution?.level2 && (
+                  <button
+                    onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs2'})}
+                    className={activeHxlLevel === 'cs2' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}
+                  >
+                    HXL CS2
+                  </button>
+                )}
+              </div>
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border-l-4 border-green-500">
+                {activeHxlLevel === 'cs1' && r.solution?.level1 && (
+                  <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level1}</p>
+                )}
+                {activeHxlLevel === 'cs2' && r.solution?.level2 && (
+                  <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level2}</p>
+                )}
+              </div>
             </div>
-            <div className="p-5 bg-green-50 dark:bg-green-900/10 rounded-xl border-l-4 border-green-500 whitespace-pre-line text-sm leading-relaxed font-medium text-gray-800 dark:text-gray-200">
-              {activeHxlLevel === 'cs1' ? r.solution_l1 : r.solution_l2}
+          )}
+
+          {r.notes && (
+            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500">
+              <strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong>
+              <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.notes}</p>
+            </div>
+          )}
+
+          {(r.templates && (r.templates.email || r.templates.chat)) || activeHxlLevel === 'cs2' ? (
+            <div className="mb-4">
+              {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
+                <>
+                  <strong className="text-gray-700 dark:text-gray-300 block mb-3 text-base font-bold">Gợi ý phản hồi dành cho CS1:</strong>
+                  {r.templates.email && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>📧 Template App/Mail</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
+                        {r.templates.email}
+                      </div>
+                    </details>
+                  )}
+                  {r.templates.chat && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>💬 Template Call/Chat</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
+                        {r.templates.chat}
+                      </div>
+                    </details>
+                  )}
+                </>
+              )}
+
+              {activeHxlLevel === 'cs2' && (
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border-l-4 border-blue-500">
+                  <strong className="text-blue-700 dark:text-blue-400 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
+                  <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-3">
+                    Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với <a
+                      href={csWriteLabLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-800 dark:hover:text-blue-300 underline transition-colors"
+                    >
+                      CSWriteLab ✍️
+                    </a>
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+            {r.link ? (
+              <a 
+                href={r.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow transition-all"
+              >
+                📄 Xem SOP gốc
+              </a>
+            ) : (
+              <div></div>
+            )}
+            <span className="text-xs text-gray-400 font-medium whitespace-nowrap">
+              Relevance: {Math.round(r.relevance_score * 100)}%
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const top5Results = results.slice(0, 5)
+  const moreSuggestions = results.slice(5)
+
+  const suggestionDomains = useMemo(() => {
+    const domainCounts: {[key: string]: number} = {}
+    moreSuggestions.forEach(r => {
+      if (r.domain) {
+        domainCounts[r.domain] = (domainCounts[r.domain] || 0) + 1
+      }
+    })
+    return Object.entries(domainCounts)
+      .sort(([, countA], [, countB]) => countB - countA)
+      .map(([domain]) => domain)
+  }, [moreSuggestions])
+
+  const filteredSuggestions = useMemo(() => {
+    if (activeSuggestionTab === 'All') {
+      return moreSuggestions
+    }
+    return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
+  }, [moreSuggestions, activeSuggestionTab])
+
+  const SopSummaryCard = ({ r, isTopMatch = false }: { r: any, isTopMatch?: boolean }) => (
+    <div 
+      className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600'} transition-colors duration-300`}
+      onClick={() => setSelectedSop(r)}
+    >
+      <div className="flex justify-between items-start mb-3">
+        <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>
+          {isTopMatch && '⭐ '} {r.title}
+        </h3>
+        <span className={`px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap ${isTopMatch ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'}`}>
+          {r.domain}
+        </span>
+      </div>
+
+      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+        {r.cause ? `Nguyên nhân: ${r.cause}` : (r.solution?.level1 ? r.solution.level1 : "Nhấp để xem chi tiết...")}
+      </p>
+
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+          Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}
+        </span>
+        <span className={`font-semibold ${isTopMatch ? 'text-yellow-700 dark:text-yellow-400' : 'text-blue-600 dark:text-blue-400'}`}>
+          ⚡ {Math.round(r.relevance_score * 100)}% Match
+        </span>
+      </div>
+    </div>
+  )
+  
+  return (
+    <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <NotificationSystem darkMode={darkMode} />
+      
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 py-6 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+            <div className="text-center md:text-left">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">FAQ Search Tool</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">powered by SOPie</p>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setDarkMode(!darkMode)}
+                className={`flex items-center justify-center p-3 rounded-xl shadow-md transition-all duration-300 hover:scale-110 ${darkMode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-800 text-yellow-400'}`}
+                title={darkMode ? "Bật chế độ sáng" : "Bật chế độ tối"}
+              >
+                <span className="text-xl">{darkMode ? '☀️' : '🌙'}</span>
+              </button>
+
+              <button onClick={() => setSearchType('ai')} className={`py-3 px-6 rounded-xl font-bold transition-all shadow-md ${searchType === 'ai' ? 'text-white bg-blue-600 hover:scale-105' : 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
+                🤖 AI Search
+              </button>
+              <button onClick={() => setSearchType('keyword')} className={`py-3 px-6 rounded-xl font-bold transition-all shadow-md ${searchType === 'keyword' ? 'text-white bg-green-500 hover:scale-105' : 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
+                🔑 Key Search
+              </button>
             </div>
           </div>
 
-          {/* 4. LƯU Ý (YELLOW) */}
-          {r.notes && (
-            <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500">
-              <strong className="text-yellow-700 dark:text-yellow-400 block mb-1 font-bold italic font-sans">📝 Lưu ý:</strong>
-              <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-pre-line leading-relaxed italic">{r.notes}</p>
-            </div>
-          )}
-
-          {/* 5. TEMPLATES */}
-          {(r.template_app_mail || r.template_call_chat) && (
-            <div className="mb-6 space-y-4">
-              <strong className="text-gray-700 dark:text-gray-300 block text-base font-bold underline font-sans tracking-tight">Gợi ý phản hồi dành cho CS1:</strong>
-              {r.template_app_mail && (
-                <details className="mb-2 group">
-                  <summary className="cursor-pointer font-bold text-gray-700 dark:text-gray-200 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 list-none flex justify-between items-center transition-all">
-                    <span>📧 Template App/Mail</span>
-                    <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
-                  </summary>
-                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line font-mono">{r.template_app_mail}</div>
-                </details>
-              )}
-              {r.template_call_chat && (
-                <details className="group">
-                  <summary className="cursor-pointer font-bold text-gray-700 dark:text-gray-200 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 list-none flex justify-between items-center transition-all">
-                    <span>💬 Template Call/Chat</span>
-                    <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
-                  </summary>
-                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line font-mono">{r.template_call_chat}</div>
-                </details>
-              )}
-            </div>
-          )}
-
-          {/* ACTIONS */}
-          <div className="mt-8 flex flex-col items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700 font-sans">
-            <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold text-center shadow-lg hover:scale-[1.01] transition-all">✍️ Soạn phản hồi với CSWriteLab AI</a>
-            <div className="flex justify-between w-full items-center">
-               {r.link_sop && <a href={r.link_sop} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold text-sm underline hover:text-blue-800 font-sans italic">📄 Xem bản SOP đầy đủ</a>}
-               <span className="text-[11px] text-gray-400 italic font-bold">Match: {Math.round(r.relevance_score * 100)}%</span>
+          {/* --- TOP BUTTONS (QUICK BUTTONS) --- */}
+          <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 text-center md:text-left">Quick Buttons</p>
+            <div className="flex items-center overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+              <div className="flex flex-nowrap justify-between gap-3 w-full min-w-max md:min-w-0"> 
+                  {LINKS.map((link, index) => (
+                      <a 
+                          key={index}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl font-semibold text-xs md:text-sm transition-all shadow-sm hover:shadow-md whitespace-nowrap ${link.styleClass}`}
+                      >
+                          <span className="text-base md:text-lg">{link.icon}</span>
+                          <span>{link.label}</span>
+                      </a>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    );
-  };
 
-  const SuggestionBox = () => (
-    <div className="mb-8 p-8 bg-red-50 dark:bg-red-900/20 border-2 border-dashed border-red-200 dark:border-red-800 rounded-2xl text-red-800 dark:text-red-200 animate-in fade-in font-sans">
-        <div className="flex items-start gap-4 text-gray-900 dark:text-white">
-            <div className="text-3xl">⚠️</div>
-            <div className="flex-1">
-                <h3 className="font-bold text-lg mb-2">Chưa có SOP có độ tương thích cao. Bạn vui lòng thử:</h3>
-                <ul className="list-disc list-inside text-sm space-y-2 mb-6 font-medium">
-                    <li>Thay đổi cách diễn đạt câu hỏi</li>
-                    <li>Điều chỉnh lại bộ filter kiến thức</li>
-                    {backendSuggestion?.found && (
-                      <li>Tham khảo thêm quy trình tại: <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline font-bold px-1 tracking-tight">🔗 {backendSuggestion.link_label}</a></li>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Search Bar Container */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
+          <div className="flex flex-col md:flex-row gap-3 mb-4">
+            <select
+              value={domain}
+              onChange={(e) => setDomain(e.target.value)}
+              className="px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white md:min-w-[200px] font-medium focus:border-blue-500 focus:outline-none transition-colors"
+            >
+              <option value="all">Tất cả</option>
+              <option value="Account">Tài khoản</option>
+              <option value="Payment">Thanh toán</option>
+              <option value="Application">Ứng dụng</option>
+              <option value="Merchant">Đối tác</option>
+              <option value="Lending">DVTC</option>
+              <option value="Travel">OTA</option>
+            </select>
+            <input
+              type="text"
+              placeholder={searchType === 'ai' ? 'Nhập câu hỏi của bạn...' : 'Nhập từ khóa ngắn gọn...'}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-400"
+            />
+            <button
+              onClick={handleSearch}
+              disabled={loading}
+              className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}
+            >
+              {loading ? '🔄 Đang tìm...' : '🔍 Tìm kiếm'}
+            </button>
+          </div>
+          
+          {searchType === 'keyword' && (
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+              💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.
+            </p>
+          )}
+
+          {/* --- FALLBACK SUGGESTION UI (Bổ sung mới) --- */}
+          {hasSearched && !hasHighConfidence && !loading && (
+            <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
+              <div className="flex items-start gap-4">
+                <div className="text-2xl mt-1">💡</div>
+                <div className="space-y-3">
+                  <p className="font-bold text-base">Chưa có kết quả có độ tương thích cao, bạn vui lòng thử:</p>
+                  <ul className="list-disc list-inside text-sm space-y-2 font-medium opacity-90">
+                    <li>Mô tả lại vấn đề một cách chi tiết hơn</li>
+                    <li>Điều chỉnh lại bộ lọc kiến thức</li>
+                    {backendSuggestion?.link ? (
+                        <li className="list-none pt-2">
+                           Tham khảo thêm tại: 
+                           <a 
+                             href={backendSuggestion.link} 
+                             target="_blank" 
+                             rel="noopener noreferrer" 
+                             className="ml-2 inline-flex items-center gap-1 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black shadow-sm hover:scale-105 transition-all"
+                           >
+                             🔗 {backendSuggestion.label || 'Link gợi ý'}
+                           </a>
+                        </li>
+                    ) : (
+                        <li className="list-none pt-2 italic text-xs">Tham khảo thêm tại các Quick Buttons phía trên.</li>
                     )}
-                </ul>
-                <p className="text-sm font-bold border-t border-red-200 pt-4 italic">Hoặc bạn có thể liên hệ QC team để được hỗ trợ chi tiết.</p>
-            </div>
-        </div>
-    </div>
-  );
-
-  const topMatches = useMemo(() => results.filter(r => r.relevance_score >= 0.8).slice(0, 5), [results]);
-  const otherMatches = useMemo(() => results.filter(r => r.relevance_score < 0.8).slice(0, 10), [results]);
-
-  return (
-    <div className={isDarkMode ? 'dark' : ''}>
-      <NotificationSystem />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans text-gray-900 dark:text-white">
-        <div className="bg-white dark:bg-gray-800 border-b shadow-sm sticky top-0 z-[150]">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex justify-between items-center mb-6">
-              <div><h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">SOPie Search Tool</h1><p className="text-[10px] uppercase font-bold text-gray-400 tracking-tight">Customer Excellence Platform</p></div>
-              <div className="flex items-center gap-3">
-                <button onClick={toggleDarkMode} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xl">{isDarkMode ? '🌞' : '🌙'}</button>
-                <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
-                  <button onClick={() => setSearchType('ai')} className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 shadow-sm scale-105' : 'text-gray-500'}`}>🤖 AI Search</button>
-                  <button onClick={() => setSearchType('keyword')} className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 shadow-sm scale-105' : 'text-gray-500'}`}>🔑 Key Search</button>
+                  </ul>
+                  <p className="text-xs font-bold uppercase tracking-wide pt-2 border-t border-amber-200 dark:border-amber-800/50">
+                    Hoặc bạn có thể liên hệ trực tiếp <span className="underline decoration-2 font-black">QC</span> để được hỗ trợ nhanh chóng.
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {LINKS.map((link, i) => (
-                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center gap-2 px-2 py-3 rounded-xl font-bold text-[11px] shadow-sm transition-all active:scale-95 ${link.styleClass}`}>
-                  <span>{link.icon}</span><span>{link.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+          )}
 
-        <div className="max-w-7xl mx-auto px-6 py-10">
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 mb-10 border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col md:flex-row gap-4 font-sans text-gray-900 dark:text-white">
-              <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 font-bold focus:border-blue-500 outline-none text-sm text-inherit cursor-pointer">
-                <option value="all">Tất cả Domain</option>
-                <option value="Account">Tài khoản</option>
-                <option value="Payment">Thanh toán</option>
-                <option value="Application">Ứng dụng</option>
-                <option value="Merchant">Đối tác</option>
-                <option value="Lending">DVTC</option>
-                <option value="Travel">OTA</option>
-              </select>
-              <input type="text" placeholder="Bạn muốn tra cứu gì hôm nay?" value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-6 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 outline-none focus:border-blue-500 font-medium transition-all text-inherit" />
-              <button onClick={handleSearch} disabled={loading} className="px-12 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 dark:shadow-none active:scale-95 transition-all disabled:opacity-50">{loading ? '...' : '🔍 Tìm ngay'}</button>
-            </div>
-          </div>
-
-          {hasSearched && (
-            <div className="animate-in slide-in-from-bottom-4 duration-500 font-sans">
-              {topMatches.length > 0 ? (
-                <div className="space-y-6">
-                  <div className="space-y-4">{topMatches.map(r => <SopSummaryCard key={r.id} r={r} isTopMatch={true} />)}</div>
-                  {otherMatches.length > 0 && (
-                    <div className="pt-8 border-t border-gray-200 dark:border-gray-700 mt-10">
-                      <h3 className="text-md font-bold mb-6 flex items-center gap-2 text-gray-500 dark:text-gray-400 uppercase px-2 italic">Gợi ý thêm (Tối đa 10 SOPs)</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{otherMatches.map(r => <SopSummaryCard key={r.id} r={r} />)}</div>
-                    </div>
-                  )}
-                </div>
-              ) : <SuggestionBox />}
+          {error && (
+            <div className="p-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 text-red-700 dark:text-red-300 rounded-lg animate-fade-in transition-colors">
+              <div className="flex items-start gap-3">
+                 <div className="text-xl">⚠️</div>
+                 <div>
+                   <strong>{error}</strong>
+                   {error.includes('Không tìm thấy') && (
+                       <ul className="list-disc list-inside mt-2 text-sm space-y-1">
+                         <li>Thử mô tả chi tiết hơn vấn đề</li>
+                         <li>Kiểm tra lại domain filter</li>
+                         <li>Liên hệ QC để được hỗ trợ nhanh chóng</li>
+                       </ul>
+                   )}
+                 </div>
+              </div>
             </div>
           )}
         </div>
-        <SopDetailModal />
+
+        {/* Results Display */}
+        {!loading && results.length > 0 && (
+          <div className="mt-8 animate-slide-up">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2>
+              <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium border border-gray-200 dark:border-gray-700">
+                {searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}
+              </span>
+            </div>
+
+            <div className="mb-12">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">
+                🏆 Top {top5Results.length} Kết quả hàng đầu
+              </h3>
+              <div className="space-y-4">
+                {top5Results.map((r) => (
+                  <SopSummaryCard key={r.id} r={r} isTopMatch={true} />
+                ))}
+              </div>
+            </div>
+
+            {moreSuggestions.length > 0 && (
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">
+                  📑 Gợi ý thêm ({moreSuggestions.length} SOPs)
+                </h3>
+                
+                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+                  <button
+                    onClick={() => setActiveSuggestionTab('All')}
+                    className={`px-4 py-2 font-semibold rounded-lg transition-colors ${activeSuggestionTab === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
+                  >
+                    Tất cả ({moreSuggestions.length})
+                  </button>
+                  {suggestionDomains.map(domain => (
+                    <button
+                      key={domain}
+                      onClick={() => setActiveSuggestionTab(domain)}
+                      className={`px-4 py-2 font-semibold rounded-lg whitespace-nowrap transition-colors ${activeSuggestionTab === domain ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
+                    >
+                      {domain} ({moreSuggestions.filter(r => r.domain === domain).length})
+                    </button>
+                  ))}
+                </div>
+
+                <div className="space-y-4">
+                  {filteredSuggestions.map(r => (
+                    <SopSummaryCard key={r.id} r={r} isTopMatch={false} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      <SopDetailModal />
     </div>
-  );
+  )
 }
