@@ -187,7 +187,7 @@ export default function Home() {
           query: query,
           domain: domain === 'all' ? null : domain,
           type: searchType === 'ai' ? 'semantic' : 'keyword',
-          limit: 10 // ĐÃ FIX: Limit 10 ngay từ request để tối ưu
+          limit: 10 // ĐÃ FIX: Limit 10 từ server
         }),
       })
 
@@ -202,7 +202,10 @@ export default function Home() {
           setError('') 
         }
         
-        setResults(data.results)
+        // Sắp xếp trước khi set state để đảm bảo thứ tự
+        const sortedResults = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
+        setResults(sortedResults)
+
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
         data.results.forEach((r: any) => {
           defaultTabs[r.id] = 'cs1' 
@@ -219,17 +222,25 @@ export default function Home() {
     }
   }
 
-  // --- LOGIC: LỌC + SẮP XẾP + GIỚI HẠN 10 ---
-  const validResults = useMemo(() => {
-    return results
-      .filter(r => r.relevance_score >= 0.8) // Chỉ lấy >= 80%
-      .sort((a, b) => b.relevance_score - a.relevance_score) // Sắp xếp từ cao xuống thấp
-      .slice(0, 10); // Đảm bảo chỉ lấy tối đa 10 kết quả
-  }, [results]);
-  
-  // Biến kiểm tra xem có kết quả nào đạt chuẩn hiển thị không
-  const hasHighConfidence = validResults.length > 0;
+  // --- LOGIC PHÂN LOẠI HIỂN THỊ ---
+  // 1. Kiểm tra xem có bất kỳ kết quả nào >= 80% không (để quyết định hiển thị UI hay Fallback)
+  const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
+  // 2. Tách danh sách kết quả (Chỉ chạy khi hasHighConfidence = true)
+  const { top5Results, moreSuggestions } = useMemo(() => {
+    if (!hasHighConfidence) return { top5Results: [], moreSuggestions: [] };
+
+    // Top Result: CHỈ LẤY những cái >= 80%, tối đa 5 cái
+    const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5);
+    
+    // Suggestion: Lấy những cái còn lại (những cái chưa nằm trong top), bao gồm cả điểm thấp
+    // Cách này giúp "Phần Gợi ý" hiện lại những kết quả điểm thấp thay vì ẩn đi
+    const topIds = new Set(top.map(r => r.id));
+    const suggestions = results.filter(r => !topIds.has(r.id));
+
+    return { top5Results: top, moreSuggestions: suggestions };
+  }, [results, hasHighConfidence]);
+  
   const SopDetailModal = () => {
     if (!selectedSop) return null
     const r = selectedSop
@@ -407,9 +418,6 @@ export default function Home() {
     )
   }
 
-  const top5Results = validResults.slice(0, 5)
-  const moreSuggestions = validResults.slice(5)
-
   const suggestionDomains = useMemo(() => {
     const domainCounts: {[key: string]: number} = {}
     moreSuggestions.forEach(r => {
@@ -552,7 +560,7 @@ export default function Home() {
             </p>
           )}
 
-          {/* --- FALLBACK SUGGESTION UI (Hiển thị khi KHÔNG có kết quả >= 80%) --- */}
+          {/* --- FALLBACK SUGGESTION UI (Chỉ hiện khi KHÔNG có kết quả nào >= 80%) --- */}
           {hasSearched && !hasHighConfidence && !loading && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
@@ -571,7 +579,7 @@ export default function Home() {
                              rel="noopener noreferrer" 
                              className="inline-flex items-center gap-1 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black shadow-sm hover:scale-105 transition-all"
                            >
-                             🔗 {backendSuggestion.label || 'Link gợi ý'}
+                             🔗 {backendSuggestion.link_label || 'Link gợi ý'}
                            </a>
                         </li>
                     )}
@@ -603,11 +611,11 @@ export default function Home() {
           )}
         </div>
 
-        {/* Results Display - CHỈ HIỂN THỊ KHI CÓ KẾT QUẢ >= 80% */}
+        {/* Results Display - HIỂN THỊ KHI CÓ KẾT QUẢ >= 80% */}
         {!loading && hasHighConfidence && (
           <div className="mt-8 animate-slide-up">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {validResults.length} kết quả</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2>
               <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium border border-gray-200 dark:border-gray-700">
                 {searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}
               </span>
@@ -624,6 +632,7 @@ export default function Home() {
               </div>
             </div>
 
+            {/* PHẦN GỢI Ý - Hiện trở lại, chứa các kết quả còn lại */}
             {moreSuggestions.length > 0 && (
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">
