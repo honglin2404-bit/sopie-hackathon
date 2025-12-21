@@ -584,8 +584,8 @@ export default function Home() {
                         </li>
                     )}
                   </ul>
-                  <p className="text-sm pt-2 border-t border-amber-200 dark:border-amber-800/50">
-                    Hoặc bạn có thể liên hệ trực tiếp <span className="underline decoration-2 font-black">QC</span> để được hỗ trợ nhanh chóng.
+                  <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50">
+                    Hoặc bạn có thể liên hệ trực tiếp QC để được hỗ trợ nhanh chóng.
                   </p>
                 </div>
               </div>
