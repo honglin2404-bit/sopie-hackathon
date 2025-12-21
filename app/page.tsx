@@ -11,7 +11,6 @@ const formatDate = (dateString: string) => {
   return dateString;
 };
 
-// 3. CHECKLIST: 6 QUICK BUTTONS TRẢI ĐỀU
 const LINKS = [
   { label: 'SOPie Index', icon: '📚', url: 'https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung', styleClass: 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300' },
   { label: 'Bảng tin SOP', icon: '📅', url: 'https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0', styleClass: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300' },
@@ -21,7 +20,7 @@ const LINKS = [
   { label: 'CSWriteLab AI', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-500 text-white hover:bg-orange-600 shadow-md scale-105 transition-all' }
 ]
 
-// --- NOTIFICATION SYSTEM (FIXED ICON & QUOTES) ---
+// --- NOTIFICATION SYSTEM ---
 const NotificationSystem = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const lastIdRef = useRef<number | null>(null);
@@ -65,9 +64,9 @@ const NotificationSystem = () => {
 
   if (notifications.length === 0) return null;
   return (
-    <div className="fixed left-6 top-[280px] z-[150] flex flex-col gap-4 w-85 pointer-events-none">
+    <div className="fixed left-6 top-[280px] z-[200] flex flex-col gap-4 w-85 pointer-events-none font-sans">
       {notifications.map((n) => (
-        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5">
+        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white">
           <div className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -75,18 +74,18 @@ const NotificationSystem = () => {
                 <h3 className="font-bold text-blue-700 dark:text-blue-400 text-sm uppercase">Cập nhật tin mới</h3>
                 <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
               </div>
-              <button onClick={() => handleCloseNoti(n.id)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => handleCloseNoti(n.id)} className="text-gray-400 hover:text-red-500">✕</button>
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-3 border border-blue-100 dark:border-blue-800/50">
-              <p className="text-xs text-gray-700 dark:text-gray-200 whitespace-pre-line font-medium leading-relaxed italic">
+              <p className="text-xs whitespace-pre-line leading-relaxed italic font-medium">
                 {n.message.replace(/"/g, '')}
               </p>
             </div>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-[10px] text-gray-400 font-medium">Lúc: {n.displayTime}</span>
+              <span className="text-[10px] text-gray-400 font-medium italic">Lúc: {n.displayTime}</span>
               <div className="flex gap-2">
-                <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1 text-[11px] font-bold text-gray-500 hover:bg-gray-100 rounded-lg">Bỏ qua</button>
-                <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={() => handleCloseNoti(n.id)} className="px-3 py-1 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm">Xem ngay</a>
+                <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Bỏ qua</button>
+                <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all">Xem ngay</a>
               </div>
             </div>
           </div>
@@ -109,7 +108,16 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [backendSuggestion, setBackendSuggestion] = useState<any>(null);
 
-  useEffect(() => { if (localStorage.getItem('sopie_dark_mode') === 'true') setIsDarkMode(true); }, []);
+  useEffect(() => { 
+    const savedMode = localStorage.getItem('sopie_dark_mode') === 'true';
+    setIsDarkMode(savedMode);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('sopie_dark_mode', String(newMode));
+  }
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -129,19 +137,19 @@ export default function Home() {
     } catch (e) {} finally { setLoading(false); }
   };
 
-  // --- SUB-COMPONENTS ---
+  // --- UI SUB-COMPONENTS ---
   const SopSummaryCard = ({ r, isTopMatch = false }: { r: any, isTopMatch?: boolean }) => (
     <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500 ring-2 ring-yellow-50 dark:ring-yellow-900/10' : 'border-blue-600'}`} onClick={() => setSelectedSop(r)}>
       <div className="flex justify-between items-start mb-3">
         <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>{isTopMatch && '⭐ '} {r.title}</h3>
-        <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">{r.domain}</span>
+        <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold whitespace-nowrap">{r.domain}</span>
       </div>
       <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
         {r.cause ? `⚠️ Nguyên nhân: ${r.cause}` : (r.solution_l1 || "Nhấp để xem chi tiết hướng xử lý...")}
       </p>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-[11px] text-gray-400 italic">Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}</span>
-        <span className="font-bold text-blue-600">⚡ {Math.round(r.relevance_score * 100)}% Match</span>
+      <div className="flex justify-between items-center text-sm text-gray-400">
+        <span className="text-[11px] italic font-sans">Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}</span>
+        <span className="font-bold text-blue-600 dark:text-blue-400 font-sans">⚡ {Math.round(r.relevance_score * 100)}% Match</span>
       </div>
     </div>
   );
@@ -153,9 +161,9 @@ export default function Home() {
     const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
 
     return (
-      <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setSelectedSop(null)}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">✕</button>
+      <div className="fixed inset-0 z-[250] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setSelectedSop(null)}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative animate-in zoom-in-95 duration-200 text-gray-900 dark:text-white font-sans" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">✕</button>
           
           <div className="flex justify-between items-start mb-6 border-b pb-4 dark:border-gray-700">
             <div className="pr-6">
@@ -165,6 +173,7 @@ export default function Home() {
             <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full font-bold whitespace-nowrap">{r.domain}</span>
           </div>
 
+          {/* 1. NGUYÊN NHÂN (RED) */}
           {r.cause && (
             <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500">
               <strong className="text-red-700 dark:text-red-400 block mb-1 font-bold">⚠️ Nguyên nhân:</strong>
@@ -172,47 +181,51 @@ export default function Home() {
             </div>
           )}
 
+          {/* 2. TOOL KIỂM TRA (BLUE) */}
           {r.check_tool_guideline && (
             <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
-              <strong className="text-blue-700 dark:text-blue-400 block mb-2 font-bold">🔧 Hướng dẫn kiểm tra Tool:</strong>
+              <strong className="text-blue-700 dark:text-blue-400 block mb-2 font-bold uppercase text-xs">🔧 Hướng dẫn kiểm tra Tool:</strong>
               <p className="text-gray-800 dark:text-gray-200 text-sm mb-3 whitespace-pre-line leading-relaxed">{r.check_tool_guideline}</p>
               {r.check_tools_name && r.check_tools_url && (
                 <div className="flex flex-wrap gap-2">
                   {r.check_tools_name.split(',').map((name: string, idx: number) => (
-                    <a key={idx} href={r.check_tools_url.split(',')[idx]?.trim()} target="_blank" rel="noopener noreferrer" className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-100 rounded-lg text-xs font-bold hover:bg-blue-200 transition-colors">🔗 {name.trim()}</a>
+                    <a key={idx} href={r.check_tools_url.split(',')[idx]?.trim()} target="_blank" rel="noopener noreferrer" className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-100 rounded-lg text-xs font-bold hover:bg-blue-200">🔗 {name.trim()}</a>
                   ))}
                 </div>
               )}
             </div>
           )}
 
+          {/* 3. HƯỚNG XỬ LÝ (GREEN) */}
           <div className="mb-6">
             <div className="flex gap-2 mb-3 border-b border-gray-200 dark:border-gray-700 font-bold">
               <button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs1'})} className={`px-4 py-2 transition-all ${activeHxlLevel === 'cs1' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}>HXL CS1</button>
               {r.solution_l2 && <button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs2'})} className={`px-4 py-2 transition-all ${activeHxlLevel === 'cs2' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}>HXL CS2</button>}
             </div>
-            <div className="p-5 bg-green-50 dark:bg-green-900/10 rounded-xl border-l-4 border-green-500 whitespace-pre-line text-sm leading-relaxed font-medium">
+            <div className="p-5 bg-green-50 dark:bg-green-900/10 rounded-xl border-l-4 border-green-500 whitespace-pre-line text-sm leading-relaxed font-medium text-gray-800 dark:text-gray-200">
               {activeHxlLevel === 'cs1' ? r.solution_l1 : r.solution_l2}
             </div>
           </div>
 
+          {/* 4. LƯU Ý (YELLOW) */}
           {r.notes && (
             <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500">
-              <strong className="text-yellow-700 dark:text-yellow-400 block mb-1 font-bold">📝 Lưu ý:</strong>
+              <strong className="text-yellow-700 dark:text-yellow-400 block mb-1 font-bold italic font-sans">📝 Lưu ý:</strong>
               <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-pre-line leading-relaxed italic">{r.notes}</p>
             </div>
           )}
 
+          {/* 5. TEMPLATES */}
           {(r.template_app_mail || r.template_call_chat) && (
             <div className="mb-6 space-y-4">
-              <strong className="text-gray-700 dark:text-gray-300 block text-base font-bold underline">Gợi ý phản hồi dành cho CS1:</strong>
+              <strong className="text-gray-700 dark:text-gray-300 block text-base font-bold underline font-sans tracking-tight">Gợi ý phản hồi dành cho CS1:</strong>
               {r.template_app_mail && (
                 <details className="mb-2 group">
                   <summary className="cursor-pointer font-bold text-gray-700 dark:text-gray-200 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 list-none flex justify-between items-center transition-all">
                     <span>📧 Template App/Mail</span>
                     <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
-                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{r.template_app_mail}</div>
+                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line font-mono">{r.template_app_mail}</div>
                 </details>
               )}
               {r.template_call_chat && (
@@ -221,17 +234,18 @@ export default function Home() {
                     <span>💬 Template Call/Chat</span>
                     <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
-                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{r.template_call_chat}</div>
+                  <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line font-mono">{r.template_call_chat}</div>
                 </details>
               )}
             </div>
           )}
 
-          <div className="mt-8 flex flex-col items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700">
+          {/* ACTIONS */}
+          <div className="mt-8 flex flex-col items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700 font-sans">
             <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-bold text-center shadow-lg hover:scale-[1.01] transition-all">✍️ Soạn phản hồi với CSWriteLab AI</a>
             <div className="flex justify-between w-full items-center">
-               {r.link_sop && <a href={r.link_sop} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold text-sm underline hover:text-blue-800 italic">📄 Xem bản SOP đầy đủ</a>}
-               <span className="text-[11px] text-gray-400 italic font-bold uppercase">Confidence: {Math.round(r.relevance_score * 100)}%</span>
+               {r.link_sop && <a href={r.link_sop} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold text-sm underline hover:text-blue-800 font-sans italic">📄 Xem bản SOP đầy đủ</a>}
+               <span className="text-[11px] text-gray-400 italic font-bold">Match: {Math.round(r.relevance_score * 100)}%</span>
             </div>
           </div>
         </div>
@@ -240,8 +254,8 @@ export default function Home() {
   };
 
   const SuggestionBox = () => (
-    <div className="mb-8 p-8 bg-red-50 dark:bg-red-900/20 border-2 border-dashed border-red-200 dark:border-red-800 rounded-2xl text-red-800 dark:text-red-200 animate-in fade-in">
-        <div className="flex items-start gap-4">
+    <div className="mb-8 p-8 bg-red-50 dark:bg-red-900/20 border-2 border-dashed border-red-200 dark:border-red-800 rounded-2xl text-red-800 dark:text-red-200 animate-in fade-in font-sans">
+        <div className="flex items-start gap-4 text-gray-900 dark:text-white">
             <div className="text-3xl">⚠️</div>
             <div className="flex-1">
                 <h3 className="font-bold text-lg mb-2">Chưa có SOP có độ tương thích cao. Bạn vui lòng thử:</h3>
@@ -249,10 +263,10 @@ export default function Home() {
                     <li>Thay đổi cách diễn đạt câu hỏi</li>
                     <li>Điều chỉnh lại bộ filter kiến thức</li>
                     {backendSuggestion?.found && (
-                      <li>Tham khảo thêm quy trình tại: <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-bold px-1 tracking-tight">🔗 {backendSuggestion.link_label}</a></li>
+                      <li>Tham khảo thêm quy trình tại: <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline font-bold px-1 tracking-tight">🔗 {backendSuggestion.link_label}</a></li>
                     )}
                 </ul>
-                <p className="text-sm font-bold border-t border-red-200 dark:border-red-800 pt-4 italic">Hoặc bạn có thể liên hệ QC team để được hỗ trợ chi tiết.</p>
+                <p className="text-sm font-bold border-t border-red-200 pt-4 italic">Hoặc bạn có thể liên hệ QC team để được hỗ trợ chi tiết.</p>
             </div>
         </div>
     </div>
@@ -264,13 +278,13 @@ export default function Home() {
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <NotificationSystem />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="bg-white dark:bg-gray-800 border-b shadow-sm sticky top-0 z-[100]">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-gray-800 border-b shadow-sm sticky top-0 z-[150]">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex justify-between items-center mb-6">
-              <div><h1 className="text-2xl font-bold text-blue-600">FAQ Search Tool</h1><p className="text-[10px] uppercase font-bold text-gray-400">powered by SOPie</p></div>
+              <div><h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">SOPie Search Tool</h1><p className="text-[10px] uppercase font-bold text-gray-400 tracking-tight">Customer Excellence Platform</p></div>
               <div className="flex items-center gap-3">
-                <button onClick={() => { setIsDarkMode(!isDarkMode); localStorage.setItem('sopie_dark_mode', String(!isDarkMode)); }} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 transition-colors">{isDarkMode ? '🌞' : '🌙'}</button>
+                <button onClick={toggleDarkMode} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xl">{isDarkMode ? '🌞' : '🌙'}</button>
                 <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
                   <button onClick={() => setSearchType('ai')} className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${searchType === 'ai' ? 'bg-white dark:bg-gray-600 text-blue-600 shadow-sm scale-105' : 'text-gray-500'}`}>🤖 AI Search</button>
                   <button onClick={() => setSearchType('keyword')} className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${searchType === 'keyword' ? 'bg-white dark:bg-gray-600 text-green-600 shadow-sm scale-105' : 'text-gray-500'}`}>🔑 Key Search</button>
@@ -289,9 +303,9 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-6 py-10">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 mb-10 border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col md:flex-row gap-4">
-              <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 font-bold focus:border-blue-500 outline-none text-sm">
-                <option value="all">Tất cả</option>
+            <div className="flex flex-col md:flex-row gap-4 font-sans text-gray-900 dark:text-white">
+              <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 font-bold focus:border-blue-500 outline-none text-sm text-inherit cursor-pointer">
+                <option value="all">Tất cả Domain</option>
                 <option value="Account">Tài khoản</option>
                 <option value="Payment">Thanh toán</option>
                 <option value="Application">Ứng dụng</option>
@@ -299,19 +313,19 @@ export default function Home() {
                 <option value="Lending">DVTC</option>
                 <option value="Travel">OTA</option>
               </select>
-              <input type="text" placeholder="Bạn muốn tra cứu gì hôm nay?" value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-6 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 outline-none focus:border-blue-500 font-medium transition-all" />
-              <button onClick={handleSearch} disabled={loading} className="px-12 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 active:scale-95 transition-all disabled:opacity-50">{loading ? '...' : '🔍 Tìm ngay'}</button>
+              <input type="text" placeholder="Bạn muốn tra cứu gì hôm nay?" value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-6 py-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl bg-gray-50 dark:bg-gray-900 outline-none focus:border-blue-500 font-medium transition-all text-inherit" />
+              <button onClick={handleSearch} disabled={loading} className="px-12 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 dark:shadow-none active:scale-95 transition-all disabled:opacity-50">{loading ? '...' : '🔍 Tìm ngay'}</button>
             </div>
           </div>
 
           {hasSearched && (
-            <div className="animate-in slide-in-from-bottom-4 duration-500">
+            <div className="animate-in slide-in-from-bottom-4 duration-500 font-sans">
               {topMatches.length > 0 ? (
                 <div className="space-y-6">
                   <div className="space-y-4">{topMatches.map(r => <SopSummaryCard key={r.id} r={r} isTopMatch={true} />)}</div>
                   {otherMatches.length > 0 && (
                     <div className="pt-8 border-t border-gray-200 dark:border-gray-700 mt-10">
-                      <h3 className="text-md font-bold mb-6 flex items-center gap-2 text-gray-500 uppercase px-2 italic">Gợi ý thêm (Tối đa 10 SOPs)</h3>
+                      <h3 className="text-md font-bold mb-6 flex items-center gap-2 text-gray-500 dark:text-gray-400 uppercase px-2 italic">Gợi ý thêm (Tối đa 10 SOPs)</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{otherMatches.map(r => <SopSummaryCard key={r.id} r={r} />)}</div>
                     </div>
                   )}
