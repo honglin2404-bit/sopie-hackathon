@@ -140,19 +140,17 @@ def format_response(sop):
         'link': sop.get('link_sop'), 'notes': sop.get('notes'), 'last_updated': sop.get('last_updated')
     }
 
-# ============= 🆕 LOGIC THÔNG BÁO (NEW) =============
+# ============= 🆕 LOGIC THÔNG BÁO (UPDATED) =============
 
 @app.route('/api/trigger-noti', methods=['POST'])
 def trigger_noti():
     try:
         data = request.json
         msg = data.get('message')
-        # Thêm biến type, mặc định là realtime nếu không gửi lên
         noti_type = data.get('type', 'realtime') 
         
         if not msg: return jsonify({"error": "No message"}), 400
         
-        # Insert thêm type vào DB
         supabase.table('notifications').insert({
             "message": msg,
             "type": noti_type
@@ -166,10 +164,10 @@ def trigger_noti():
 @app.route('/api/get-latest-noti', methods=['GET'])
 def get_latest_noti():
     try:
-        # Lấy 5 tin gần nhất để Frontend lọc (Logic sticky summary)
-        response = supabase.table('notifications').select("*").order('id', desc=True).limit(5).execute()
+        # SỬA: Limit 20 để tránh tin Summary bị trôi
+        response = supabase.table('notifications').select("*").order('id', desc=True).limit(20).execute()
         if response.data: 
-            return jsonify({"success": True, "notis": response.data}) # Trả về list notis
+            return jsonify({"success": True, "notis": response.data})
         return jsonify({"success": False, "notis": []})
     except Exception as e:
         logger.error(f"Get Latest Noti Error: {e}")
@@ -251,7 +249,7 @@ def search():
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'healthy', 'message': 'SOPie Backend THRESHOLD 0.4 is running'})
+    return jsonify({'status': 'healthy', 'message': 'SOPie Backend FULLY OPERATIONAL'})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
