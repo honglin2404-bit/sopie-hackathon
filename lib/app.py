@@ -147,8 +147,17 @@ def trigger_noti():
     try:
         data = request.json
         msg = data.get('message')
+        # Thêm biến type, mặc định là realtime nếu không gửi lên
+        noti_type = data.get('type', 'realtime') 
+        
         if not msg: return jsonify({"error": "No message"}), 400
-        supabase.table('notifications').insert({"message": msg}).execute()
+        
+        # Insert thêm type vào DB
+        supabase.table('notifications').insert({
+            "message": msg,
+            "type": noti_type
+        }).execute()
+        
         return jsonify({"success": True})
     except Exception as e:
         logger.error(f"Trigger Noti Error: {e}")
@@ -157,9 +166,11 @@ def trigger_noti():
 @app.route('/api/get-latest-noti', methods=['GET'])
 def get_latest_noti():
     try:
-        response = supabase.table('notifications').select("*").order('id', desc=True).limit(1).execute()
-        if response.data: return jsonify({"success": True, "noti": response.data[0]})
-        return jsonify({"success": False, "noti": None})
+        # Lấy 5 tin gần nhất để Frontend lọc (Logic sticky summary)
+        response = supabase.table('notifications').select("*").order('id', desc=True).limit(5).execute()
+        if response.data: 
+            return jsonify({"success": True, "notis": response.data}) # Trả về list notis
+        return jsonify({"success": False, "notis": []})
     except Exception as e:
         logger.error(f"Get Latest Noti Error: {e}")
         return jsonify({"error": str(e)}), 500
