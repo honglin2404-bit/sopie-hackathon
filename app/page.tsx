@@ -183,7 +183,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
-  // Bổ sung state để quản lý Suggestion
   const [hasSearched, setHasSearched] = useState(false);
   const [backendSuggestion, setBackendSuggestion] = useState<any>(null);
 
@@ -232,7 +231,7 @@ export default function Home() {
           query: query,
           domain: domain === 'all' ? null : domain,
           type: searchType === 'ai' ? 'semantic' : 'keyword',
-          limit: 10 // ĐÃ FIX: Limit 10 từ server
+          limit: 10
         }),
       })
 
@@ -247,7 +246,6 @@ export default function Home() {
           setError('') 
         }
         
-        // Sắp xếp trước khi set state để đảm bảo thứ tự
         const sortedResults = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
         setResults(sortedResults)
 
@@ -267,25 +265,23 @@ export default function Home() {
     }
   }
 
-  // --- LOGIC PHÂN LOẠI HIỂN THỊ ---
-  // 1. Kiểm tra xem có bất kỳ kết quả nào >= 80% không (để quyết định hiển thị UI hay Fallback)
+  // --- LOGIC PHÂN LOẠI HIỂN THỊ (UPDATED) ---
+  // 1. Kiểm tra xem có bất kỳ kết quả nào >= 80% không
   const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
-  // 2. Tách danh sách kết quả (Chỉ chạy khi hasHighConfidence = true)
+  // 2. Tách danh sách kết quả (ĐÃ SỬA: Luôn trả về dữ liệu kể cả khi low confidence)
   const { top5Results, moreSuggestions } = useMemo(() => {
-    if (!hasHighConfidence) return { top5Results: [], moreSuggestions: [] };
-
     // Top Result: CHỈ LẤY những cái >= 80%, tối đa 5 cái
     const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5);
     
-    // Suggestion: Lấy những cái còn lại (những cái chưa nằm trong top), bao gồm cả điểm thấp
-    // Cách này giúp "Phần Gợi ý" hiện lại những kết quả điểm thấp thay vì ẩn đi
+    // Suggestion: Lấy những cái còn lại (những cái chưa nằm trong top)
     const topIds = new Set(top.map(r => r.id));
     const suggestions = results.filter(r => !topIds.has(r.id));
 
     return { top5Results: top, moreSuggestions: suggestions };
-  }, [results, hasHighConfidence]);
+  }, [results]); // Bỏ dependency hasHighConfidence để luôn tính toán
   
+  // ... (Giữ nguyên Component Modal: SopDetailModal) ...
   const SopDetailModal = () => {
     if (!selectedSop) return null
     const r = selectedSop
@@ -656,8 +652,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* Results Display - HIỂN THỊ KHI CÓ KẾT QUẢ >= 80% */}
-        {!loading && hasHighConfidence && (
+        {/* Results Display - ĐÃ SỬA: Hiển thị nếu có kết quả (bất kể điểm số) */}
+        {!loading && results.length > 0 && (
           <div className="mt-8 animate-slide-up">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2>
@@ -666,18 +662,21 @@ export default function Home() {
               </span>
             </div>
 
-            <div className="mb-12">
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">
-                🏆 Top {top5Results.length} Kết quả hàng đầu
-              </h3>
-              <div className="space-y-4">
-                {top5Results.map((r) => (
-                  <SopSummaryCard key={r.id} r={r} isTopMatch={true} />
-                ))}
+            {/* Chỉ hiện Top 5 Results nếu có kết quả > 80% */}
+            {top5Results.length > 0 && (
+              <div className="mb-12">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">
+                  🏆 Top {top5Results.length} Kết quả hàng đầu
+                </h3>
+                <div className="space-y-4">
+                  {top5Results.map((r) => (
+                    <SopSummaryCard key={r.id} r={r} isTopMatch={true} />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* PHẦN GỢI Ý - Hiện trở lại, chứa các kết quả còn lại */}
+            {/* PHẦN GỢI Ý - Chứa các kết quả còn lại (hoặc tất cả nếu không có Top Results) */}
             {moreSuggestions.length > 0 && (
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">
