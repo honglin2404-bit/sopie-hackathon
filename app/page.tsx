@@ -2,15 +2,13 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 
-// --- NOTIFICATION SYSTEM COMPONENT (LOGIC MỚI) ---
+// --- NOTIFICATION SYSTEM COMPONENT (FIX POSITION & TIME) ---
 const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
-  // Lưu ID các noti user đã bấm tắt thủ công để không hiện lại
   const [closedNotiIds, setClosedNotiIds] = useState<number[]>([]);
   const SHEET_URL = "https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0";
 
   useEffect(() => {
-    // Load danh sách đã đóng từ localStorage
     const savedClosed = localStorage.getItem('sopie_closed_notis');
     if (savedClosed) {
       setClosedNotiIds(JSON.parse(savedClosed));
@@ -27,47 +25,43 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
           const now = new Date();
 
           data.notis.forEach((noti: any) => {
-            // Nếu user đã đóng tin này rồi thì bỏ qua
             if (closedNotiIds.includes(noti.id)) return;
 
-            const createdTime = new Date(noti.created_at); // Cần Backend có cột created_at
-            
-            // --- LOGIC 1: TIN REALTIME (TIN LẺ) ---
-            // Chỉ hiện cho người đang online (tức là tin mới tạo trong vòng 5 phút gần đây)
+            const createdTime = new Date(noti.created_at);
+            // Format giờ hiển thị: HH:mm (Ví dụ: 09:30)
+            const timeStr = `${createdTime.getHours().toString().padStart(2, '0')}:${createdTime.getMinutes().toString().padStart(2, '0')}`;
+            const dateStr = `${createdTime.getDate()}/${createdTime.getMonth() + 1}`;
+
+            // --- LOGIC 1: TIN REALTIME ---
             if (noti.type === 'realtime' || !noti.type) {
               const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
               if (diffMinutes <= 5) { 
-                validNotis.push({ ...noti, displayLabel: '⚡ TIN NÓNG' });
+                // Thêm displayTime vào object
+                validNotis.push({ ...noti, displayLabel: '⚡ TIN NÓNG', displayTime: timeStr });
               }
             }
 
-            // --- LOGIC 2: TIN TỔNG HỢP (DAILY SUMMARY) ---
-            // Treo đến 14h35 ngày hôm sau
+            // --- LOGIC 2: TIN SUMMARY ---
             else if (noti.type === 'summary') {
-              // Trích xuất ngày từ nội dung tin: "Bản tổng hợp tin mới của ngày DD/MM/YYYY"
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
                 const day = parseInt(dateMatch[1]);
-                const month = parseInt(dateMatch[2]) - 1; // Month 0-indexed
+                const month = parseInt(dateMatch[2]) - 1; 
                 const year = parseInt(dateMatch[3]);
                 
-                // Tạo ngày của bản tin
                 const reportDate = new Date(year, month, day);
-                
-                // Tạo mốc hết hạn: Ngày hôm sau của reportDate lúc 14:35:00
                 const expiryDate = new Date(reportDate);
-                expiryDate.setDate(expiryDate.getDate() + 1); // +1 ngày
-                expiryDate.setHours(14, 35, 0, 0); // 14:35
+                expiryDate.setDate(expiryDate.getDate() + 1); 
+                expiryDate.setHours(14, 35, 0, 0); 
 
-                // Nếu bây giờ vẫn NHỎ HƠN hạn chót -> Hiển thị
                 if (now < expiryDate) {
-                  validNotis.push({ ...noti, displayLabel: '📅 BẢN TIN NGÀY' });
+                  // Với tin Summary, hiển thị ngày
+                  validNotis.push({ ...noti, displayLabel: '📅 BẢN TIN NGÀY', displayTime: dateStr });
                 }
               }
             }
           });
 
-          // Sắp xếp: Tin mới nhất lên đầu
           validNotis.sort((a, b) => b.id - a.id);
           setActiveNotis(validNotis);
         }
@@ -76,23 +70,25 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
       }
     };
 
-    checkNewNoti(); // Check ngay khi load
-    const interval = setInterval(checkNewNoti, 30000); // Check mỗi 30s
+    checkNewNoti(); 
+    const interval = setInterval(checkNewNoti, 30000); 
     return () => clearInterval(interval);
-  }, [closedNotiIds]); // Re-run khi closed list thay đổi để filter ngay lập tức
+  }, [closedNotiIds]); 
 
   const handleCloseNoti = (id: number) => {
     const newClosed = [...closedNotiIds, id];
     setClosedNotiIds(newClosed);
     localStorage.setItem('sopie_closed_notis', JSON.stringify(newClosed));
-    // Remove khỏi state hiển thị ngay lập tức
     setActiveNotis(prev => prev.filter(n => n.id !== id));
   };
 
   if (activeNotis.length === 0) return null;
 
   return (
-    <div className="fixed left-6 top-[280px] z-[200] flex flex-col gap-4 w-80 pointer-events-none font-sans">
+    // ĐIỀU CHỈNH VỊ TRÍ TẠI ĐÂY:
+    // Đã đổi top-[280px] thành top-[360px] để né phần Quick Buttons mới thêm
+    // Bạn có thể tăng giảm số 360px này nếu muốn lên/xuống thêm
+    <div className="fixed left-6 top-[360px] z-[200] flex flex-col gap-4 w-80 pointer-events-none font-sans">
       {activeNotis.map((n) => (
         <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors">
           <div className="p-4">
@@ -106,15 +102,24 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
               </div>
               <button onClick={() => handleCloseNoti(n.id)} className="text-gray-400 hover:text-red-500 transition-colors">✕</button>
             </div>
+            
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-3 border border-blue-100 dark:border-blue-800/50">
               <p className="text-xs whitespace-pre-line leading-relaxed italic font-medium">
                 {n.message.replace(/"/g, '')}
               </p>
             </div>
-            <div className="flex items-center justify-end mt-2 gap-2">
-                <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Đã đọc</button>
-                <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all">Xem chi tiết</a>
+
+            {/* PHẦN HIỂN THỊ GIỜ ĐÃ ĐƯỢC THÊM LẠI */}
+            <div className="flex items-center justify-between mt-2">
+                <span className="text-[10px] text-gray-400 font-medium italic">
+                    {n.type === 'summary' ? `Ngày: ${n.displayTime}` : `Lúc: ${n.displayTime}`}
+                </span>
+                <div className="flex gap-2">
+                    <button onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Đã đọc</button>
+                    <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={() => handleCloseNoti(n.id)} className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all">Xem chi tiết</a>
+                </div>
             </div>
+
           </div>
         </div>
       ))}
