@@ -2,30 +2,26 @@
 
 import React, { useState, useMemo, useEffect } from 'react'
 
-// --- NOTIFICATION SYSTEM COMPONENT (FINAL COMPLETED) ---
+// --- 1. NOTIFICATION SYSTEM (FINAL: SPLIT LEFT/RIGHT & THEMED) ---
 const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
-  // Lưu ID dạng string để tránh lỗi so sánh
   const [closedNotiIds, setClosedNotiIds] = useState<string[]>([]);
-  const SHEET_URL = "https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0";
+  
+  // 🔗 CẤU HÌNH LINK
+  const NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0";
+  const ISSUE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1xUWGBiw9tBnZqrxjt4enL_oZ7LsU8QiWKhJOS5FbwrU/edit?gid=0#gid=0"; 
 
   useEffect(() => {
     try {
       const savedClosed = localStorage.getItem('sopie_closed_notis');
-      if (savedClosed) {
-        const parsed = JSON.parse(savedClosed);
-        setClosedNotiIds(parsed.map((id: any) => String(id)));
-      }
-    } catch (e) {
-      console.error("Lỗi load history:", e);
-    }
+      if (savedClosed) setClosedNotiIds(JSON.parse(savedClosed).map((id: any) => String(id)));
+    } catch (e) { console.error(e); }
   }, []);
 
   useEffect(() => {
     const checkNewNoti = async () => {
       try {
         const backendUrl = 'https://sopie-search-tool.onrender.com';
-        // Gọi API lấy 20 tin gần nhất
         const res = await fetch(`${backendUrl}/api/get-latest-noti`);
         const data = await res.json();
         
@@ -34,63 +30,63 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
           const now = new Date();
 
           data.notis.forEach((noti: any) => {
-            const notiIdStr = String(noti.id);
-            if (closedNotiIds.includes(notiIdStr)) return;
+            if (closedNotiIds.includes(String(noti.id))) return;
 
             const createdTime = new Date(noti.created_at);
             const timeStr = `${createdTime.getHours().toString().padStart(2, '0')}:${createdTime.getMinutes().toString().padStart(2, '0')}`;
             const dateStr = `${createdTime.getDate()}/${createdTime.getMonth() + 1}`;
 
-            // --- LOGIC 1: TIN REALTIME (5 PHÚT) ---
+            // A. REALTIME (BLUE) -> LEFT
             if (noti.type === 'realtime' || !noti.type) {
               const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
               if (diffMinutes <= 5) { 
-                validNotis.push({ ...noti, displayLabel: 'HOT NEWS', displayTime: timeStr });
+                validNotis.push({ ...noti, theme: 'blue', position: 'left', header: '⚡ TIN NÓNG', time: `Lúc: ${timeStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
               }
             }
-
-            // --- LOGIC 2: TIN SUMMARY (TREO ĐẾN 15:00 HÔM SAU) ---
+            // B. SUMMARY (GREEN) -> LEFT
             else if (noti.type === 'summary') {
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
-                const day = parseInt(dateMatch[1]);
-                const month = parseInt(dateMatch[2]) - 1; 
-                const year = parseInt(dateMatch[3]);
-                
-                // Ngày của bản tin
-                const reportDate = new Date(year, month, day);
-                
-                // Hạn chót: Ngày hôm sau lúc 15:00
-                const expiryDate = new Date(reportDate);
-                expiryDate.setDate(expiryDate.getDate() + 1); 
-                expiryDate.setHours(15, 0, 0, 0); // ĐÃ CHỈNH: 15:00
-
-                // Nếu hiện tại chưa đến hạn chót -> Hiển thị
-                if (now < expiryDate) {
-                  validNotis.push({ ...noti, displayLabel: 'TỔNG HỢP TIN MỚI NGÀY', displayTime: dateStr });
+                const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
+                const expiry = new Date(y, m, d); expiry.setDate(expiry.getDate() + 1); expiry.setHours(14, 35, 0, 0);
+                if (now < expiry) {
+                  validNotis.push({ ...noti, theme: 'green', position: 'left', header: '📅 BẢN TIN NGÀY', time: `Ngày: ${dateStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
                 }
               }
             }
+            // C. ISSUE (ORANGE) -> RIGHT
+            else if (noti.type === 'issue') {
+               const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
+               if (diffMinutes <= 60) { 
+                 const firstBr = noti.message.indexOf('\n');
+                 const title = firstBr !== -1 ? noti.message.substring(0, firstBr) : "Lỗi hệ thống";
+                 const body = firstBr !== -1 ? noti.message.substring(firstBr + 1) : noti.message;
+                 validNotis.push({ 
+                   ...noti, 
+                   theme: 'orange', 
+                   position: 'right', // CĂN PHẢI
+                   header: `🔴 ISSUE: ${title}`, 
+                   message: body, 
+                   time: `Gửi lúc: ${timeStr}`, 
+                   url: ISSUE_SHEET_URL,
+                   btnLabel: 'Xem ngay'
+                 });
+               }
+            }
           });
-
-          // Sắp xếp tin mới nhất lên đầu
-          validNotis.sort((a, b) => b.id - a.id);
+          validNotis.sort((a, b) => b.id - a.id); // Tin mới nhất lên đầu
           setActiveNotis(validNotis);
         }
-      } catch (e) {
-        console.error("Noti Error:", e);
-      }
+      } catch (e) { console.error(e); }
     };
-
     checkNewNoti(); 
     const interval = setInterval(checkNewNoti, 30000); 
     return () => clearInterval(interval);
   }, [closedNotiIds]); 
 
-  const handleCloseNoti = (e: React.MouseEvent, id: number | string) => {
-    e.stopPropagation(); // Chặn click xuyên thấu
+  const handleClose = (e: any, id: any) => {
+    e.stopPropagation();
     const idStr = String(id);
-    
     if (!closedNotiIds.includes(idStr)) {
       const newClosed = [...closedNotiIds, idStr];
       setClosedNotiIds(newClosed);
@@ -101,66 +97,55 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
 
   if (activeNotis.length === 0) return null;
 
-  return (
-    // ĐÃ CHỈNH: top-[220px] để ngang hàng Search Bar
-    <div className="fixed left-6 top-[220px] z-[9999] flex flex-col gap-4 w-80 pointer-events-none font-sans">
-      {activeNotis.map((n) => (
-        <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors">
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{n.type === 'summary' ? '📋' : '🔥'}</span>
-                <h3 className="font-bold text-blue-700 dark:text-blue-400 text-sm uppercase">
-                   {n.displayLabel}
-                </h3>
-                <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
-              </div>
-              <button 
-                onClick={(e) => handleCloseNoti(e, n.id)} 
-                className="text-gray-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
-              >✕</button>
-            </div>
-            
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-3 border border-blue-100 dark:border-blue-800/50">
-              <p className="text-xs whitespace-pre-line leading-relaxed italic font-medium">
-                {n.message.replace(/"/g, '')}
-              </p>
-            </div>
+  // Render Card
+  const NotiCard = ({ n }: { n: any }) => {
+    let c = { border: '', text: '', bg: '', btn: '', ring: '' };
+    if (n.theme === 'green') c = { border: 'border-green-500', text: 'text-green-700 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-900/20', btn: 'bg-green-600 hover:bg-green-700', ring: 'bg-green-500' };
+    else if (n.theme === 'orange') c = { border: 'border-orange-500', text: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20', btn: 'bg-orange-600 hover:bg-orange-700', ring: 'bg-orange-500' };
+    else c = { border: 'border-blue-500', text: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/20', btn: 'bg-blue-600 hover:bg-blue-700', ring: 'bg-blue-500' };
 
-            <div className="flex items-center justify-between mt-2">
-                <span className="text-[10px] text-gray-400 font-medium italic">
-                    {n.type === 'summary' ? `Ngày: ${n.displayTime}` : `Lúc: ${n.displayTime}`}
-                </span>
-                <div className="flex gap-2">
-                    <button 
-                        onClick={(e) => handleCloseNoti(e, n.id)} 
-                        className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors border border-gray-200 dark:border-gray-600 cursor-pointer"
-                    >Bỏ qua</button>
-                    <a 
-                        href={SHEET_URL} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={(e) => handleCloseNoti(e, n.id)} 
-                        className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all cursor-pointer"
-                    >Xem ngay</a>
-                </div>
+    return (
+      <div className={`pointer-events-auto animate-in slide-in-from-bottom-5 duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 ${c.border} ring-1 ring-black/5 text-gray-900 dark:text-white mb-4`}>
+        <div className="p-4">
+          <div className="flex justify-between items-start mb-2">
+            <div className="flex items-center gap-2">
+              <h3 className={`font-bold ${c.text} text-sm uppercase`}>{n.header}</h3>
+              <span className={`flex h-2 w-2 rounded-full ${c.ring} animate-pulse`}></span>
+            </div>
+            <button onClick={(e) => handleClose(e, n.id)} className="text-gray-400 hover:text-red-500">✕</button>
+          </div>
+          <div className={`${c.bg} p-3 rounded-xl mb-3 border border-gray-100 dark:border-gray-700/50`}>
+            <p className="text-xs whitespace-pre-line font-medium leading-relaxed">{n.message.replace(/"/g, '')}</p>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-[10px] text-gray-400 italic font-medium">{n.time}</span>
+            <div className="flex gap-2">
+              <button onClick={(e) => handleClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Bỏ qua</button>
+              <a href={n.url} target="_blank" onClick={(e) => handleClose(e, n.id)} className={`px-3 py-1.5 text-[10px] font-bold text-white rounded shadow-sm ${c.btn}`}>{n.btnLabel}</a>
             </div>
           </div>
         </div>
-      ))}
-    </div>
+      </div>
+    )
+  }
+
+  const leftNotis = activeNotis.filter(n => n.position === 'left');
+  const rightNotis = activeNotis.filter(n => n.position === 'right');
+
+  return (
+    <>
+      {leftNotis.length > 0 && <div className="fixed left-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">{leftNotis.map(n => <NotiCard key={n.id} n={n} />)}</div>}
+      {rightNotis.length > 0 && <div className="fixed right-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">{rightNotis.map(n => <NotiCard key={n.id} n={n} />)}</div>}
+    </>
   );
 };
 
 // --- HELPER FUNCTIONS ---
 const formatDate = (dateString: string) => {
   try {
-    const parts = dateString.split('-'); // YYYY-MM-DD
-    if (parts.length === 3) {
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-  } catch (e) { console.error("Lỗi format ngày:", e); }
-  return dateString;
+    const parts = dateString.split('-');
+    if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  } catch (e) {} return dateString;
 };
 
 const LINKS = [
@@ -188,87 +173,67 @@ export default function Home() {
   const [selectedSop, setSelectedSop] = useState<any | null>(null)
   const [activeSuggestionTab, setActiveSuggestionTab] = useState('All')
 
-  // Load dark mode preference from localStorage
   useEffect(() => {
     const savedMode = localStorage.getItem('sopie_dark_mode') === 'true';
     setDarkMode(savedMode);
   }, []);
 
-  // Save dark mode preference
   useEffect(() => {
     localStorage.setItem('sopie_dark_mode', darkMode.toString());
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    if (darkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
   }, [darkMode]);
 
   const handleSearch = async () => {
-    if (!query.trim()) {
-      setError('Vui lòng nhập câu hỏi')
-      return
-    }
-
+    if (!query.trim()) { setError('Vui lòng nhập câu hỏi'); return; }
     if (searchType === 'keyword' && query.trim().split(' ').length > 5) {
-      setError('Bạn đang ở chế độ tra cứu bằng từ khóa. Xin vui lòng nhập từ khóa hoặc bật chế độ tra cứu AI')
-      return
+      setError('Bạn đang ở chế độ tra cứu bằng từ khóa. Xin vui lòng nhập từ khóa hoặc bật chế độ tra cứu AI');
+      return;
     }
 
     setLoading(true); setError(''); setResults([]); setHasSearched(false); setBackendSuggestion(null); setSelectedSop(null); setActiveSuggestionTab('All'); 
 
-    const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-      ? 'http://localhost:5000'
-      : 'https://sopie-search-tool.onrender.com';
+    const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://sopie-search-tool.onrender.com';
     
     try {
       const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: query,
-          domain: domain === 'all' ? null : domain,
-          type: searchType === 'ai' ? 'semantic' : 'keyword',
-          limit: 10
-        }),
+        body: JSON.stringify({ query, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 10 }),
       })
 
       const data = await response.json()
       if (data.success) {
         setHasSearched(true);
         if (data.suggestion) setBackendSuggestion(data.suggestion);
-
-        if (data.results.length === 0 && !data.suggestion) {
-          setError('Không tìm thấy SOP phù hợp. Vui lòng thử lại với từ khóa chi tiết hơn hoặc kiểm tra lại domain filter.')
-        } else {
-          setError('') 
-        }
+        if (data.results.length === 0 && !data.suggestion) setError('Không tìm thấy SOP phù hợp. Vui lòng thử lại với từ khóa chi tiết hơn hoặc kiểm tra lại domain filter.')
+        else setError('');
         
-        const sortedResults = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
-        setResults(sortedResults)
+        const sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
+        setResults(sorted)
 
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
-        data.results.forEach((r: any) => {
-          defaultTabs[r.id] = 'cs1' 
-        })
+        data.results.forEach((r: any) => { defaultTabs[r.id] = 'cs1' })
         setActiveHxlTabs(defaultTabs)
-      } else {
-        setError('Lỗi kết nối API. Vui lòng kiểm tra status của backend server.')
-      }
+      } else setError('Lỗi kết nối API. Vui lòng kiểm tra status của backend server.')
     } catch (err) {
-      console.error("Fetch error:", err);
-      setError('Không thể kết nối backend. Vui lòng kiểm tra server hoặc Network/CORS.')
-    } finally {
-      setLoading(false)
-    }
+      console.error(err); setError('Không thể kết nối backend. Vui lòng kiểm tra server hoặc Network/CORS.')
+    } finally { setLoading(false) }
   }
 
-  // --- LOGIC PHÂN LOẠI HIỂN THỊ ---
+  const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
+
   const { top5Results, moreSuggestions } = useMemo(() => {
-    const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5);
-    const topIds = new Set(top.map(r => r.id));
-    const suggestions = results.filter(r => !topIds.has(r.id));
-    return { top5Results: top, moreSuggestions: suggestions };
+    const highScores = results.filter(r => r.relevance_score >= 0.8);
+    if (highScores.length > 0) {
+      const top = highScores.slice(0, 5);
+      const topIds = new Set(top.map(r => r.id));
+      const rest = results.filter(r => !topIds.has(r.id)).slice(0, 10);
+      return { top5Results: top, moreSuggestions: rest };
+    } else {
+      // Nếu không có high score, hiển thị 10 gợi ý tốt nhất
+      return { top5Results: [], moreSuggestions: results.slice(0, 10) };
+    }
   }, [results]);
   
   const SopDetailModal = () => {
@@ -280,12 +245,14 @@ export default function Home() {
     return (
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={() => setSelectedSop(null)}>
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors duration-300 border border-gray-100 dark:border-gray-700" onClick={(e) => e.stopPropagation()}>
-          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
+          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
           
           <div className="flex justify-between items-start mb-4">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex-1 pr-4">{r.title}</h3>
+            <div className="flex-1 pr-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{r.title}</h3>
+                {/* ID SOP hiển thị góc trái dưới tiêu đề */}
+                <span className="text-xs text-gray-400 font-mono mt-1 block">ID: {r.id}</span>
+            </div>
             <span className="px-4 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold whitespace-nowrap">{r.domain}</span>
           </div>
 
@@ -326,8 +293,8 @@ export default function Home() {
 
           {r.notes && (<div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500"><strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.notes}</p></div>)}
 
-          {(r.templates && (r.templates.email || r.templates.chat)) || activeHxlLevel === 'cs2' ? (
-            <div className="mb-4">
+          {/* Logic Tab CS2: Ẩn template cũ, hiện CSWriteLab */}
+          <div className="mb-4">
               {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
                 <>
                   <strong className="text-gray-700 dark:text-gray-300 block mb-3 text-base font-bold">Gợi ý phản hồi dành cho CS1:</strong>
@@ -335,9 +302,16 @@ export default function Home() {
                   {r.templates.chat && (<details className="mb-3 group"><summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all"><span>💬 Template Call/Chat</span><span className="transition-transform group-open:rotate-180">▼</span></summary><div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{r.templates.chat}</div></details>)}
                 </>
               )}
-              {activeHxlLevel === 'cs2' && (<div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border-l-4 border-blue-500"><strong className="text-blue-700 dark:text-blue-400 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-3">Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-800 dark:hover:text-blue-300 underline transition-colors">CSWriteLab ✍️</a></p></div>)}
-            </div>
-          ) : null}
+              {activeHxlLevel === 'cs2' && (
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border-l-4 border-blue-500">
+                    <strong className="text-blue-700 dark:text-blue-400 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
+                    <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-3">Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với:</p>
+                    <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg shadow-sm transition-all">
+                        CSWriteLab ✍️
+                    </a>
+                </div>
+              )}
+          </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
             {r.link ? (<a href={r.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow transition-all">📄 Xem SOP gốc</a>) : (<div></div>)}
@@ -404,9 +378,31 @@ export default function Home() {
           
           {searchType === 'keyword' && (<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.</p>)}
 
-          {hasSearched && !loading && results.length === 0 && (
+          {/* FALLBACK UI: Hiện khi search xong mà không có High Confidence */}
+          {hasSearched && !loading && !hasHighConfidence && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
-              <div className="flex items-start gap-4"><div className="text-2xl mt-1">💡</div><div className="space-y-3"><p className="font-bold text-base">Chưa có kết quả có độ tương thích cao, bạn vui lòng thử:</p><ul className="list-disc list-inside text-sm space-y-2 font-medium opacity-90"><li>Mô tả lại vấn đề một cách chi tiết hơn</li><li>Điều chỉnh lại bộ lọc kiến thức</li>{backendSuggestion?.link && (<li className="list-none pt-2 flex items-center gap-2"><span>Tham khảo thêm tại:</span><a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black shadow-sm hover:scale-105 transition-all">🔗 {backendSuggestion.link_label || 'Link gợi ý'}</a></li>)}</ul><p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50">Hoặc bạn có thể liên hệ trực tiếp QC để được hỗ trợ nhanh chóng.</p></div></div>
+              <div className="flex items-start gap-4">
+                <div className="text-2xl mt-1">💡</div>
+                <div className="space-y-3">
+                  <p className="font-bold text-base">Chưa tìm thấy kết quả phù hợp, CS vui lòng:</p>
+                  <ul className="list-disc list-inside text-sm space-y-2 font-medium opacity-90">
+                    <li>Thay đổi cách mô tả vấn đề và thử lại</li>
+                    <li>Kiểm tra lại bộ lọc domain kiến thức</li>
+                    {backendSuggestion?.link && (
+                        <li className="list-none pt-2 flex items-center gap-2">
+                           <span>Tham khảo chi tiết tại SOP gốc:</span>
+                           <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold rounded-lg shadow-sm hover:scale-105 transition-all">
+                             🔗 {backendSuggestion.link_label || 'Link quy trình'}
+                           </a>
+                        </li>
+                    )}
+                  </ul>
+                  {/* FOOTER ĐƯỢC YÊU CẦU THÊM */}
+                  <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50">
+                    Hoặc CS có thể liên hệ QC team để được hỗ trợ nhanh chóng.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
@@ -416,8 +412,21 @@ export default function Home() {
         {!loading && results.length > 0 && (
           <div className="mt-8 animate-slide-up">
             <div className="flex items-center justify-between mb-6"><h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {results.length} kết quả</h2><span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium border border-gray-200 dark:border-gray-700">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span></div>
-            {top5Results.length > 0 && (<div className="mb-12"><h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {top5Results.length} Kết quả hàng đầu</h3><div className="space-y-4">{top5Results.map((r) => (<SopSummaryCard key={r.id} r={r} isTopMatch={true} />))}</div></div>)}
-            {moreSuggestions.length > 0 && (<div><h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">📑 Gợi ý thêm ({moreSuggestions.length} SOPs)</h3><div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide"><button onClick={() => setActiveSuggestionTab('All')} className={`px-4 py-2 font-semibold rounded-lg transition-colors ${activeSuggestionTab === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>Tất cả ({moreSuggestions.length})</button>{suggestionDomains.map(domain => (<button key={domain} onClick={() => setActiveSuggestionTab(domain)} className={`px-4 py-2 font-semibold rounded-lg whitespace-nowrap transition-colors ${activeSuggestionTab === domain ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>{domain} ({moreSuggestions.filter(r => r.domain === domain).length})</button>))}</div><div className="space-y-4">{filteredSuggestions.map(r => (<SopSummaryCard key={r.id} r={r} isTopMatch={false} />))}</div></div>)}
+            
+            {top5Results.length > 0 && (
+                <div className="mb-12">
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {top5Results.length} Kết quả hàng đầu</h3>
+                    <div className="space-y-4">{top5Results.map((r) => (<SopSummaryCard key={r.id} r={r} isTopMatch={true} />))}</div>
+                </div>
+            )}
+            
+            {moreSuggestions.length > 0 && (
+                <div>
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">📑 Gợi ý thêm ({moreSuggestions.length} SOPs)</h3>
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide"><button onClick={() => setActiveSuggestionTab('All')} className={`px-4 py-2 font-semibold rounded-lg transition-colors ${activeSuggestionTab === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>Tất cả ({moreSuggestions.length})</button>{suggestionDomains.map(domain => (<button key={domain} onClick={() => setActiveSuggestionTab(domain)} className={`px-4 py-2 font-semibold rounded-lg whitespace-nowrap transition-colors ${activeSuggestionTab === domain ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>{domain} ({moreSuggestions.filter(r => r.domain === domain).length})</button>))}</div>
+                    <div className="space-y-4">{filteredSuggestions.map(r => (<SopSummaryCard key={r.id} r={r} isTopMatch={false} />))}</div>
+                </div>
+            )}
           </div>
         )}
       </div>
