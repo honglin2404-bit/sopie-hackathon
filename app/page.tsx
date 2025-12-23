@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 
-// --- NOTIFICATION SYSTEM COMPONENT (UPDATED) ---
-// Logic: Tự động lọc tin Summary để treo đến 14:35 ngày hôm sau
+// --- NOTIFICATION SYSTEM COMPONENT (FINAL COMPLETED) ---
 const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
   // Lưu ID dạng string để tránh lỗi so sánh
@@ -26,7 +25,7 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
     const checkNewNoti = async () => {
       try {
         const backendUrl = 'https://sopie-search-tool.onrender.com';
-        // Gọi API lấy 20 tin gần nhất để đảm bảo tin Summary không bị trôi
+        // Gọi API lấy 20 tin gần nhất
         const res = await fetch(`${backendUrl}/api/get-latest-noti`);
         const data = await res.json();
         
@@ -36,7 +35,6 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
 
           data.notis.forEach((noti: any) => {
             const notiIdStr = String(noti.id);
-            // Nếu user đã tắt tin này rồi thì bỏ qua
             if (closedNotiIds.includes(notiIdStr)) return;
 
             const createdTime = new Date(noti.created_at);
@@ -47,13 +45,12 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
             if (noti.type === 'realtime' || !noti.type) {
               const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
               if (diffMinutes <= 5) { 
-                validNotis.push({ ...noti, displayLabel: '⚡ TIN NÓNG', displayTime: timeStr });
+                validNotis.push({ ...noti, displayLabel: 'HOT NEWS', displayTime: timeStr });
               }
             }
 
-            // --- LOGIC 2: TIN SUMMARY (TREO ĐẾN 14:35 HÔM SAU) ---
+            // --- LOGIC 2: TIN SUMMARY (TREO ĐẾN 15:00 HÔM SAU) ---
             else if (noti.type === 'summary') {
-              // Regex tìm ngày trong nội dung tin: "ngày DD/MM/YYYY"
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
                 const day = parseInt(dateMatch[1]);
@@ -63,14 +60,14 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
                 // Ngày của bản tin
                 const reportDate = new Date(year, month, day);
                 
-                // Hạn chót: Ngày hôm sau lúc 14:35
+                // Hạn chót: Ngày hôm sau lúc 15:00
                 const expiryDate = new Date(reportDate);
                 expiryDate.setDate(expiryDate.getDate() + 1); 
-                expiryDate.setHours(14, 35, 0, 0); 
+                expiryDate.setHours(15, 0, 0, 0); // ĐÃ CHỈNH: 15:00
 
                 // Nếu hiện tại chưa đến hạn chót -> Hiển thị
                 if (now < expiryDate) {
-                  validNotis.push({ ...noti, displayLabel: '📅 BẢN TIN NGÀY', displayTime: dateStr });
+                  validNotis.push({ ...noti, displayLabel: 'TỔNG HỢP TIN MỚI NGÀY', displayTime: dateStr });
                 }
               }
             }
@@ -91,7 +88,7 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   }, [closedNotiIds]); 
 
   const handleCloseNoti = (e: React.MouseEvent, id: number | string) => {
-    e.stopPropagation(); // Chặn click nhầm
+    e.stopPropagation(); // Chặn click xuyên thấu
     const idStr = String(id);
     
     if (!closedNotiIds.includes(idStr)) {
@@ -105,8 +102,8 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   if (activeNotis.length === 0) return null;
 
   return (
-    // Position fixed, né Search Bar (top 360px), z-index cao nhất
-    <div className="fixed left-6 top-[360px] z-[9999] flex flex-col gap-4 w-80 pointer-events-none font-sans">
+    // ĐÃ CHỈNH: top-[220px] để ngang hàng Search Bar
+    <div className="fixed left-6 top-[220px] z-[9999] flex flex-col gap-4 w-80 pointer-events-none font-sans">
       {activeNotis.map((n) => (
         <div key={n.id} className="pointer-events-auto animate-in slide-in-from-left-full duration-500 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border-t-4 border-blue-500 overflow-hidden ring-1 ring-black/5 text-gray-900 dark:text-white transition-colors">
           <div className="p-4">
@@ -118,20 +115,34 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
                 </h3>
                 <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
               </div>
-              <button onClick={(e) => handleCloseNoti(e, n.id)} className="text-gray-400 hover:text-red-500 transition-colors p-1 cursor-pointer">✕</button>
+              <button 
+                onClick={(e) => handleCloseNoti(e, n.id)} 
+                className="text-gray-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+              >✕</button>
             </div>
+            
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl mb-3 border border-blue-100 dark:border-blue-800/50">
               <p className="text-xs whitespace-pre-line leading-relaxed italic font-medium">
                 {n.message.replace(/"/g, '')}
               </p>
             </div>
+
             <div className="flex items-center justify-between mt-2">
                 <span className="text-[10px] text-gray-400 font-medium italic">
                     {n.type === 'summary' ? `Ngày: ${n.displayTime}` : `Lúc: ${n.displayTime}`}
                 </span>
                 <div className="flex gap-2">
-                    <button onClick={(e) => handleCloseNoti(e, n.id)} className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors border border-gray-200 dark:border-gray-600 cursor-pointer">Đã đọc</button>
-                    <a href={SHEET_URL} target="_blank" rel="noopener noreferrer" onClick={(e) => handleCloseNoti(e, n.id)} className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all cursor-pointer">Xem chi tiết</a>
+                    <button 
+                        onClick={(e) => handleCloseNoti(e, n.id)} 
+                        className="px-3 py-1.5 text-[11px] font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors border border-gray-200 dark:border-gray-600 cursor-pointer"
+                    >Bỏ qua</button>
+                    <a 
+                        href={SHEET_URL} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        onClick={(e) => handleCloseNoti(e, n.id)} 
+                        className="px-3 py-1.5 text-[11px] font-bold bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-all cursor-pointer"
+                    >Xem ngay</a>
                 </div>
             </div>
           </div>
@@ -170,7 +181,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
-  // Bổ sung state để quản lý Suggestion
   const [hasSearched, setHasSearched] = useState(false);
   const [backendSuggestion, setBackendSuggestion] = useState<any>(null);
 
@@ -255,7 +265,6 @@ export default function Home() {
 
   // --- LOGIC PHÂN LOẠI HIỂN THỊ ---
   const { top5Results, moreSuggestions } = useMemo(() => {
-    // Logic: Luôn trả về 5 top và phần còn lại, bất kể điểm số (để hiện phần Gợi ý)
     const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5);
     const topIds = new Set(top.map(r => r.id));
     const suggestions = results.filter(r => !topIds.has(r.id));
