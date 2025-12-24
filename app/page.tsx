@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react'
 
-// --- 1. NOTIFICATION SYSTEM (FINAL: SPLIT LEFT/RIGHT & THEMED) ---
+// --- 1. NOTIFICATION SYSTEM (FINAL LOGIC: 18:00 SAME DAY / 15:00 NEXT DAY) ---
 const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
   const [closedNotiIds, setClosedNotiIds] = useState<string[]>([]);
@@ -33,48 +33,92 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
             if (closedNotiIds.includes(String(noti.id))) return;
 
             const createdTime = new Date(noti.created_at);
-            const timeStr = `${createdTime.getHours().toString().padStart(2, '0')}:${createdTime.getMinutes().toString().padStart(2, '0')}`;
-            const dateStr = `${createdTime.getDate()}/${createdTime.getMonth() + 1}`;
+            
+            // Format hiển thị: dd/mm HH:MM
+            const dd = String(createdTime.getDate()).padStart(2, '0');
+            const mm = String(createdTime.getMonth() + 1).padStart(2, '0');
+            const hh = String(createdTime.getHours()).padStart(2, '0');
+            const min = String(createdTime.getMinutes()).padStart(2, '0');
+            const fullTimeStr = `${dd}/${mm} ${hh}:${min}`;
 
-            // A. REALTIME (BLUE) -> LEFT
+            // --- A. REALTIME (BLUE): TREO ĐẾN 18:00 CÙNG NGÀY ---
             if (noti.type === 'realtime' || !noti.type) {
-              const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
-              if (diffMinutes <= 5) { 
-                validNotis.push({ ...noti, theme: 'blue', position: 'left', header: '⚡ TIN NÓNG', time: `Lúc: ${timeStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
+              const expiry = new Date(createdTime);
+              expiry.setHours(18, 0, 0, 0); // Hết hạn lúc 18:00 cùng ngày tạo
+
+              // Chỉ hiện nếu chưa qua 18:00
+              if (now < expiry) { 
+                validNotis.push({ 
+                  ...noti, 
+                  theme: 'blue', 
+                  position: 'left', 
+                  header: '⚡ HOT NEWS', 
+                  time: `Lúc: ${fullTimeStr}`, 
+                  url: NEWS_SHEET_URL, 
+                  btnLabel: 'Xem ngay' 
+                });
               }
             }
-            // B. SUMMARY (GREEN) -> LEFT
+
+            // --- B. SUMMARY (GREEN): TREO ĐẾN 15:00 HÔM SAU ---
             else if (noti.type === 'summary') {
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
                 const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
-                const expiry = new Date(y, m, d); expiry.setDate(expiry.getDate() + 1); expiry.setHours(14, 35, 0, 0);
+                
+                // Logic: Hết hạn vào 15:00 của ngày hôm sau
+                const expiry = new Date(y, m, d); 
+                expiry.setDate(expiry.getDate() + 1); // +1 ngày
+                expiry.setHours(15, 0, 0, 0);         // 15:00:00
+
                 if (now < expiry) {
-                  validNotis.push({ ...noti, theme: 'green', position: 'left', header: '📅 BẢN TIN NGÀY', time: `Ngày: ${dateStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
+                  validNotis.push({ 
+                    ...noti, 
+                    theme: 'green', 
+                    position: 'left', 
+                    header: '📅 BẢN TIN NGÀY', 
+                    time: `Ngày: ${d}/${m + 1}`, 
+                    url: NEWS_SHEET_URL, 
+                    btnLabel: 'Xem ngay' 
+                  });
                 }
               }
             }
-            // C. ISSUE (ORANGE) -> RIGHT
+
+            // --- C. ISSUE (ORANGE): TREO ĐẾN 15:00 HÔM SAU ---
             else if (noti.type === 'issue') {
-               const diffMinutes = (now.getTime() - createdTime.getTime()) / (1000 * 60);
-               if (diffMinutes <= 60) { 
-                 const firstBr = noti.message.indexOf('\n');
-                 const title = firstBr !== -1 ? noti.message.substring(0, firstBr) : "Lỗi hệ thống";
-                 const body = firstBr !== -1 ? noti.message.substring(firstBr + 1) : noti.message;
+               const firstBr = noti.message.indexOf('\n');
+               const title = firstBr !== -1 ? noti.message.substring(0, firstBr) : "Lỗi hệ thống";
+               const body = firstBr !== -1 ? noti.message.substring(firstBr + 1) : noti.message;
+
+               // Lấy ngày phát hiện hoặc ngày tạo tin
+               let issueDate = createdTime; 
+               const dateMatch = noti.message.match(/Ngày phát hiện: (\d{1,2})\/(\d{1,2})\/(\d{4})/);
+               if (dateMatch) {
+                 const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
+                 issueDate = new Date(y, m, d);
+               }
+
+               // Logic: Hết hạn vào 15:00 của ngày hôm sau
+               const expiry = new Date(issueDate);
+               expiry.setDate(expiry.getDate() + 1); // +1 ngày
+               expiry.setHours(15, 0, 0, 0);         // 15:00:00
+
+               if (now < expiry) {
                  validNotis.push({ 
                    ...noti, 
                    theme: 'orange', 
-                   position: 'right', // CĂN PHẢI
-                   header: `🔴 ISSUE: ${title}`, 
+                   position: 'right', 
+                   header: `🔴 ISSUE REPORT: ${title}`, 
                    message: body, 
-                   time: `Gửi lúc: ${timeStr}`, 
-                   url: ISSUE_SHEET_URL,
+                   time: `Gửi lúc: ${fullTimeStr}`, 
+                   url: ISSUE_SHEET_URL, 
                    btnLabel: 'Xem ngay'
                  });
                }
             }
           });
-          validNotis.sort((a, b) => b.id - a.id); // Tin mới nhất lên đầu
+          validNotis.sort((a, b) => b.id - a.id);
           setActiveNotis(validNotis);
         }
       } catch (e) { console.error(e); }
@@ -120,7 +164,9 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
           <div className="flex items-center justify-between mt-2">
             <span className="text-[10px] text-gray-400 italic font-medium">{n.time}</span>
             <div className="flex gap-2">
-              <button onClick={(e) => handleClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">Bỏ qua</button>
+              <button onClick={(e) => handleClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                {n.theme === 'orange' ? 'Bỏ qua' : 'Đã đọc'}
+              </button>
               <a href={n.url} target="_blank" onClick={(e) => handleClose(e, n.id)} className={`px-3 py-1.5 text-[10px] font-bold text-white rounded shadow-sm ${c.btn}`}>{n.btnLabel}</a>
             </div>
           </div>
@@ -231,7 +277,6 @@ export default function Home() {
       const rest = results.filter(r => !topIds.has(r.id)).slice(0, 10);
       return { top5Results: top, moreSuggestions: rest };
     } else {
-      // Nếu không có high score, hiển thị 10 gợi ý tốt nhất
       return { top5Results: [], moreSuggestions: results.slice(0, 10) };
     }
   }, [results]);
@@ -250,7 +295,6 @@ export default function Home() {
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1 pr-4">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{r.title}</h3>
-                {/* ID SOP hiển thị góc trái dưới tiêu đề */}
                 <span className="text-xs text-gray-400 font-mono mt-1 block">ID: {r.id}</span>
             </div>
             <span className="px-4 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold whitespace-nowrap">{r.domain}</span>
@@ -293,7 +337,6 @@ export default function Home() {
 
           {r.notes && (<div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500"><strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.notes}</p></div>)}
 
-          {/* Logic Tab CS2: Ẩn template cũ, hiện CSWriteLab */}
           <div className="mb-4">
               {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
                 <>
@@ -378,7 +421,6 @@ export default function Home() {
           
           {searchType === 'keyword' && (<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.</p>)}
 
-          {/* FALLBACK UI: Hiện khi search xong mà không có High Confidence */}
           {hasSearched && !loading && !hasHighConfidence && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
@@ -397,7 +439,6 @@ export default function Home() {
                         </li>
                     )}
                   </ul>
-                  {/* FOOTER ĐƯỢC YÊU CẦU THÊM */}
                   <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50">
                     Hoặc CS có thể liên hệ QC team để được hỗ trợ nhanh chóng.
                   </p>
