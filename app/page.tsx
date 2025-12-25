@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 
-// --- 1. NOTIFICATION SYSTEM (OPTIMIZED WITH MEMO) ---
+// --- 1. NOTIFICATION SYSTEM ---
 const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
   const [closedNotiIds, setClosedNotiIds] = useState<string[]>([]);
@@ -38,16 +38,14 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
             const min = String(createdTime.getMinutes()).padStart(2, '0');
             const fullTimeStr = `${dd}/${mm} ${hh}:${min}`;
 
-            // A. REALTIME
+            // Logic phân loại tin
             if (noti.type === 'realtime' || !noti.type) {
               const expiry = new Date(createdTime);
               expiry.setHours(18, 0, 0, 0); 
               if (now < expiry) { 
                 validNotis.push({ ...noti, theme: 'blue', position: 'left', header: '⚡ HOT NEWS', time: `Lúc: ${fullTimeStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
               }
-            }
-            // B. SUMMARY
-            else if (noti.type === 'summary') {
+            } else if (noti.type === 'summary') {
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
                 const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
@@ -58,9 +56,7 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
                   validNotis.push({ ...noti, theme: 'green', position: 'left', header: '📅 BẢN TIN NGÀY', time: `Ngày: ${d}/${m + 1}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
                 }
               }
-            }
-            // C. ISSUE
-            else if (noti.type === 'issue') {
+            } else if (noti.type === 'issue') {
                const firstBr = noti.message.indexOf('\n');
                const title = firstBr !== -1 ? noti.message.substring(0, firstBr) : "Lỗi hệ thống";
                const body = firstBr !== -1 ? noti.message.substring(firstBr + 1) : noti.message;
@@ -88,20 +84,38 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
     return () => clearInterval(interval);
   }, [closedNotiIds]); 
 
-  const handleClose = (e: any, id: any) => {
+  const handleClose = useCallback((e: any, id: any) => {
     e.stopPropagation();
     const idStr = String(id);
-    if (!closedNotiIds.includes(idStr)) {
-      const newClosed = [...closedNotiIds, idStr];
-      setClosedNotiIds(newClosed);
+    setClosedNotiIds(prev => {
+      if (prev.includes(idStr)) return prev;
+      const newClosed = [...prev, idStr];
       localStorage.setItem('sopie_closed_notis', JSON.stringify(newClosed));
-      setActiveNotis(prev => prev.filter(n => String(n.id) !== idStr));
-    }
-  };
+      return newClosed;
+    });
+    setActiveNotis(prev => prev.filter(n => String(n.id) !== idStr));
+  }, []);
 
   if (activeNotis.length === 0) return null;
 
-  const NotiCard = ({ n }: { n: any }) => {
+  return (
+    <>
+      {activeNotis.filter(n => n.position === 'left').length > 0 && (
+        <div className="fixed left-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">
+          {activeNotis.filter(n => n.position === 'left').map(n => <NotiCard key={n.id} n={n} onClose={handleClose} />)}
+        </div>
+      )}
+      {activeNotis.filter(n => n.position === 'right').length > 0 && (
+        <div className="fixed right-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">
+          {activeNotis.filter(n => n.position === 'right').map(n => <NotiCard key={n.id} n={n} onClose={handleClose} />)}
+        </div>
+      )}
+    </>
+  );
+});
+NotificationSystem.displayName = 'NotificationSystem';
+
+const NotiCard = React.memo(({ n, onClose }: { n: any, onClose: any }) => {
     let c = { border: '', text: '', bg: '', btn: '', ring: '' };
     if (n.theme === 'green') c = { border: 'border-green-500', text: 'text-green-700 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-900/20', btn: 'bg-green-600 hover:bg-green-700', ring: 'bg-green-500' };
     else if (n.theme === 'orange') c = { border: 'border-orange-500', text: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20', btn: 'bg-orange-600 hover:bg-orange-700', ring: 'bg-orange-500' };
@@ -115,7 +129,7 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
               <h3 className={`font-bold ${c.text} text-sm uppercase`}>{n.header}</h3>
               <span className={`flex h-2 w-2 rounded-full ${c.ring} animate-pulse`}></span>
             </div>
-            <button onClick={(e) => handleClose(e, n.id)} className="text-gray-400 hover:text-red-500">✕</button>
+            <button onClick={(e) => onClose(e, n.id)} className="text-gray-400 hover:text-red-500">✕</button>
           </div>
           <div className={`${c.bg} p-3 rounded-xl mb-3 border border-gray-100 dark:border-gray-700/50`}>
             <p className="text-xs whitespace-pre-line font-medium leading-relaxed">{n.message.replace(/"/g, '')}</p>
@@ -123,30 +137,19 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
           <div className="flex items-center justify-between mt-2">
             <span className="text-[10px] text-gray-400 italic font-medium">{n.time}</span>
             <div className="flex gap-2">
-              <button onClick={(e) => handleClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+              <button onClick={(e) => onClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                 Bỏ qua
               </button>
-              <a href={n.url} target="_blank" onClick={(e) => handleClose(e, n.id)} className={`px-3 py-1.5 text-[10px] font-bold text-white rounded shadow-sm ${c.btn}`}>{n.btnLabel}</a>
+              <a href={n.url} target="_blank" onClick={(e) => onClose(e, n.id)} className={`px-3 py-1.5 text-[10px] font-bold text-white rounded shadow-sm ${c.btn}`}>{n.btnLabel}</a>
             </div>
           </div>
         </div>
       </div>
     )
-  }
-
-  const leftNotis = activeNotis.filter(n => n.position === 'left');
-  const rightNotis = activeNotis.filter(n => n.position === 'right');
-
-  return (
-    <>
-      {leftNotis.length > 0 && <div className="fixed left-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">{leftNotis.map(n => <NotiCard key={n.id} n={n} />)}</div>}
-      {rightNotis.length > 0 && <div className="fixed right-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">{rightNotis.map(n => <NotiCard key={n.id} n={n} />)}</div>}
-    </>
-  );
 });
-NotificationSystem.displayName = 'NotificationSystem';
+NotiCard.displayName = 'NotiCard';
 
-// --- HELPER FUNCTIONS ---
+// --- HELPER FUNCTIONS & COMPONENTS (MOVED OUTSIDE) ---
 const formatDate = (dateString: string) => {
   try {
     const parts = dateString.split('-');
@@ -163,7 +166,6 @@ const LINKS = [
   { label: 'CSWriteLab', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300' }
 ]
 
-// --- COMPONENT: COPY BUTTON ---
 const CopyButton = ({ text }: { text: string }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = (e: React.MouseEvent) => {
@@ -183,6 +185,133 @@ const CopyButton = ({ text }: { text: string }) => {
   );
 };
 
+// --- SOP CARD COMPONENT (Đưa ra ngoài Home để tránh re-render) ---
+const SopSummaryCard = React.memo(({ r, isTopMatch = false, onClick }: { r: any, isTopMatch?: boolean, onClick: (r: any) => void }) => (
+  <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600'} duration-200`} onClick={() => onClick(r)}>
+    <div className="flex justify-between items-start mb-3">
+      <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>{isTopMatch && '⭐ '} {r.title}</h3>
+      <span className={`px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap ${isTopMatch ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'}`}>{r.domain}</span>
+    </div>
+    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{r.cause ? `Nguyên nhân: ${r.cause}` : (r.solution?.level1 ? r.solution.level1 : "Nhấp để xem chi tiết...")}</p>
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}</span>
+      <span className={`font-semibold ${isTopMatch ? 'text-yellow-700 dark:text-yellow-400' : 'text-blue-600 dark:text-blue-400'}`}>⚡ {Math.round(r.relevance_score * 100)}% Match</span>
+    </div>
+  </div>
+));
+SopSummaryCard.displayName = 'SopSummaryCard';
+
+// --- SOP DETAIL MODAL (Đưa ra ngoài Home) ---
+const SopDetailModal = React.memo(({ r, onClose, activeHxlLevel, onTabChange }: { r: any, onClose: () => void, activeHxlLevel: string, onTabChange: (id: string, level: 'cs1'|'cs2') => void }) => {
+    if (!r) return null;
+    const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
+
+    return (
+      <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={onClose}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+          <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
+          
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1 pr-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{r.title}</h3>
+                <span className="text-xs text-gray-400 font-mono mt-1 block">ID: {r.id}</span>
+            </div>
+            <span className="px-4 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold whitespace-nowrap">{r.domain}</span>
+          </div>
+
+          {r.cause && (<div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500"><strong className="text-red-700 dark:text-red-400 block mb-2">⚠️ Nguyên nhân:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{r.cause}</p></div>)}
+
+          {r.check_tools && r.check_tools.guideline && (
+            <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
+              <strong className="text-blue-700 dark:text-blue-400 block mb-2">🔧 Hướng dẫn kiểm tra tool:</strong>
+              <p className="text-gray-800 dark:text-gray-200 mb-3 whitespace-pre-wrap break-words leading-relaxed">{r.check_tools.guideline}</p>
+              {r.check_tools.name && r.check_tools.url && (
+                <div className="flex flex-wrap gap-3 mt-2">
+                  {(() => {
+                    const names = r.check_tools.name.split(',').map((n: string) => n.trim()).filter(Boolean)
+                    const urls = r.check_tools.url.split(',').map((u: string) => u.trim()).filter(Boolean)
+                    return names.map((name: string, index: number) => {
+                      const url = urls[index] || urls[0]
+                      return (<a key={index} href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/60 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-lg text-sm font-medium transition-colors border border-blue-200 dark:border-blue-700">🔗 {name}</a>)
+                    })
+                  })()}
+                </div>
+              )}
+            </div>
+          )}
+          
+          {(r.solution?.level1 || r.solution?.level2) && (
+            <div className="mb-4">
+              <strong className="text-green-700 dark:text-green-400 block mb-3 text-base">✅ Hướng xử lý:</strong>
+              <div className="flex gap-2 mb-3 border-b border-gray-200 dark:border-gray-700">
+                <button onClick={() => onTabChange(r.id, 'cs1')} className={activeHxlLevel === 'cs1' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}>HXL CS1</button>
+                {r.solution?.level2 && (<button onClick={() => onTabChange(r.id, 'cs2')} className={activeHxlLevel === 'cs2' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}>HXL CS2</button>)}
+              </div>
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border-l-4 border-green-500">
+                {activeHxlLevel === 'cs1' && r.solution?.level1 && (<p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level1}</p>)}
+                {activeHxlLevel === 'cs2' && r.solution?.level2 && (<p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level2}</p>)}
+              </div>
+            </div>
+          )}
+
+          {r.notes && (<div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500"><strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.notes}</p></div>)}
+
+          <div className="mb-4">
+              {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
+                <>
+                  <strong className="text-gray-700 dark:text-gray-300 block mb-3 text-base font-bold">Gợi ý phản hồi dành cho CS1:</strong>
+                  {r.templates.email && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>📧 Template App/Mail</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
+                        {r.templates.email}
+                        <div className="mt-3 flex justify-end">
+                           <CopyButton text={r.templates.email} />
+                        </div>
+                      </div>
+                    </details>
+                  )}
+                  {r.templates.chat && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>💬 Template Call/Chat</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
+                        {r.templates.chat}
+                        <div className="mt-3 flex justify-end">
+                           <CopyButton text={r.templates.chat} />
+                        </div>
+                      </div>
+                    </details>
+                  )}
+                </>
+              )}
+              {activeHxlLevel === 'cs2' && (
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border-l-4 border-blue-500">
+                    <strong className="text-blue-700 dark:text-blue-400 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
+                    <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-3">Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với:</p>
+                    <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg shadow-sm transition-all">
+                        CSWriteLab ✍️
+                    </a>
+                </div>
+              )}
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+            {r.link ? (<a href={r.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow transition-all">📄 Xem SOP gốc</a>) : (<div></div>)}
+            <span className="text-xs text-gray-400 font-medium whitespace-nowrap">Relevance: {Math.round(r.relevance_score * 100)}%</span>
+          </div>
+        </div>
+      </div>
+    )
+});
+SopDetailModal.displayName = 'SopDetailModal';
+
+// --- MAIN HOME COMPONENT ---
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [query, setQuery] = useState('')
@@ -261,117 +390,6 @@ export default function Home() {
       return { top5Results: [], moreSuggestions: results.slice(0, 10) };
     }
   }, [results]);
-  
-  const SopDetailModal = () => {
-    if (!selectedSop) return null
-    const r = selectedSop
-    const activeHxlLevel = activeHxlTabs[r.id] || 'cs1';
-    const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
-
-    return (
-      <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={() => setSelectedSop(null)}>
-        {/* FIX: Đã xóa 'duration-300' thừa ở đây, chỉ giữ lại duration-200 cho animation */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-          <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
-          
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex-1 pr-4">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{r.title}</h3>
-                <span className="text-xs text-gray-400 font-mono mt-1 block">ID: {r.id}</span>
-            </div>
-            <span className="px-4 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold whitespace-nowrap">{r.domain}</span>
-          </div>
-
-          {r.cause && (<div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500"><strong className="text-red-700 dark:text-red-400 block mb-2">⚠️ Nguyên nhân:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{r.cause}</p></div>)}
-
-          {r.check_tools && r.check_tools.guideline && (
-            <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
-              <strong className="text-blue-700 dark:text-blue-400 block mb-2">🔧 Hướng dẫn kiểm tra tool:</strong>
-              <p className="text-gray-800 dark:text-gray-200 mb-3 whitespace-pre-wrap break-words leading-relaxed">{r.check_tools.guideline}</p>
-              {r.check_tools.name && r.check_tools.url && (
-                <div className="flex flex-wrap gap-3 mt-2">
-                  {(() => {
-                    const names = r.check_tools.name.split(',').map((n: string) => n.trim()).filter(Boolean)
-                    const urls = r.check_tools.url.split(',').map((u: string) => u.trim()).filter(Boolean)
-                    return names.map((name: string, index: number) => {
-                      const url = urls[index] || urls[0]
-                      return (<a key={index} href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/60 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-lg text-sm font-medium transition-colors border border-blue-200 dark:border-blue-700">🔗 {name}</a>)
-                    })
-                  })()}
-                </div>
-              )}
-            </div>
-          )}
-          
-          {(r.solution?.level1 || r.solution?.level2) && (
-            <div className="mb-4">
-              <strong className="text-green-700 dark:text-green-400 block mb-3 text-base">✅ Hướng xử lý:</strong>
-              <div className="flex gap-2 mb-3 border-b border-gray-200 dark:border-gray-700">
-                <button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs1'})} className={activeHxlLevel === 'cs1' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}>HXL CS1</button>
-                {r.solution?.level2 && (<button onClick={() => setActiveHxlTabs({...activeHxlTabs, [r.id]: 'cs2'})} className={activeHxlLevel === 'cs2' ? 'px-4 py-2 font-semibold text-green-700 dark:text-green-400 border-b-2 border-green-600' : 'px-4 py-2 font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}>HXL CS2</button>)}
-              </div>
-              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border-l-4 border-green-500">
-                {activeHxlLevel === 'cs1' && r.solution?.level1 && (<p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level1}</p>)}
-                {activeHxlLevel === 'cs2' && r.solution?.level2 && (<p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.solution.level2}</p>)}
-              </div>
-            </div>
-          )}
-
-          {r.notes && (<div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500"><strong className="text-yellow-700 dark:text-yellow-400 block mb-2">📝 Lưu ý:</strong><p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">{r.notes}</p></div>)}
-
-          <div className="mb-4">
-              {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
-                <>
-                  <strong className="text-gray-700 dark:text-gray-300 block mb-3 text-base font-bold">Gợi ý phản hồi dành cho CS1:</strong>
-                  {r.templates.email && (
-                    <details className="mb-3 group">
-                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
-                        <span>📧 Template App/Mail</span>
-                        <span className="transition-transform group-open:rotate-180">▼</span>
-                      </summary>
-                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
-                        {r.templates.email}
-                        <div className="mt-3 flex justify-end">
-                           <CopyButton text={r.templates.email} />
-                        </div>
-                      </div>
-                    </details>
-                  )}
-                  {r.templates.chat && (
-                    <details className="mb-3 group">
-                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
-                        <span>💬 Template Call/Chat</span>
-                        <span className="transition-transform group-open:rotate-180">▼</span>
-                      </summary>
-                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
-                        {r.templates.chat}
-                        <div className="mt-3 flex justify-end">
-                           <CopyButton text={r.templates.chat} />
-                        </div>
-                      </div>
-                    </details>
-                  )}
-                </>
-              )}
-              {activeHxlLevel === 'cs2' && (
-                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border-l-4 border-blue-500">
-                    <strong className="text-blue-700 dark:text-blue-400 block mb-2">💡 Gợi ý sau khi có kết quả BPLQ:</strong>
-                    <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-3">Sau khi có kết quả từ BPLQ, CS có thể soạn thảo nhanh văn bản phản hồi với:</p>
-                    <a href={csWriteLabLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg shadow-sm transition-all">
-                        CSWriteLab ✍️
-                    </a>
-                </div>
-              )}
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
-            {r.link ? (<a href={r.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow transition-all">📄 Xem SOP gốc</a>) : (<div></div>)}
-            <span className="text-xs text-gray-400 font-medium whitespace-nowrap">Relevance: {Math.round(r.relevance_score * 100)}%</span>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   const suggestionDomains = useMemo(() => {
     const domainCounts: {[key: string]: number} = {}
@@ -382,22 +400,12 @@ export default function Home() {
   const filteredSuggestions = useMemo(() => {
     if (activeSuggestionTab === 'All') return moreSuggestions;
     return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
-  }, [moreSuggestions, activeSuggestionTab])
+  }, [moreSuggestions, activeSuggestionTab]);
 
-  // --- OPTIMIZED RESULT CARD ---
-  const SopSummaryCard = ({ r, isTopMatch = false }: { r: any, isTopMatch?: boolean }) => (
-    <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600'} transition-colors duration-300`} onClick={() => setSelectedSop(r)}>
-      <div className="flex justify-between items-start mb-3">
-        <h3 className={`font-bold text-gray-900 dark:text-white flex-1 pr-4 ${isTopMatch ? 'text-xl' : 'text-lg'}`}>{isTopMatch && '⭐ '} {r.title}</h3>
-        <span className={`px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap ${isTopMatch ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'}`}>{r.domain}</span>
-      </div>
-      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{r.cause ? `Nguyên nhân: ${r.cause}` : (r.solution?.level1 ? r.solution.level1 : "Nhấp để xem chi tiết...")}</p>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">Cập nhật: {r.last_updated ? formatDate(r.last_updated) : 'N/A'}</span>
-        <span className={`font-semibold ${isTopMatch ? 'text-yellow-700 dark:text-yellow-400' : 'text-blue-600 dark:text-blue-400'}`}>⚡ {Math.round(r.relevance_score * 100)}% Match</span>
-      </div>
-    </div>
-  )
+  // Handler for Modal Tabs
+  const handleTabChange = useCallback((id: string, level: 'cs1'|'cs2') => {
+      setActiveHxlTabs(prev => ({...prev, [id]: level}));
+  }, []);
   
   return (
     <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
@@ -424,7 +432,6 @@ export default function Home() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
           <div className="flex flex-col md:flex-row gap-3 mb-4">
             <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white md:min-w-[200px] font-medium focus:border-blue-500 focus:outline-none transition-colors"><option value="all">Tất cả</option><option value="Account">Tài khoản</option><option value="Payment">Thanh toán</option><option value="Application">Ứng dụng</option><option value="Merchant">Đối tác</option><option value="Lending">DVTC</option><option value="Travel">OTA</option></select>
-            {/* Input này đã được tối ưu nhờ React.memo ở các component con */}
             <input type="text" placeholder={searchType === 'ai' ? 'Nhập câu hỏi của bạn...' : 'Nhập từ khóa ngắn gọn...'} value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-400"/>
             <button onClick={handleSearch} disabled={loading} className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}>{loading ? '🔄 Đang tìm...' : '🔍 Tìm kiếm'}</button>
           </div>
@@ -467,7 +474,7 @@ export default function Home() {
             {top5Results.length > 0 && (
                 <div className="mb-12">
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-yellow-400 inline-block pr-8">🏆 Top {top5Results.length} Kết quả hàng đầu</h3>
-                    <div className="space-y-4">{top5Results.map((r) => (<SopSummaryCard key={r.id} r={r} isTopMatch={true} />))}</div>
+                    <div className="space-y-4">{top5Results.map((r) => (<SopSummaryCard key={r.id} r={r} isTopMatch={true} onClick={setSelectedSop} />))}</div>
                 </div>
             )}
             
@@ -475,13 +482,20 @@ export default function Home() {
                 <div>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">📑 Gợi ý thêm ({moreSuggestions.length} SOPs)</h3>
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide"><button onClick={() => setActiveSuggestionTab('All')} className={`px-4 py-2 font-semibold rounded-lg transition-colors ${activeSuggestionTab === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>Tất cả ({moreSuggestions.length})</button>{suggestionDomains.map(domain => (<button key={domain} onClick={() => setActiveSuggestionTab(domain)} className={`px-4 py-2 font-semibold rounded-lg whitespace-nowrap transition-colors ${activeSuggestionTab === domain ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>{domain} ({moreSuggestions.filter(r => r.domain === domain).length})</button>))}</div>
-                    <div className="space-y-4">{filteredSuggestions.map(r => (<SopSummaryCard key={r.id} r={r} isTopMatch={false} />))}</div>
+                    <div className="space-y-4">{filteredSuggestions.map(r => (<SopSummaryCard key={r.id} r={r} isTopMatch={false} onClick={setSelectedSop} />))}</div>
                 </div>
             )}
           </div>
         )}
       </div>
-      <SopDetailModal />
+      
+      {/* Modal nằm ngoài loop, chỉ render khi cần */}
+      <SopDetailModal 
+        r={selectedSop} 
+        onClose={() => setSelectedSop(null)} 
+        activeHxlLevel={selectedSop ? (activeHxlTabs[selectedSop.id] || 'cs1') : 'cs1'}
+        onTabChange={handleTabChange}
+      />
     </div>
   )
 }
