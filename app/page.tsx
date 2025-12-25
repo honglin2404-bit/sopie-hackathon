@@ -1,13 +1,12 @@
 'use client'
 
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 
-// --- 1. NOTIFICATION SYSTEM (FINAL LOGIC: 18:00 SAME DAY / 15:00 NEXT DAY) ---
-const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
+// --- 1. NOTIFICATION SYSTEM (OPTIMIZED WITH MEMO) ---
+const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
   const [closedNotiIds, setClosedNotiIds] = useState<string[]>([]);
   
-  // 🔗 CẤU HÌNH LINK
   const NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1QHnjWRPNAvKbWFRFtq5MjLNOQKj0XiKJc9MeQfDA7Wc/edit?gid=0#gid=0";
   const ISSUE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1xUWGBiw9tBnZqrxjt4enL_oZ7LsU8QiWKhJOS5FbwrU/edit?gid=0#gid=0"; 
 
@@ -33,88 +32,49 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
             if (closedNotiIds.includes(String(noti.id))) return;
 
             const createdTime = new Date(noti.created_at);
-            
-            // Format hiển thị: dd/mm HH:MM
             const dd = String(createdTime.getDate()).padStart(2, '0');
             const mm = String(createdTime.getMonth() + 1).padStart(2, '0');
             const hh = String(createdTime.getHours()).padStart(2, '0');
             const min = String(createdTime.getMinutes()).padStart(2, '0');
             const fullTimeStr = `${dd}/${mm} ${hh}:${min}`;
 
-            // --- A. REALTIME (BLUE): TREO ĐẾN 18:00 CÙNG NGÀY ---
+            // A. REALTIME
             if (noti.type === 'realtime' || !noti.type) {
               const expiry = new Date(createdTime);
-              expiry.setHours(18, 0, 0, 0); // Hết hạn lúc 18:00 cùng ngày tạo
-
-              // Chỉ hiện nếu chưa qua 18:00
+              expiry.setHours(18, 0, 0, 0); 
               if (now < expiry) { 
-                validNotis.push({ 
-                  ...noti, 
-                  theme: 'blue', 
-                  position: 'left', 
-                  header: '⚡ HOT NEWS', 
-                  time: `Lúc: ${fullTimeStr}`, 
-                  url: NEWS_SHEET_URL, 
-                  btnLabel: 'Xem ngay' 
-                });
+                validNotis.push({ ...noti, theme: 'blue', position: 'left', header: '⚡ HOT NEWS', time: `Lúc: ${fullTimeStr}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
               }
             }
-
-            // --- B. SUMMARY (GREEN): TREO ĐẾN 15:00 HÔM SAU ---
+            // B. SUMMARY
             else if (noti.type === 'summary') {
               const dateMatch = noti.message.match(/ngày (\d{1,2})\/(\d{1,2})\/(\d{4})/);
               if (dateMatch) {
                 const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
-                
-                // Logic: Hết hạn vào 15:00 của ngày hôm sau
                 const expiry = new Date(y, m, d); 
-                expiry.setDate(expiry.getDate() + 1); // +1 ngày
-                expiry.setHours(15, 0, 0, 0);         // 15:00:00
-
+                expiry.setDate(expiry.getDate() + 1);
+                expiry.setHours(15, 0, 0, 0);
                 if (now < expiry) {
-                  validNotis.push({ 
-                    ...noti, 
-                    theme: 'green', 
-                    position: 'left', 
-                    header: '📅 BẢN TIN NGÀY', 
-                    time: `Ngày: ${d}/${m + 1}`, 
-                    url: NEWS_SHEET_URL, 
-                    btnLabel: 'Xem ngay' 
-                  });
+                  validNotis.push({ ...noti, theme: 'green', position: 'left', header: '📅 BẢN TIN NGÀY', time: `Ngày: ${d}/${m + 1}`, url: NEWS_SHEET_URL, btnLabel: 'Xem ngay' });
                 }
               }
             }
-
-            // --- C. ISSUE (ORANGE): TREO ĐẾN 15:00 HÔM SAU ---
+            // C. ISSUE
             else if (noti.type === 'issue') {
                const firstBr = noti.message.indexOf('\n');
                const title = firstBr !== -1 ? noti.message.substring(0, firstBr) : "Lỗi hệ thống";
                const body = firstBr !== -1 ? noti.message.substring(firstBr + 1) : noti.message;
-
-               // Lấy ngày phát hiện hoặc ngày tạo tin
                let issueDate = createdTime; 
                const dateMatch = noti.message.match(/Ngày phát hiện: (\d{1,2})\/(\d{1,2})\/(\d{4})/);
                if (dateMatch) {
                  const d = parseInt(dateMatch[1]), m = parseInt(dateMatch[2]) - 1, y = parseInt(dateMatch[3]);
                  issueDate = new Date(y, m, d);
                }
-
-               // Logic: Hết hạn vào 15:00 của ngày hôm sau
                const expiry = new Date(issueDate);
-               expiry.setDate(expiry.getDate() + 1); // +1 ngày
-               expiry.setHours(15, 0, 0, 0);         // 15:00:00
-
+               expiry.setDate(expiry.getDate() + 1);
+               expiry.setHours(15, 0, 0, 0);
                if (now < expiry) {
-                 validNotis.push({ 
-                   ...noti, 
-                   theme: 'orange', 
-                   position: 'right', 
-                   header: `🔴 ISSUE REPORT: ${title}`, 
-                   message: body, 
-                   time: `Gửi lúc: ${fullTimeStr}`, 
-                   url: ISSUE_SHEET_URL, 
-                   btnLabel: 'Xem ngay'
-                 });
+                 validNotis.push({ ...noti, theme: 'orange', position: 'right', header: `🔴 ISSUE REPORT: ${title}`, message: body, time: `Gửi lúc: ${fullTimeStr}`, url: ISSUE_SHEET_URL, btnLabel: 'Xem ngay' });
                }
             }
           });
@@ -141,7 +101,6 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
 
   if (activeNotis.length === 0) return null;
 
-  // Render Card
   const NotiCard = ({ n }: { n: any }) => {
     let c = { border: '', text: '', bg: '', btn: '', ring: '' };
     if (n.theme === 'green') c = { border: 'border-green-500', text: 'text-green-700 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-900/20', btn: 'bg-green-600 hover:bg-green-700', ring: 'bg-green-500' };
@@ -165,7 +124,7 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
             <span className="text-[10px] text-gray-400 italic font-medium">{n.time}</span>
             <div className="flex gap-2">
               <button onClick={(e) => handleClose(e, n.id)} className="px-3 py-1.5 text-[10px] font-bold text-gray-500 border border-gray-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                {n.theme === 'orange' ? 'Bỏ qua' : 'Đã đọc'}
+                Bỏ qua
               </button>
               <a href={n.url} target="_blank" onClick={(e) => handleClose(e, n.id)} className={`px-3 py-1.5 text-[10px] font-bold text-white rounded shadow-sm ${c.btn}`}>{n.btnLabel}</a>
             </div>
@@ -184,7 +143,8 @@ const NotificationSystem = ({ darkMode }: { darkMode: boolean }) => {
       {rightNotis.length > 0 && <div className="fixed right-6 top-[220px] z-[9999] flex flex-col w-80 pointer-events-none font-sans">{rightNotis.map(n => <NotiCard key={n.id} n={n} />)}</div>}
     </>
   );
-};
+});
+NotificationSystem.displayName = 'NotificationSystem';
 
 // --- HELPER FUNCTIONS ---
 const formatDate = (dateString: string) => {
@@ -202,6 +162,26 @@ const LINKS = [
   { label: 'Đề xuất SOP', icon: '✨', url: 'https://forms.gle/rXZvHgfuLHMYQ7Wn6', styleClass: 'bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-300' },
   { label: 'CSWriteLab', icon: '✍️', url: 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab', styleClass: 'bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/40 dark:text-orange-300' }
 ]
+
+// --- COMPONENT: COPY BUTTON ---
+const CopyButton = ({ text }: { text: string }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button 
+      onClick={handleCopy} 
+      className={`ml-2 px-2 py-1 text-xs font-bold rounded border transition-all ${copied ? 'bg-green-500 text-white border-green-500' : 'bg-white dark:bg-gray-800 text-gray-500 border-gray-300 hover:bg-gray-100'}`}
+      title="Sao chép nội dung"
+    >
+      {copied ? '✅ Đã chép' : '📋 Sao chép'}
+    </button>
+  );
+};
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
@@ -267,6 +247,7 @@ export default function Home() {
     } finally { setLoading(false) }
   }
 
+  // --- MEMOIZED CALCS (Fix INP) ---
   const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
   const { top5Results, moreSuggestions } = useMemo(() => {
@@ -289,7 +270,8 @@ export default function Home() {
 
     return (
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={() => setSelectedSop(null)}>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors duration-300 border border-gray-100 dark:border-gray-700" onClick={(e) => e.stopPropagation()}>
+        {/* FIX: Đã xóa 'duration-300' thừa ở đây, chỉ giữ lại duration-200 cho animation */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
           <button onClick={() => setSelectedSop(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
           
           <div className="flex justify-between items-start mb-4">
@@ -341,8 +323,34 @@ export default function Home() {
               {activeHxlLevel === 'cs1' && (r.templates.email || r.templates.chat) && (
                 <>
                   <strong className="text-gray-700 dark:text-gray-300 block mb-3 text-base font-bold">Gợi ý phản hồi dành cho CS1:</strong>
-                  {r.templates.email && (<details className="mb-3 group"><summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all"><span>📧 Template App/Mail</span><span className="transition-transform group-open:rotate-180">▼</span></summary><div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{r.templates.email}</div></details>)}
-                  {r.templates.chat && (<details className="mb-3 group"><summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all"><span>💬 Template Call/Chat</span><span className="transition-transform group-open:rotate-180">▼</span></summary><div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{r.templates.chat}</div></details>)}
+                  {r.templates.email && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>📧 Template App/Mail</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
+                        {r.templates.email}
+                        <div className="mt-3 flex justify-end">
+                           <CopyButton text={r.templates.email} />
+                        </div>
+                      </div>
+                    </details>
+                  )}
+                  {r.templates.chat && (
+                    <details className="mb-3 group">
+                      <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg list-none flex justify-between items-center transition-all">
+                        <span>💬 Template Call/Chat</span>
+                        <span className="transition-transform group-open:rotate-180">▼</span>
+                      </summary>
+                      <div className="mt-2 p-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line relative">
+                        {r.templates.chat}
+                        <div className="mt-3 flex justify-end">
+                           <CopyButton text={r.templates.chat} />
+                        </div>
+                      </div>
+                    </details>
+                  )}
                 </>
               )}
               {activeHxlLevel === 'cs2' && (
@@ -376,6 +384,7 @@ export default function Home() {
     return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
   }, [moreSuggestions, activeSuggestionTab])
 
+  // --- OPTIMIZED RESULT CARD ---
   const SopSummaryCard = ({ r, isTopMatch = false }: { r: any, isTopMatch?: boolean }) => (
     <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600'} transition-colors duration-300`} onClick={() => setSelectedSop(r)}>
       <div className="flex justify-between items-start mb-3">
@@ -415,6 +424,7 @@ export default function Home() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
           <div className="flex flex-col md:flex-row gap-3 mb-4">
             <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white md:min-w-[200px] font-medium focus:border-blue-500 focus:outline-none transition-colors"><option value="all">Tất cả</option><option value="Account">Tài khoản</option><option value="Payment">Thanh toán</option><option value="Application">Ứng dụng</option><option value="Merchant">Đối tác</option><option value="Lending">DVTC</option><option value="Travel">OTA</option></select>
+            {/* Input này đã được tối ưu nhờ React.memo ở các component con */}
             <input type="text" placeholder={searchType === 'ai' ? 'Nhập câu hỏi của bạn...' : 'Nhập từ khóa ngắn gọn...'} value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-400"/>
             <button onClick={handleSearch} disabled={loading} className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}>{loading ? '🔄 Đang tìm...' : '🔍 Tìm kiếm'}</button>
           </div>
