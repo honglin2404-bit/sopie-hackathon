@@ -38,7 +38,6 @@ const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
             const min = String(createdTime.getMinutes()).padStart(2, '0');
             const fullTimeStr = `${dd}/${mm} ${hh}:${min}`;
 
-            // Logic phân loại tin
             if (noti.type === 'realtime' || !noti.type) {
               const expiry = new Date(createdTime);
               expiry.setHours(18, 0, 0, 0); 
@@ -149,7 +148,7 @@ const NotiCard = React.memo(({ n, onClose }: { n: any, onClose: any }) => {
 });
 NotiCard.displayName = 'NotiCard';
 
-// --- HELPER FUNCTIONS & COMPONENTS (MOVED OUTSIDE) ---
+// --- HELPER FUNCTIONS & COMPONENTS ---
 const formatDate = (dateString: string) => {
   try {
     const parts = dateString.split('-');
@@ -185,7 +184,7 @@ const CopyButton = ({ text }: { text: string }) => {
   );
 };
 
-// --- SOP CARD COMPONENT (Đưa ra ngoài Home để tránh re-render) ---
+// --- SOP CARD COMPONENT ---
 const SopSummaryCard = React.memo(({ r, isTopMatch = false, onClick }: { r: any, isTopMatch?: boolean, onClick: (r: any) => void }) => (
   <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all cursor-pointer border-l-4 ${isTopMatch ? 'border-yellow-500' : 'border-blue-600'} duration-200`} onClick={() => onClick(r)}>
     <div className="flex justify-between items-start mb-3">
@@ -201,13 +200,14 @@ const SopSummaryCard = React.memo(({ r, isTopMatch = false, onClick }: { r: any,
 ));
 SopSummaryCard.displayName = 'SopSummaryCard';
 
-// --- SOP DETAIL MODAL (Đưa ra ngoài Home) ---
+// --- SOP DETAIL MODAL ---
 const SopDetailModal = React.memo(({ r, onClose, activeHxlLevel, onTabChange }: { r: any, onClose: () => void, activeHxlLevel: string, onTabChange: (id: string, level: 'cs1'|'cs2') => void }) => {
     if (!r) return null;
     const csWriteLabLink = 'https://chatgpt.com/g/g-691c957c091081919a5b97e94df0bd50-cswritelab';
 
     return (
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={onClose}>
+        {/* FIX: Đã xóa 'duration-300' và xung đột CSS */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
           <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
           
@@ -402,9 +402,14 @@ export default function Home() {
     return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
   }, [moreSuggestions, activeSuggestionTab]);
 
-  // Handler for Modal Tabs
+  // Handler for Modal Tabs - Memoized
   const handleTabChange = useCallback((id: string, level: 'cs1'|'cs2') => {
       setActiveHxlTabs(prev => ({...prev, [id]: level}));
+  }, []);
+
+  // FIX QUAN TRỌNG: Memoize hàm close modal để SopDetailModal không bị re-render vô nghĩa
+  const handleCloseModal = useCallback(() => {
+    setSelectedSop(null);
   }, []);
   
   return (
@@ -489,10 +494,10 @@ export default function Home() {
         )}
       </div>
       
-      {/* Modal nằm ngoài loop, chỉ render khi cần */}
+      {/* Modal nằm ngoài loop, chỉ render khi cần. Truyền handleCloseModal (đã memoize) vào */}
       <SopDetailModal 
         r={selectedSop} 
-        onClose={() => setSelectedSop(null)} 
+        onClose={handleCloseModal} 
         activeHxlLevel={selectedSop ? (activeHxlTabs[selectedSop.id] || 'cs1') : 'cs1'}
         onTabChange={handleTabChange}
       />
