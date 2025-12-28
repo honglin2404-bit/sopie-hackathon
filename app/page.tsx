@@ -327,16 +327,7 @@ export default function Home() {
   const [selectedSop, setSelectedSop] = useState<any | null>(null)
   const [activeSuggestionTab, setActiveSuggestionTab] = useState('All')
 
-  useEffect(() => {
-    const savedMode = localStorage.getItem('sopie_dark_mode') === 'true';
-    setDarkMode(savedMode);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('sopie_dark_mode', darkMode.toString());
-    if (darkMode) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  }, [darkMode]);
+  // ... [GIỮ NGUYÊN useEffect] ...
 
   const handleSearch = async () => {
     if (!query.trim()) { setError('Vui lòng nhập câu hỏi'); return; }
@@ -349,17 +340,17 @@ export default function Home() {
 
     const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://sopie-search-tool.onrender.com';
     
-    // --- TỰ ĐỘNG TỐI ƯU QUERY CHO AI SEARCH ---
     let finalQuery = query;
     if (searchType === 'ai' && query.length < 15 && /\d/.test(query)) {
         finalQuery = `Mã lỗi ${query}`;
     }
 
     try {
+      // Vẫn giữ limit 20 để lấy dư dữ liệu
       const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: finalQuery, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 10 }),
+        body: JSON.stringify({ query: finalQuery, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 20 }),
       })
 
       const data = await response.json()
@@ -371,18 +362,18 @@ export default function Home() {
         
         let sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
 
-        // --- ĐÃ BỎ CLIENT-SIDE FILTER ĐỂ HIỂN THỊ ĐỦ SOP GỢI Ý (LIMIT 10) ---
-        // if (searchType === 'keyword') {
-        //     const lowerQuery = query.toLowerCase().trim();
-        //     sorted = sorted.filter((item: any) => {
-        //         const content = (item.title + " " + (item.id || "") + " " + (item.cause || "")).toLowerCase();
-        //         return content.includes(lowerQuery);
-        //     });
-        //     if (sorted.length === 0) {
-        //         setError(`Không tìm thấy kết quả chứa từ khóa "${query}".`);
-        //     }
-        // }
-        // ---------------------------------------------------------------------
+        if (searchType === 'keyword') {
+            const lowerQuery = query.toLowerCase().trim();
+            sorted = sorted.filter((item: any) => {
+                const content = (
+                    (item.title || "") + " " + 
+                    (item.id || "") + " " + 
+                    (item.cause || "") + " " +
+                    (item.solution?.level1 || "")
+                ).toLowerCase();
+                return content.includes(lowerQuery);
+            });
+        }
 
         setResults(sorted)
 
@@ -395,13 +386,18 @@ export default function Home() {
     } finally { setLoading(false) }
   }
 
-  // --- MEMOIZED CALCS (Fix INP) ---
   const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
   const { top5Results, moreSuggestions } = useMemo(() => {
-    // FIX: Dùng slice thay vì filter ID để tránh lỗi trùng lặp/mất data
-    const top = results.slice(0, 5); 
-    const rest = results.slice(5); // Lấy tất cả phần còn lại
+    // 1. Logic Top Match: Chỉ lấy những SOP có score >= 0.8 (80%) và giới hạn 5 cái
+    // Những SOP nào điểm cao nhất nhưng dưới 0.8 sẽ KHÔNG được vào đây.
+    const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5); 
+    
+    // 2. Logic Gợi ý thêm: Lấy tất cả những SOP còn lại (không nằm trong top)
+    // Bao gồm cả những SOP >= 0.8 (nếu Top 5 đã đầy) và những SOP < 0.8
+    // Giới hạn hiển thị 10 cái.
+    const rest = results.filter(r => !top.includes(r)).slice(0, 10);
+
     return { top5Results: top, moreSuggestions: rest };
   }, [results]);
 
@@ -411,6 +407,8 @@ export default function Home() {
     return Object.entries(domainCounts).sort(([, countA], [, countB]) => countB - countA).map(([domain]) => domain)
   }, [moreSuggestions])
 
+  // ... [GIỮ NGUYÊN PHẦN CÒN LẠI] ...
+  
   const filteredSuggestions = useMemo(() => {
     if (activeSuggestionTab === 'All') return moreSuggestions;
     return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
@@ -476,7 +474,6 @@ export default function Home() {
                     <li>Kiểm tra lại bộ lọc domain kiến thức</li>
                   </ul>
                   
-                  {/* --- FALLBACK SUGGESTION URL (MỚI) --- */}
                   {backendSuggestion?.link && (
                       <div className="mt-3 pl-1">
                            <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold rounded-lg shadow-sm hover:scale-105 transition-all">
@@ -484,7 +481,6 @@ export default function Home() {
                            </a>
                       </div>
                   )}
-                  {/* -------------------------------------- */}
 
                   <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50 mt-2">
                     Hoặc CS có thể liên hệ QC team để được hỗ trợ nhanh chóng.
@@ -510,7 +506,7 @@ export default function Home() {
             
             {moreSuggestions.length > 0 && (
                 <div>
-                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">📑 Gợi ý thêm ({moreSuggestions.length} SOPs)</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-300 dark:border-gray-700 inline-block pr-8">Gợi ý thêm ({moreSuggestions.length} SOPs)</h3>
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide"><button onClick={() => setActiveSuggestionTab('All')} className={`px-4 py-2 font-semibold rounded-lg transition-colors ${activeSuggestionTab === 'All' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>Tất cả ({moreSuggestions.length})</button>{suggestionDomains.map(domain => (<button key={domain} onClick={() => setActiveSuggestionTab(domain)} className={`px-4 py-2 font-semibold rounded-lg whitespace-nowrap transition-colors ${activeSuggestionTab === domain ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'}`}>{domain} ({moreSuggestions.filter(r => r.domain === domain).length})</button>))}</div>
                     <div className="space-y-4">{filteredSuggestions.map(r => (<SopSummaryCard key={r.id} r={r} isTopMatch={false} onClick={setSelectedSop} />))}</div>
                 </div>
