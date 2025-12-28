@@ -349,13 +349,11 @@ export default function Home() {
 
     const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://sopie-search-tool.onrender.com';
     
-    // --- TỰ ĐỘNG TỐI ƯU QUERY (FIX LỖI TÌM MÃ KHÔNG RA) ---
-    // Nếu là AI Search + từ khóa ngắn + có chứa số => Tự động thêm "Mã lỗi" để AI hiểu ngữ cảnh
+    // --- TỰ ĐỘNG TỐI ƯU QUERY CHO AI SEARCH ---
     let finalQuery = query;
     if (searchType === 'ai' && query.length < 15 && /\d/.test(query)) {
         finalQuery = `Mã lỗi ${query}`;
     }
-    // --------------------------------------------------------
 
     try {
       const response = await fetch(`${backendUrl}/api/search`, {
@@ -371,7 +369,23 @@ export default function Home() {
         if (data.results.length === 0 && !data.suggestion) setError('Không tìm thấy SOP phù hợp. Vui lòng thử lại với từ khóa chi tiết hơn hoặc kiểm tra lại domain filter.')
         else setError('');
         
-        const sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
+        let sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
+
+        // --- CLIENT-SIDE FILTER CHO KEY SEARCH (FIX LỖI KẾT QUẢ RÁC) ---
+        if (searchType === 'keyword') {
+            const lowerQuery = query.toLowerCase().trim();
+            sorted = sorted.filter((item: any) => {
+                const content = (item.title + " " + (item.id || "") + " " + (item.cause || "")).toLowerCase();
+                return content.includes(lowerQuery);
+            });
+            
+            // Nếu filter xong mà rỗng (do backend trả rác hết), thì báo lỗi luôn
+            if (sorted.length === 0) {
+                setError(`Không tìm thấy kết quả chứa từ khóa "${query}".`);
+            }
+        }
+        // -------------------------------------------------------------
+
         setResults(sorted)
 
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
@@ -387,15 +401,10 @@ export default function Home() {
   const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
 
   const { top5Results, moreSuggestions } = useMemo(() => {
-    const highScores = results.filter(r => r.relevance_score >= 0.8);
-    if (highScores.length > 0) {
-      const top = highScores.slice(0, 5);
-      const topIds = new Set(top.map(r => r.id));
-      const rest = results.filter(r => !topIds.has(r.id)).slice(0, 10);
-      return { top5Results: top, moreSuggestions: rest };
-    } else {
-      return { top5Results: [], moreSuggestions: results.slice(0, 10) };
-    }
+    // FIX: Dùng slice thay vì filter ID để tránh lỗi trùng lặp/mất data
+    const top = results.slice(0, 5); 
+    const rest = results.slice(5); // Lấy tất cả phần còn lại
+    return { top5Results: top, moreSuggestions: rest };
   }, [results]);
 
   const suggestionDomains = useMemo(() => {
@@ -409,12 +418,10 @@ export default function Home() {
     return moreSuggestions.filter(r => r.domain === activeSuggestionTab)
   }, [moreSuggestions, activeSuggestionTab]);
 
-  // Handler for Modal Tabs - Memoized
   const handleTabChange = useCallback((id: string, level: 'cs1'|'cs2') => {
       setActiveHxlTabs(prev => ({...prev, [id]: level}));
   }, []);
 
-  // FIX QUAN TRỌNG: Memoize hàm close modal để SopDetailModal không bị re-render vô nghĩa
   const handleCloseModal = useCallback(() => {
     setSelectedSop(null);
   }, []);
@@ -451,7 +458,7 @@ export default function Home() {
                 <option value="Lending (LD)">DVTC</option>
                 <option value="Promotion (PM)">Khuyến mãi</option>
                 <option value="Travel (TV)">OTA</option>
-                <option value="Merchant (MC)">Đối tác</option>
+                <option value="Merchant (MC)">Đối tác</option>                
                 <option value="General (GE)">Thông tin chung</option>
             </select>
             <input type="text" placeholder={searchType === 'ai' ? 'Nhập câu hỏi của bạn...' : 'Nhập từ khóa ngắn gọn...'} value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-400"/>
@@ -511,7 +518,6 @@ export default function Home() {
         )}
       </div>
       
-      {/* Modal nằm ngoài loop, chỉ render khi cần. Truyền handleCloseModal (đã memoize) vào */}
       <SopDetailModal 
         r={selectedSop} 
         onClose={handleCloseModal} 
