@@ -207,7 +207,6 @@ const SopDetailModal = React.memo(({ r, onClose, activeHxlLevel, onTabChange }: 
 
     return (
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm" onClick={onClose}>
-        {/* FIX: Đã xóa 'duration-300' và xung đột CSS */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 relative transition-colors border border-gray-100 dark:border-gray-700 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
           <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 z-10 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">✕</button>
           
@@ -350,11 +349,19 @@ export default function Home() {
 
     const backendUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://sopie-search-tool.onrender.com';
     
+    // --- TỰ ĐỘNG TỐI ƯU QUERY (FIX LỖI TÌM MÃ KHÔNG RA) ---
+    // Nếu là AI Search + từ khóa ngắn + có chứa số => Tự động thêm "Mã lỗi" để AI hiểu ngữ cảnh
+    let finalQuery = query;
+    if (searchType === 'ai' && query.length < 15 && /\d/.test(query)) {
+        finalQuery = `Mã lỗi ${query}`;
+    }
+    // --------------------------------------------------------
+
     try {
       const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 10 }),
+        body: JSON.stringify({ query: finalQuery, domain: domain === 'all' ? null : domain, type: searchType === 'ai' ? 'semantic' : 'keyword', limit: 10 }),
       })
 
       const data = await response.json()
@@ -436,7 +443,17 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
           <div className="flex flex-col md:flex-row gap-3 mb-4">
-            <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white md:min-w-[200px] font-medium focus:border-blue-500 focus:outline-none transition-colors"><option value="all">Tất cả</option><option value="Generals (GE)">Nền tảng chung</option><option value="Account (AC)">Tài khoản</option><option value="Payment (PY)">Thanh toán</option><option value="Application (AP)">Ứng dụng</option><option value="Lending (LD)">DVTC</option><option value="Promotion (PM)">OTA</option><option value="Travel (TV)">OTA</option><option value="Merchant (MC)">Đối tác</option></select>
+            <select value={domain} onChange={(e) => setDomain(e.target.value)} className="px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white md:min-w-[200px] font-medium focus:border-blue-500 focus:outline-none transition-colors">
+                <option value="all">Tất cả</option>
+                <option value="Account (AC)">Tài khoản</option>
+                <option value="Payment (PY)">Thanh toán</option>
+                <option value="Application (AP)">Ứng dụng</option>
+                <option value="Lending (LD)">DVTC</option>
+                <option value="Promotion (PM)">Khuyến mãi</option>
+                <option value="Travel (TV)">OTA</option>
+                <option value="Merchant (MC)">Đối tác</option>
+                <option value="General (GE)">Thông tin chung</option>
+            </select>
             <input type="text" placeholder={searchType === 'ai' ? 'Nhập câu hỏi của bạn...' : 'Nhập từ khóa ngắn gọn...'} value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} className="flex-1 px-5 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-400"/>
             <button onClick={handleSearch} disabled={loading} className={loading ? 'px-8 py-4 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed' : searchType === 'ai' ? 'px-8 py-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md' : 'px-8 py-4 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 shadow-md'}>{loading ? '🔄 Đang tìm...' : '🔍 Tìm kiếm'}</button>
           </div>
