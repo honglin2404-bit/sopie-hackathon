@@ -371,20 +371,18 @@ export default function Home() {
         
         let sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
 
-        // --- CLIENT-SIDE FILTER CHO KEY SEARCH (FIX LỖI KẾT QUẢ RÁC) ---
-        if (searchType === 'keyword') {
-            const lowerQuery = query.toLowerCase().trim();
-            sorted = sorted.filter((item: any) => {
-                const content = (item.title + " " + (item.id || "") + " " + (item.cause || "")).toLowerCase();
-                return content.includes(lowerQuery);
-            });
-            
-            // Nếu filter xong mà rỗng (do backend trả rác hết), thì báo lỗi luôn
-            if (sorted.length === 0) {
-                setError(`Không tìm thấy kết quả chứa từ khóa "${query}".`);
-            }
-        }
-        // -------------------------------------------------------------
+        // --- ĐÃ BỎ CLIENT-SIDE FILTER ĐỂ HIỂN THỊ ĐỦ SOP GỢI Ý (LIMIT 10) ---
+        // if (searchType === 'keyword') {
+        //     const lowerQuery = query.toLowerCase().trim();
+        //     sorted = sorted.filter((item: any) => {
+        //         const content = (item.title + " " + (item.id || "") + " " + (item.cause || "")).toLowerCase();
+        //         return content.includes(lowerQuery);
+        //     });
+        //     if (sorted.length === 0) {
+        //         setError(`Không tìm thấy kết quả chứa từ khóa "${query}".`);
+        //     }
+        // }
+        // ---------------------------------------------------------------------
 
         setResults(sorted)
 
@@ -471,21 +469,24 @@ export default function Home() {
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
                 <div className="text-2xl mt-1">💡</div>
-                <div className="space-y-3">
+                <div className="space-y-3 w-full">
                   <p className="font-bold text-base">Chưa tìm thấy kết quả phù hợp, CS vui lòng:</p>
                   <ul className="list-disc list-inside text-sm space-y-2 font-medium opacity-90">
                     <li>Thay đổi cách mô tả vấn đề và thử lại</li>
                     <li>Kiểm tra lại bộ lọc domain kiến thức</li>
-                    {backendSuggestion?.link && (
-                        <li className="list-none pt-2 flex items-center gap-2">
-                           <span>Tham khảo chi tiết tại SOP gốc:</span>
+                  </ul>
+                  
+                  {/* --- FALLBACK SUGGESTION URL (MỚI) --- */}
+                  {backendSuggestion?.link && (
+                      <div className="mt-3 pl-1">
                            <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold rounded-lg shadow-sm hover:scale-105 transition-all">
                              🔗 {backendSuggestion.link_label || 'Link quy trình'}
                            </a>
-                        </li>
-                    )}
-                  </ul>
-                  <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50">
+                      </div>
+                  )}
+                  {/* -------------------------------------- */}
+
+                  <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50 mt-2">
                     Hoặc CS có thể liên hệ QC team để được hỗ trợ nhanh chóng.
                   </p>
                 </div>
