@@ -8,9 +8,15 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 from openai import OpenAI
 
+# [QUAN TRỌNG] Import Blueprint từ file sync mới
+from lib.sync_google_sheets import sync_bp
+
 # Load environment variables
 load_dotenv()
 app = Flask(__name__)
+
+# [QUAN TRỌNG] Đăng ký Blueprint để kích hoạt API '/api/sync-sheets'
+app.register_blueprint(sync_bp)
 
 # --- CORS Configuration ---
 frontend_url = "https://sopie-search-tool.vercel.app"
@@ -34,7 +40,7 @@ if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
-# ============= 🧠 CẤU HÌNH FALLBACK RULES =============
+# ============= 🧠 CẤU HÌNH FALLBACK RULES (GIỮ NGUYÊN KHÔNG ĐỔI) =============
 FALLBACK_RULES = [
     # --- NHÓM ỨNG DỤNG & TÍNH NĂNG CHUNG ---
     {"keywords": ["lỗi ứng dụng", "văng app", "không vào được", "không mở được", "app lỗi", "treo app", "chậm", "lag"], "context_name": "lỗi ứng dụng Zalopay", "link": "https://sites.google.com/view/cs-faq-chung/%E1%BB%A9ng-d%E1%BB%A5ng/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-ticket-l%E1%BB%97i-%E1%BB%A9ng-d%E1%BB%A5ng", "link_label": "Quy trình Lỗi ứng dụng"},
@@ -80,6 +86,7 @@ def get_fallback_suggestion(query_text):
                 return {"found": True, "context_name": rule["context_name"], "link": rule["link"], "link_label": rule["link_label"]}
     return {"found": False, "context_name": DEFAULT_FALLBACK["context_name"], "link": DEFAULT_FALLBACK["link"], "link_label": DEFAULT_FALLBACK["link_label"]}
 
+# [QUAN TRỌNG] Hàm này VẪN GIỮ để phục vụ chức năng SEARCH (chuyển câu hỏi người dùng thành vector)
 def generate_embedding(text):
     try:
         if not text or not text.strip(): return None
@@ -89,11 +96,7 @@ def generate_embedding(text):
         logger.error(f"Embedding error: {e}")
         return None
 
-def create_searchable_text(sop):
-    parts = [str(sop.get('title', '')), str(sop.get('cause', '')), str(sop.get('solution_l1', '')), str(sop.get('keywords_primary', '')), str(sop.get('keywords_secondary', '')), str(sop.get('feature', ''))]
-    return " ".join(parts)
-
-# ============= SCORE CALCULATION =============
+# ============= SCORE CALCULATION (LOGIC TÍNH ĐIỂM) =============
 def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, search_type='semantic'):
     final_score = 0.0
     query_lower = query_text.lower().strip() if query_text else ""
@@ -140,7 +143,7 @@ def format_response(sop):
         'link': sop.get('link_sop'), 'notes': sop.get('notes'), 'last_updated': sop.get('last_updated')
     }
 
-# ============= 🆕 LOGIC THÔNG BÁO (UPDATED) =============
+# ============= API: NOTIFICATION (LOGIC THÔNG BÁO) =============
 
 @app.route('/api/trigger-noti', methods=['POST'])
 def trigger_noti():
@@ -164,7 +167,6 @@ def trigger_noti():
 @app.route('/api/get-latest-noti', methods=['GET'])
 def get_latest_noti():
     try:
-        # SỬA: Limit 20 để tránh tin Summary bị trôi
         response = supabase.table('notifications').select("*").order('id', desc=True).limit(20).execute()
         if response.data: 
             return jsonify({"success": True, "notis": response.data})
@@ -173,36 +175,7 @@ def get_latest_noti():
         logger.error(f"Get Latest Noti Error: {e}")
         return jsonify({"error": str(e)}), 500
 
-# ============= API: SYNC =============
-@app.route('/api/sync-sops', methods=['POST'])
-def sync_sops():
-    try:
-        data = request.json
-        sops_list = data.get('sops', [])
-        if not sops_list: return jsonify({'error': 'No data provided'}), 400
-        count = 0
-        for item in sops_list:
-            search_text = create_searchable_text(item)
-            embedding = generate_embedding(search_text)
-            sop_record = {
-                'id': str(item.get('id')), 'title': item.get('title'), 'domain': item.get('domain'),
-                'product': item.get('product'), 'feature': item.get('feature'), 'cause': item.get('cause'),
-                'check_tool_guideline': item.get('check_tool_guideline'), 'check_tools_name': item.get('check_tools_name'),
-                'check_tools_url': item.get('check_tools_url'), 'solution_l1': item.get('solution_l1'),
-                'solution_l2': item.get('solution_l2'), 'notes': item.get('notes'),
-                'template_app_mail': item.get('template_app_mail'), 'template_call_chat': item.get('template_call_chat'),
-                'link_sop': item.get('link_sop'), 'last_updated': item.get('last_updated'),
-                'keywords_primary': item.get('keywords_primary', ''), 'keywords_secondary': item.get('keywords_secondary', ''),
-                'embedding': embedding 
-            }
-            supabase.table('sops').upsert(sop_record).execute()
-            count += 1
-        return jsonify({'success': True, 'count': count})
-    except Exception as e:
-        logger.error(f"Sync error: {e}")
-        return jsonify({'error': str(e)}), 500
-
-# ============= API: SEARCH =============
+# ============= API: SEARCH (LOGIC TÌM KIẾM) =============
 @app.route('/api/search', methods=['POST'])
 def search():
     try:
@@ -215,13 +188,16 @@ def search():
         
         results = []
         if search_type == 'semantic':
+            # Chuyển câu hỏi người dùng thành Vector
             embedding = generate_embedding(query)
             if embedding:
+                # Gọi hàm tìm kiếm trong Database (RPC)
                 rpc_params = {'query_embedding': embedding, 'match_threshold': 0.4, 'match_count': limit}
                 if domain: rpc_params['domain_filter'] = domain
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
         else: 
+            # Tìm kiếm theo từ khóa (RPC)
             rpc_params = {'query_text': query, 'match_count': limit}
             if domain: rpc_params['domain_filter'] = domain
             res = supabase.rpc('kw_sops', rpc_params).execute()
