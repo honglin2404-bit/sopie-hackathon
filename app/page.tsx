@@ -404,31 +404,43 @@ export default function Home() {
       return results.some(r => r.relevance_score >= 0.8);
   }, [results, searchType, query]);
 
-  const { top5Results, moreSuggestions } = useMemo(() => {
+const { top5Results, moreSuggestions } = useMemo(() => {
     let top: any[] = [];
     let rest: any[] = [];
 
     if (searchType === 'keyword') {
-        // --- LOGIC KEY SEARCH HYBRID ---
         const lowerQuery = query.toLowerCase().trim();
         
-        // 1. Tách những thằng khớp chính xác (Exact Matches) -> Đưa vào Top
+        // 1. Nhóm A: Khớp chính xác cụm từ khóa (Ưu tiên cao nhất)
         const exactMatches = results.filter((item: any) => {
             const content = ((item.title || "") + " " + (item.id || "") + " " + (item.cause || "") + " " + (item.solution?.level1 || "")).toLowerCase();
             return content.includes(lowerQuery);
         });
 
-        // 2. Những thằng không khớp (Loose Matches) -> Đưa vào Gợi ý
-        const looseMatches = results.filter((item: any) => !exactMatches.includes(item));
+        // 2. Nhóm B: Không khớp chính xác câu chữ, nhưng điểm rất cao (>= 80%)
+        // (Đây là nhóm giúp "cứu" các trường hợp nhập từ khóa bị ngắt quãng như case bạn gặp)
+        const highScoreMatches = results.filter((item: any) => 
+            !exactMatches.includes(item) && item.relevance_score >= 0.8
+        );
 
-        top = exactMatches.slice(0, 5); // Top chỉ chứa tối đa 5 kết quả khớp chính xác
-        
-        // Gợi ý = (Phần dư của Top) + (Kết quả liên quan khác từ backend)
-        const remainingExact = exactMatches.slice(5);
-        rest = [...remainingExact, ...looseMatches].slice(0, 10);
+        // 3. Nhóm C: Các kết quả còn lại (Gợi ý lỏng lẻo)
+        const looseMatches = results.filter((item: any) => 
+            !exactMatches.includes(item) && !highScoreMatches.includes(item)
+        );
+
+        // --- GỘP LOGIC VÀO TOP ---
+        // Top 5 sẽ lấy hết Exact (A), nếu chưa đủ 5 thì lấy tiếp High Score (B)
+        const candidatesForTop = [...exactMatches, ...highScoreMatches];
+        top = candidatesForTop.slice(0, 5);
+
+        // --- GỘP LOGIC VÀO GỢI Ý ---
+        // Gợi ý = (Phần dư của A+B nếu Top đã đầy) + Nhóm C
+        const remainingFromTop = candidatesForTop.slice(5);
+        rest = [...remainingFromTop, ...looseMatches].slice(0, 10);
 
     } else {
-        // --- LOGIC AI SEARCH (CŨ) ---
+        // --- LOGIC AI SEARCH ---
+        // Đơn giản là lấy theo điểm số
         top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5); 
         rest = results.filter(r => !top.includes(r)).slice(0, 10);
     }
