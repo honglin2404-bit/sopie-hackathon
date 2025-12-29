@@ -362,6 +362,7 @@ export default function Home() {
     }
 
     try {
+      // Vẫn giữ limit 20
       const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -377,8 +378,7 @@ export default function Home() {
         
         let sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
 
-        // [QUAN TRỌNG] KHÔNG FILTER TRỰC TIẾP Ở ĐÂY NỮA
-        // Để giữ lại toàn bộ data cho phần gợi ý thêm của Key Search
+        // [QUAN TRỌNG] ĐÃ BỎ STRICT CLIENT-SIDE FILTER ĐỂ CÁC KẾT QUẢ GẦN ĐÚNG (NHƯNG ĐIỂM CAO) CÓ CƠ HỘI HIỂN THỊ
         setResults(sorted)
 
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
@@ -390,21 +390,21 @@ export default function Home() {
     } finally { setLoading(false) }
   }
 
-  // Logic Box Vàng
+  // [LOGIC BOX VÀNG] Update để phản ánh đúng logic mới
   const hasHighConfidence = useMemo(() => {
-      // Key search: Nếu có ít nhất 1 kết quả khớp chính xác -> coi là high confidence
       if (searchType === 'keyword') {
+          // Với Key search, nếu Top 5 có kết quả (tức là có exact match HOẶC high score) thì coi là tự tin
+          // Tuy nhiên, để an toàn, vẫn check xem có kết quả nào thực sự khớp hoặc điểm cao không
           const lowerQuery = query.toLowerCase().trim();
           return results.some((item: any) => {
              const content = (item.title + " " + item.id + " " + item.cause + " " + (item.solution?.level1 || "")).toLowerCase();
-             return content.includes(lowerQuery);
+             return content.includes(lowerQuery) || item.relevance_score >= 0.8;
           });
       }
-      // AI Search: Dựa vào điểm số
       return results.some(r => r.relevance_score >= 0.8);
   }, [results, searchType, query]);
 
-const { top5Results, moreSuggestions } = useMemo(() => {
+  const { top5Results, moreSuggestions } = useMemo(() => {
     let top: any[] = [];
     let rest: any[] = [];
 
@@ -417,8 +417,7 @@ const { top5Results, moreSuggestions } = useMemo(() => {
             return content.includes(lowerQuery);
         });
 
-        // 2. Nhóm B: Không khớp chính xác câu chữ, nhưng điểm rất cao (>= 80%)
-        // (Đây là nhóm giúp "cứu" các trường hợp nhập từ khóa bị ngắt quãng như case bạn gặp)
+        // 2. Nhóm B: Không khớp chính xác, nhưng điểm rất cao (>= 80%) -> CỨU TINH CHO CASE BẠN GẶP
         const highScoreMatches = results.filter((item: any) => 
             !exactMatches.includes(item) && item.relevance_score >= 0.8
         );
@@ -439,8 +438,7 @@ const { top5Results, moreSuggestions } = useMemo(() => {
         rest = [...remainingFromTop, ...looseMatches].slice(0, 10);
 
     } else {
-        // --- LOGIC AI SEARCH ---
-        // Đơn giản là lấy theo điểm số
+        // --- LOGIC AI SEARCH (Giữ nguyên) ---
         top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5); 
         rest = results.filter(r => !top.includes(r)).slice(0, 10);
     }
@@ -510,7 +508,7 @@ const { top5Results, moreSuggestions } = useMemo(() => {
           
           {searchType === 'keyword' && (<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.</p>)}
 
-          {/* [FIX] Box Vàng + Default Fallback Suggestion */}
+          {/* Box Vàng + Default Fallback Suggestion */}
           {hasSearched && !loading && !hasHighConfidence && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
