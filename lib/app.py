@@ -3,19 +3,24 @@ from flask_cors import CORS
 import os
 import json
 import logging
-from datetime import datetime
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from openai import OpenAI
 
-# [QUAN TRỌNG] Import Blueprint từ file sync mới
-from lib.sync_google_sheets import sync_bp
+# [FIX QUAN TRỌNG] Sửa đường dẫn Import
+# Vì app.py đang nằm chung thư mục với sync_google_sheets.py nên bỏ chữ "lib." đi
+try:
+    # Trường hợp 1: Chạy trên Render (Root dir là lib)
+    from sync_google_sheets import sync_bp
+except ImportError:
+    # Trường hợp 2: Chạy Local từ thư mục gốc (Root dir là ZALOPAY-CS-SEARCH)
+    from lib.sync_google_sheets import sync_bp
 
 # Load environment variables
 load_dotenv()
 app = Flask(__name__)
 
-# [QUAN TRỌNG] Đăng ký Blueprint để kích hoạt API '/api/sync-sheets'
+# [QUAN TRỌNG] Đăng ký Blueprint
 app.register_blueprint(sync_bp)
 
 # --- CORS Configuration ---
@@ -40,18 +45,16 @@ if not all([SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY]):
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 openai_client = OpenAI(api_key=OPENAI_KEY)
 
-# ============= 🧠 CẤU HÌNH FALLBACK RULES (GIỮ NGUYÊN KHÔNG ĐỔI) =============
+# ============= 🧠 CẤU HÌNH FALLBACK RULES (GIỮ NGUYÊN) =============
 FALLBACK_RULES = [
-    # --- NHÓM ỨNG DỤNG & TÍNH NĂNG CHUNG ---
+    # ... (Giữ nguyên danh sách cũ của bạn, không cần thay đổi) ...
     {"keywords": ["lỗi ứng dụng", "văng app", "không vào được", "không mở được", "app lỗi", "treo app", "chậm", "lag"], "context_name": "lỗi ứng dụng Zalopay", "link": "https://sites.google.com/view/cs-faq-chung/%E1%BB%A9ng-d%E1%BB%A5ng/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-ticket-l%E1%BB%97i-%E1%BB%A9ng-d%E1%BB%A5ng", "link_label": "Quy trình Lỗi ứng dụng"},
     {"keywords": ["điểm tin cậy", "nâng điểm", "hạng tài khoản", "tin cậy thấp", "điểm thấp"], "context_name": "tính năng Điểm tin cậy", "link": "https://sites.google.com/view/cs-faq-chung/%E1%BB%A9ng-d%E1%BB%A5ng/%C4%91i%E1%BB%83m-tin-c%E1%BA%ADy", "link_label": "FAQ Điểm tin cậy"},
     {"keywords": ["autodebit", "thanh toán tự động", "gia hạn tự động", "hủy tự động", "trừ tiền tự động"], "context_name": "dịch vụ Autodebit", "link": "https://sites.google.com/view/cs-faq-chung/%E1%BB%A9ng-d%E1%BB%A5ng/t%C3%ADnh-n%C4%83ng-autodebit", "link_label": "Tính năng Autodebit"},
-    # --- NHÓM NGÂN HÀNG & TÀI KHOẢN ---
     {"keywords": ["liên kết ngân hàng", "thêm thẻ", "lỗi liên kết", "không liên kết được", "liên kết bank"], "context_name": "lỗi liên kết ngân hàng", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/li%C3%AAn-k%E1%BA%BFt-ng%C3%A2n-h%C3%A0ng/li%C3%AAn-k%E1%BA%BFtl%E1%BB%97i-li%C3%AAn-k%E1%BA%BFt", "link_label": "Xử lý Lỗi liên kết"},
     {"keywords": ["hủy liên kết", "gỡ thẻ", "xóa ngân hàng", "không gỡ được thẻ", "unbound"], "context_name": "hủy liên kết ngân hàng", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/li%C3%AAn-k%E1%BA%BFt-ng%C3%A2n-h%C3%A0ng/quy-tr%C3%ACnh-h%E1%BB%97-tr%E1%BB%A3-h%E1%BB%A7y-li%C3%AAn-k%E1%BA%BFt", "link_label": "Quy trình Hủy liên kết"},
     {"keywords": ["đăng ký", "đăng nhập", "tạo tài khoản", "không nhận otp", "quên tài khoản"], "context_name": "tài khoản Zalopay", "link": "https://sites.google.com/view/cs-faq-chung/t%C3%A0i-kho%E1%BA%A3n-chung/%C4%91%C4%83ng-nh%E1%BA%ADpt%E1%BA%A1o-t%C3%A0i-kho%E1%BA%A3n-zalopay", "link_label": "FAQ Đăng ký/Đăng nhập"},
     {"keywords": ["mật khẩu", "đổi mật khẩu", "quên mật khẩu", "pin", "thiết lập mật khẩu"], "context_name": "mật khẩu thanh toán", "link": "https://sites.google.com/view/cs-faq-chung/t%C3%A0i-kho%E1%BA%A3n-chung/m%E1%BA%ADt-kh%E1%BA%A9u-thanh-to%C3%A1n", "link_label": "FAQ Mật khẩu"},
-    # --- NHÓM GIAO DỊCH VÀ ĐỐI TÁC ---
     {"keywords": ["rút tiền", "chuyển tiền", "ibft", "trả nợ thẻ", "rút về bank"], "context_name": "Rút tiền/Chuyển tiền/Trả nợ thẻ", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/ibft-r%C3%BAt-ti%E1%BB%81n-tr%E1%BA%A3-n%E1%BB%A3-th%E1%BA%BB", "link_label": "Quy trình Rút/Chuyển tiền/Trả nợ thẻ"},
     {"keywords": ["nạp tiền", "topup vào ví", "nạp ví", "nạp tiền lỗi"], "context_name": "xử lý giao dịch Nạp tiền", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/n%E1%BA%A1p-ti%E1%BB%81n", "link_label": "Quy trình Nạp tiền"},
     {"keywords": ["telco", "nạp điện thoại", "thẻ đt", "trả sau", "esim", "gohub", "apple gift card", "google gift card"], "context_name": "dịch vụ Telco/Thẻ ĐT/Hóa đơn trả sau", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/telco", "link_label": "Quy trình Telco"},
@@ -60,12 +63,10 @@ FALLBACK_RULES = [
     {"keywords": ["apple", "itunes", "icloud", "appstore", "apple music"], "context_name": "đối tác Apple", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/%C4%91%E1%BB%91i-t%C3%A1c-kh%C3%A1c/9999-apple-service", "link_label": "Đối tác Apple"},
     {"keywords": ["tiktok", "nạp xu", "livestream", "tiktok ads"], "context_name": "đối tác Tiktok", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/%C4%91%E1%BB%91i-t%C3%A1c-kh%C3%A1c/tiktok", "link_label": "Đối tác Tiktok"},
     {"keywords": ["vng", "game", "nạp card", "zing", "pubg", "vltk", "valorant"], "context_name": "đối tác Game VNG", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/%C4%91%E1%BB%91i-t%C3%A1c-kh%C3%A1c/game-vng", "link_label": "Dịch vụ Game VNG"},
-    # --- NHÓM TÀI CHÍNH & KHUYẾN MÃI ---
     {"keywords": ["số dư sinh lời", "sdsl", "mmf", "lợi nhuận", "túi thần tài"], "context_name": "Số dư sinh lời (SDSL)", "link": "https://sites.google.com/view/cs-faq-chung/khuy%E1%BA%BFn-m%C3%A3ilending-chung/lending/s%E1%BB%91-d%C6%B0-sinh-l%E1%BB%9Di-mmf", "link_label": "FAQ Số dư sinh lời"},
     {"keywords": ["vay tiền", "cashloan", "vay nhanh", "trả nợ vay"], "context_name": "Vay tiền nhanh (Cashloan)", "link": "https://sites.google.com/view/cs-faq-chung/khuy%E1%BA%BFn-m%C3%A3ilending-chung/lending/vay-ti%E1%BB%81n-nhanh-cashloan", "link_label": "FAQ Cashloan"},
     {"keywords": ["chứng khoán", "stock", "dnse", "mua cổ phiếu"], "context_name": "Chứng khoán (Stock Trading)", "link": "https://sites.google.com/view/cs-faq-chung/khuy%E1%BA%BFn-m%C3%A3ilending-chung/lending/ch%E1%BB%A9ng-kho%C3%A1n-stocktrading", "link_label": "FAQ Chứng khoán"},
     {"keywords": ["khuyến mãi", "voucher", "ưu đãi", "giảm giá", "mã code", "hoàn tiền", "cashback", "referrals"], "context_name": "Khuyến mãi & Ưu đãi", "link": "https://sites.google.com/view/cs-faq-chung/khuy%E1%BA%BFn-m%C3%A3ilending-chung/khuy%E1%BA%BFn-m%C3%A3i", "link_label": "Quy trình Khuyến mãi"},
-    # --- NHÓM KHÁC ---
     {"keywords": ["sao kê", "lịch sử giao dịch", "lsgd", "xác nhận giao dịch"], "context_name": "Sao kê/Lịch sử giao dịch", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/g%E1%BB%ADi-sao-k%C3%AAlsgd", "link_label": "HD Gửi sao kê"},
     {"keywords": ["hạn mức", "phí dịch vụ", "biểu phí", "tối đa", "tối thiểu"], "context_name": "Hạn mức & Phí dịch vụ", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/h%E1%BA%A1n-m%E1%BB%A9c-thanh-to%C3%A1n-v%C3%A0-ph%C3%AD-d%E1%BB%8Bch-v%E1%BB%A5", "link_label": "Biểu phí & Hạn mức"}
 ]
@@ -86,7 +87,7 @@ def get_fallback_suggestion(query_text):
                 return {"found": True, "context_name": rule["context_name"], "link": rule["link"], "link_label": rule["link_label"]}
     return {"found": False, "context_name": DEFAULT_FALLBACK["context_name"], "link": DEFAULT_FALLBACK["link"], "link_label": DEFAULT_FALLBACK["link_label"]}
 
-# [QUAN TRỌNG] Hàm này VẪN GIỮ để phục vụ chức năng SEARCH (chuyển câu hỏi người dùng thành vector)
+# [QUAN TRỌNG] Hàm này VẪN GIỮ để phục vụ chức năng SEARCH
 def generate_embedding(text):
     try:
         if not text or not text.strip(): return None
@@ -96,7 +97,7 @@ def generate_embedding(text):
         logger.error(f"Embedding error: {e}")
         return None
 
-# ============= SCORE CALCULATION (LOGIC TÍNH ĐIỂM) =============
+# ============= SCORE CALCULATION =============
 def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, search_type='semantic'):
     final_score = 0.0
     query_lower = query_text.lower().strip() if query_text else ""
@@ -143,7 +144,7 @@ def format_response(sop):
         'link': sop.get('link_sop'), 'notes': sop.get('notes'), 'last_updated': sop.get('last_updated')
     }
 
-# ============= API: NOTIFICATION (LOGIC THÔNG BÁO) =============
+# ============= API: NOTIFICATION =============
 
 @app.route('/api/trigger-noti', methods=['POST'])
 def trigger_noti():
@@ -175,7 +176,7 @@ def get_latest_noti():
         logger.error(f"Get Latest Noti Error: {e}")
         return jsonify({"error": str(e)}), 500
 
-# ============= API: SEARCH (LOGIC TÌM KIẾM) =============
+# ============= API: SEARCH =============
 @app.route('/api/search', methods=['POST'])
 def search():
     try:
@@ -188,16 +189,13 @@ def search():
         
         results = []
         if search_type == 'semantic':
-            # Chuyển câu hỏi người dùng thành Vector
             embedding = generate_embedding(query)
             if embedding:
-                # Gọi hàm tìm kiếm trong Database (RPC)
                 rpc_params = {'query_embedding': embedding, 'match_threshold': 0.4, 'match_count': limit}
                 if domain: rpc_params['domain_filter'] = domain
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
         else: 
-            # Tìm kiếm theo từ khóa (RPC)
             rpc_params = {'query_text': query, 'match_count': limit}
             if domain: rpc_params['domain_filter'] = domain
             res = supabase.rpc('kw_sops', rpc_params).execute()
