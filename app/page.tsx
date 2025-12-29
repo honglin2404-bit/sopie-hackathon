@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 
-// --- 1. NOTIFICATION SYSTEM (HỆ THỐNG THÔNG BÁO) ---
+// --- 1. NOTIFICATION SYSTEM ---
 const NotificationSystem = React.memo(({ darkMode }: { darkMode: boolean }) => {
   const [activeNotis, setActiveNotis] = useState<any[]>([]);
   const [closedNotiIds, setClosedNotiIds] = useState<string[]>([]);
@@ -352,18 +352,16 @@ export default function Home() {
     // --- XỬ LÝ QUERY TRƯỚC KHI GỬI ĐI ---
     let finalQuery = query;
 
-    // [FIX 1] Key Search Negative number logic
+    // [FIX] Bỏ dấu trừ để tránh backend hiểu lầm là NOT operator
     if (searchType === 'keyword' && /^-\d+/.test(query.trim())) {
         finalQuery = query.trim().replace(/^-/, ''); 
     }
     
-    // [FIX 2] AI Search Smart Query
     if (searchType === 'ai' && query.length < 15 && /\d/.test(query)) {
         finalQuery = `Mã lỗi ${query}`;
     }
 
     try {
-      // [FIX 3] Giữ limit 20 để lấy dư data
       const response = await fetch(`${backendUrl}/api/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -379,20 +377,8 @@ export default function Home() {
         
         let sorted = (data.results || []).sort((a: any, b: any) => b.relevance_score - a.relevance_score);
 
-        // [FIX 4] Client-side filter for Key Search
-        if (searchType === 'keyword') {
-            const lowerQuery = query.toLowerCase().trim();
-            sorted = sorted.filter((item: any) => {
-                const content = (
-                    (item.title || "") + " " + 
-                    (item.id || "") + " " + 
-                    (item.cause || "") + " " +
-                    (item.solution?.level1 || "")
-                ).toLowerCase();
-                return content.includes(lowerQuery);
-            });
-        }
-
+        // [QUAN TRỌNG] KHÔNG FILTER TRỰC TIẾP Ở ĐÂY NỮA
+        // Để giữ lại toàn bộ data cho phần gợi ý thêm của Key Search
         setResults(sorted)
 
         const defaultTabs: {[key: string]: 'cs1' | 'cs2'} = {}
@@ -404,17 +390,51 @@ export default function Home() {
     } finally { setLoading(false) }
   }
 
-  // [FIX 5] Yellow Box Logic
-  const hasHighConfidence = useMemo(() => results.some(r => r.relevance_score >= 0.8), [results]);
+  // Logic Box Vàng
+  const hasHighConfidence = useMemo(() => {
+      // Key search: Nếu có ít nhất 1 kết quả khớp chính xác -> coi là high confidence
+      if (searchType === 'keyword') {
+          const lowerQuery = query.toLowerCase().trim();
+          return results.some((item: any) => {
+             const content = (item.title + " " + item.id + " " + item.cause + " " + (item.solution?.level1 || "")).toLowerCase();
+             return content.includes(lowerQuery);
+          });
+      }
+      // AI Search: Dựa vào điểm số
+      return results.some(r => r.relevance_score >= 0.8);
+  }, [results, searchType, query]);
 
   const { top5Results, moreSuggestions } = useMemo(() => {
-    // [FIX 6] Logic Top/Suggestion split
-    const top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5); 
-    
-    const rest = results.filter(r => !top.includes(r)).slice(0, 10);
+    let top: any[] = [];
+    let rest: any[] = [];
+
+    if (searchType === 'keyword') {
+        // --- LOGIC KEY SEARCH HYBRID ---
+        const lowerQuery = query.toLowerCase().trim();
+        
+        // 1. Tách những thằng khớp chính xác (Exact Matches) -> Đưa vào Top
+        const exactMatches = results.filter((item: any) => {
+            const content = ((item.title || "") + " " + (item.id || "") + " " + (item.cause || "") + " " + (item.solution?.level1 || "")).toLowerCase();
+            return content.includes(lowerQuery);
+        });
+
+        // 2. Những thằng không khớp (Loose Matches) -> Đưa vào Gợi ý
+        const looseMatches = results.filter((item: any) => !exactMatches.includes(item));
+
+        top = exactMatches.slice(0, 5); // Top chỉ chứa tối đa 5 kết quả khớp chính xác
+        
+        // Gợi ý = (Phần dư của Top) + (Kết quả liên quan khác từ backend)
+        const remainingExact = exactMatches.slice(5);
+        rest = [...remainingExact, ...looseMatches].slice(0, 10);
+
+    } else {
+        // --- LOGIC AI SEARCH (CŨ) ---
+        top = results.filter(r => r.relevance_score >= 0.8).slice(0, 5); 
+        rest = results.filter(r => !top.includes(r)).slice(0, 10);
+    }
 
     return { top5Results: top, moreSuggestions: rest };
-  }, [results]);
+  }, [results, searchType, query]);
 
   const suggestionDomains = useMemo(() => {
     const domainCounts: {[key: string]: number} = {}
@@ -435,7 +455,6 @@ export default function Home() {
     setSelectedSop(null);
   }, []);
 
-  // [FIX MỚI] Tính tổng số thẻ hiển thị thực tế (Top + Gợi ý) để hiển thị lên Header cho khớp
   const visibleCount = top5Results.length + moreSuggestions.length;
   
   return (
@@ -479,7 +498,7 @@ export default function Home() {
           
           {searchType === 'keyword' && (<p className="text-sm text-gray-500 dark:text-gray-400 mb-3">💡 Mẹo: Key Search hoạt động tốt nhất với từ khóa ngắn gọn (1-5 từ). Dùng AI Search cho câu hỏi dài.</p>)}
 
-          {/* [FIX 7] Box Vàng + Fallback Suggestion */}
+          {/* [FIX] Box Vàng + Default Fallback Suggestion */}
           {hasSearched && !loading && !hasHighConfidence && (
             <div className="mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border-l-8 border-amber-500 rounded-xl text-amber-900 dark:text-amber-200 animate-fade-in transition-all">
               <div className="flex items-start gap-4">
@@ -491,13 +510,16 @@ export default function Home() {
                     <li>Kiểm tra lại bộ lọc domain kiến thức</li>
                   </ul>
                   
-                  {backendSuggestion?.link && (
-                      <div className="mt-3 pl-1">
-                           <a href={backendSuggestion.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold rounded-lg shadow-sm hover:scale-105 transition-all">
-                             🔗 {backendSuggestion.link_label || 'Link quy trình'}
-                           </a>
-                      </div>
-                  )}
+                  <div className="mt-3 pl-1">
+                       <a 
+                         href={backendSuggestion?.link || "https://sites.google.com/view/cs-faq-chung/quy-%C4%91%E1%BB%8Bnh-chung"} 
+                         target="_blank" 
+                         rel="noopener noreferrer" 
+                         className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 font-bold rounded-lg shadow-sm hover:scale-105 transition-all"
+                       >
+                         🔗 {backendSuggestion?.link_label || 'Tra cứu thủ công tại SOPie Index'}
+                       </a>
+                  </div>
 
                   <p className="text-sm font-bold pt-2 border-t border-amber-200 dark:border-amber-800/50 mt-2">
                     Hoặc CS có thể liên hệ QC team để được hỗ trợ nhanh chóng.
@@ -513,7 +535,6 @@ export default function Home() {
         {!loading && results.length > 0 && (
           <div className="mt-8 animate-slide-up">
             <div className="flex items-center justify-between mb-6">
-                {/* [FIX MỚI] SỬ DỤNG BIẾN visibleCount ĐỂ HIỂN THỊ SỐ LƯỢNG KẾT QUẢ KHỚP VỚI GIAO DIỆN */}
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tìm thấy {visibleCount} kết quả</h2>
                 <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium border border-gray-200 dark:border-gray-700">{searchType === 'ai' ? '🤖 AI Search' : '🔑 Key Search'}</span>
             </div>
