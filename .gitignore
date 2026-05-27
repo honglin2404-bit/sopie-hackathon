@@ -18,6 +18,7 @@ Build outputs
 out/
 build/
 dist/
+tsconfig.tsbuildinfo
 
 Logs
 
