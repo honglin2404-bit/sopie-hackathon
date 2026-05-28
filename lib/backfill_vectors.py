@@ -49,12 +49,15 @@ def main():
     for i, row in enumerate(all_sops):
         print(f"[{i+1}/{len(all_sops)}] Processing ID: {row['id']}...")
         
-        # Tạo chuỗi text đầy đủ nhất (Thêm cả keyword nếu có)
+        # [OPT] Chuỗi embedding ưu tiên title + keywords_primary (lặp 2 lần để tăng weight).
+        # Chỉ lấy 200 ký tự đầu của solution để tránh vector bị loãng bởi nội dung dài.
+        # Nhất quán với cách tạo embedding trong sync_google_sheets.py.
         sol_l1 = row.get('solution_l1') or ''
-        sol_l2 = row.get('solution_l2') or ''
         kw = row.get('keywords_primary') or ''
-        
-        content_text = f"{row.get('title', '')} {row.get('cause', '')} {sol_l1} {sol_l2} {kw}"
+        title_val = row.get('title', '')
+        cause_val = row.get('cause', '')
+
+        content_text = f"{title_val} {title_val} {kw} {kw} {cause_val} {sol_l1[:200]}"
         
         vector = generate_embedding(content_text)
         

@@ -80,7 +80,11 @@ FALLBACK_RULES = [
     {"keywords": ["khuyến mãi", "voucher", "ưu đãi", "giảm giá", "mã code", "hoàn tiền", "cashback", "referrals"], "context_name": "Khuyến mãi & Ưu đãi", "link": "https://sites.google.com/view/cs-faq-chung/khuy%E1%BA%BFn-m%C3%A3ilending-chung/khuy%E1%BA%BFn-m%C3%A3i", "link_label": "Quy trình Khuyến mãi"},
     # --- NHÓM KHÁC ---
     {"keywords": ["sao kê", "lịch sử giao dịch", "lsgd", "xác nhận giao dịch"], "context_name": "Sao kê/Lịch sử giao dịch", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/g%E1%BB%ADi-sao-k%C3%AAlsgd", "link_label": "HD Gửi sao kê"},
-    {"keywords": ["hạn mức", "phí dịch vụ", "biểu phí", "tối đa", "tối thiểu"], "context_name": "Hạn mức & Phí dịch vụ", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/h%E1%BA%A1n-m%E1%BB%A9c-thanh-to%C3%A1n-v%C3%A0-ph%C3%AD-d%E1%BB%8Bch-v%E1%BB%A5", "link_label": "Biểu phí & Hạn mức"}
+    {"keywords": ["hạn mức", "phí dịch vụ", "biểu phí", "tối đa", "tối thiểu"], "context_name": "Hạn mức & Phí dịch vụ", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/h%E1%BA%A1n-m%E1%BB%A9c-thanh-to%C3%A1n-v%C3%A0-ph%C3%AD-d%E1%BB%8Bch-v%E1%BB%A5", "link_label": "Biểu phí & Hạn mức"},
+    # --- NHÓM DỊCH VỤ ĐỐI TÁC & MUA SẮM ---
+    {"keywords": ["mua vé", "đặt vé", "vé xem phim", "vé máy bay", "vé sự kiện", "cgv", "galaxy cinema", "booking", "thao tác mua vé"], "context_name": "dịch vụ Mua vé & Giải trí", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/%C4%91%E1%BB%91i-t%C3%A1c-kh%C3%A1c", "link_label": "Quy trình Đối tác Mua vé"},
+    {"keywords": ["grab", "shopee", "lazada", "tiki", "sendo", "mua sắm", "đặt hàng", "thanh toán đơn hàng"], "context_name": "thanh toán Sàn TMĐT & Đối tác", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all/%C4%91%E1%BB%91i-t%C3%A1c-kh%C3%A1c", "link_label": "Quy trình Đối tác TMĐT"},
+    {"keywords": ["hoàn tiền giao dịch", "refund", "lỗi thanh toán", "giao dịch thất bại", "không nhận được tiền"], "context_name": "xử lý Hoàn tiền & Giao dịch lỗi", "link": "https://sites.google.com/view/cs-faq-chung/thanh-to%C3%A1n-payment/quy-tr%C3%ACnh-x%E1%BB%AD-l%C3%BD-gd-all", "link_label": "Quy trình Xử lý Giao dịch lỗi"}
 ]
 
 DEFAULT_FALLBACK = {
@@ -134,7 +138,7 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, 
             final_score = base_score + match_bonus
     else:
         if similarity is None: similarity = 0.5
-        min_threshold = 0.4 
+        min_threshold = 0.35  # Hạ từ 0.4 → 0.35 để lấy thêm candidate tiếng Việt
         if similarity < min_threshold: rescaled = 0.0
         else: rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
         final_score = max(0.0, min(1.0, rescaled))
@@ -194,20 +198,25 @@ def search():
     try:
         data = request.json
         query = data.get('query', '')
+        # [BUG FIX] raw_query: query gốc của user trước khi frontend enrich.
+        # Dùng cho token-matching bonus trong calculate_final_score.
+        # Nếu không có (gọi trực tiếp hoặc query ngắn không enrich), fallback về query.
+        raw_query = data.get('raw_query') or query
         domain = data.get('domain', None)
         search_type = data.get('type', 'keyword')
         limit = data.get('limit', 25)
         if not query: return jsonify({'error': 'Query required'}), 400
-        
+
         results = []
         if search_type == 'semantic':
+            # Dùng query (enriched) để tạo embedding — vector phong phú hơn
             embedding = generate_embedding(query)
             if embedding:
-                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.4, 'match_count': limit}
+                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.35, 'match_count': limit}
                 if domain: rpc_params['domain_filter'] = domain
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
-        else: 
+        else:
             rpc_params = {'query_text': query, 'match_count': limit}
             if domain: rpc_params['domain_filter'] = domain
             res = supabase.rpc('kw_sops', rpc_params).execute()
@@ -216,18 +225,23 @@ def search():
         formatted_results = []
         for r in results:
             similarity = r.get('similarity', 0.5)
-            final_score = calculate_final_score(similarity, r, query, domain, search_type)
+            # [BUG FIX] Dùng raw_query cho token-matching, không dùng enriched query.
+            # Trước đây: query enriched có 20+ token → match_ratio thấp → mất bonus.
+            # Sau fix: raw_query "thao tác mua vé" có 4 token → match_ratio cao → bonus OK.
+            scoring_query = raw_query if search_type == 'semantic' else query
+            final_score = calculate_final_score(similarity, r, scoring_query, domain, search_type)
             if final_score > 0:
                 formatted = format_response(r)
                 formatted['relevance_score'] = final_score
                 formatted_results.append(formatted)
-        
+
         sorted_results = sorted(formatted_results, key=lambda x: x['relevance_score'], reverse=True)
         response_data = {'success': True, 'results': sorted_results}
-        
+
+        # Fallback suggestion dùng raw_query để match đúng rule (ví dụ: "mua vé")
         top_score = sorted_results[0]['relevance_score'] if sorted_results else 0
         if not sorted_results or top_score < 0.8:
-            response_data['suggestion'] = get_fallback_suggestion(query)
+            response_data['suggestion'] = get_fallback_suggestion(raw_query)
         return jsonify(response_data)
     except Exception as e:
         logger.error(f"Search error: {e}")

@@ -98,7 +98,8 @@ export function useSearch() {
       // [FIX 1] Query Enrichment — AI Search
       // Vấn đề: query ngắn (≤4 từ) tạo ra vector thưa, không khớp tốt với
       // SOP embeddings vốn được tạo từ đoạn văn dài.
-      // Giải pháp: làm giàu ngữ cảnh trước khi embed để vector đủ "dày".
+      // Giải pháp: làm giàu ngữ cảnh để cải thiện chất lượng vector,
+      // nhưng vẫn gửi kèm rawQuery để backend dùng cho token-matching.
       // ----------------------------------------------------------------
       let finalQuery = rawQuery
 
@@ -129,6 +130,11 @@ export function useSearch() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             query: finalQuery,
+            // [BUG FIX] Gửi kèm raw_query để backend dùng cho token-matching bonus.
+            // Khi query bị enrich, các token phụ ("hướng", "dẫn", "xử lý", ...) làm
+            // match_ratio giảm thấp → mất bonus +0.20 → score dưới ngưỡng 0.72.
+            // Backend sẽ dùng raw_query cho scoring và finalQuery chỉ để tạo embedding.
+            raw_query: rawQuery,
             domain: domain === 'all' ? null : domain,
             type: searchType === 'ai' ? 'semantic' : 'keyword',
             limit: 20,

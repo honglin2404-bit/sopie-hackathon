@@ -115,8 +115,13 @@ def sync_sheets():
                 supabase.table('sops').upsert(cleaned_data).execute()
                 
                 # --- PHẦN 3: TẠO & LƯU VECTOR (EMBEDDING) ---
-                # Ghép tất cả thông tin quan trọng để AI học
-                content_for_embedding = f"{row.get('title', '')} {row.get('feature', '')} {row.get('cause', '')} {sol_l1} {sol_l2} {ct_guideline} {row.get('keywords_primary', '')}"
+                # [OPT] Chuỗi embedding ưu tiên title + keywords_primary (lặp 2 lần để tăng weight).
+                # Chỉ lấy 200 ký tự đầu của solution để tránh vector bị loãng bởi nội dung dài.
+                # Bỏ solution_l2 / ct_guideline vì ít semantic, không giúp matching tốt hơn.
+                title_val = row.get('title', '')
+                kw_primary = row.get('keywords_primary', '')
+                cause_val = row.get('cause', '')
+                content_for_embedding = f"{title_val} {title_val} {kw_primary} {kw_primary} {cause_val} {sol_l1[:200]}"
                 
                 # Chỉ tạo vector nếu có nội dung
                 if content_for_embedding.strip():
