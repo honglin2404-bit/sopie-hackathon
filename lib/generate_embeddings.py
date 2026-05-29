@@ -111,5 +111,48 @@ def generate_all_embeddings():
     
     print("🎉 Done! All embeddings generated.")
 
+def generate_selected_embeddings(sop_ids: list):
+    """Re-embed một số SOP cụ thể theo ID"""
+    print(f"🔄 Re-embedding {len(sop_ids)} SOPs: {sop_ids}")
+
+    for sop_id in sop_ids:
+        try:
+            response = supabase.table('sops').select('*').eq('id', sop_id).single().execute()
+            sop = response.data
+            if not sop:
+                print(f"  ❌ Không tìm thấy SOP: {sop_id}")
+                continue
+
+            print(f"⚙️  Processing: {sop['title'][:60]}...")
+            searchable_text = create_searchable_text(sop)
+            embedding = generate_embedding(searchable_text)
+
+            existing = supabase.table('sop_embeddings').select('id').eq('sop_id', sop_id).execute()
+            if existing.data:
+                supabase.table('sop_embeddings').update({
+                    'embedding': embedding,
+                    'content': searchable_text
+                }).eq('sop_id', sop_id).execute()
+                print(f"  ✅ Updated: {sop_id}")
+            else:
+                supabase.table('sop_embeddings').insert({
+                    'sop_id': sop_id,
+                    'embedding': embedding,
+                    'content': searchable_text
+                }).execute()
+                print(f"  ✅ Created: {sop_id}")
+
+        except Exception as e:
+            print(f"  ❌ Error {sop_id}: {e}")
+
+    print("🎉 Done!")
+
+
 if __name__ == "__main__":
-    generate_all_embeddings()
+    import sys
+    if len(sys.argv) > 1:
+        # Chạy: python lib/generate_embeddings.py TV_VJ_010 TV_BB_001 TV_VNA_003
+        ids = sys.argv[1:]
+        generate_selected_embeddings(ids)
+    else:
+        generate_all_embeddings()

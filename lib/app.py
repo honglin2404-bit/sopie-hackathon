@@ -125,8 +125,10 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, 
     cause_lower = str(sop.get('cause', '')).lower()
     full_context = f"{title_lower} {feature_lower} {keywords} {cause_lower}"
 
+    kw_primary_lower = str(sop.get('keywords_primary', '')).lower()
+
     if search_type == 'keyword':
-        base_score = 0.85 
+        base_score = 0.85
         if query_lower in full_context: final_score = 1.0
         else:
             match_bonus = 0.0
@@ -138,15 +140,22 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, 
             final_score = base_score + match_bonus
     else:
         if similarity is None: similarity = 0.5
-        min_threshold = 0.20  # Hạ từ 0.35 → 0.20 để lấy đủ candidate cho domain có nhiều SOP
+        min_threshold = 0.20
         if similarity < min_threshold: rescaled = 0.0
         else: rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
         final_score = max(0.0, min(1.0, rescaled))
         if final_score > 0 and query_tokens:
-            matched_count = sum(1 for token in query_tokens if token in full_context)
-            match_ratio = matched_count / len(query_tokens)
-            if match_ratio >= 0.7: final_score += 0.20
-            elif match_ratio >= 0.5: final_score += 0.10
+            # Bonus từ keywords_primary (weight cao — đây là signal chính xác nhất)
+            primary_matched = sum(1 for token in query_tokens if token in kw_primary_lower)
+            primary_ratio = primary_matched / len(query_tokens)
+
+            # Bonus từ full_context (weight thấp hơn)
+            full_matched = sum(1 for token in query_tokens if token in full_context)
+            full_ratio = full_matched / len(query_tokens)
+
+            if primary_ratio >= 0.30:   final_score += 0.25   # nhiều keyword_primary khớp → boost mạnh
+            elif full_ratio >= 0.70:    final_score += 0.12   # khớp nhiều trong context chung
+            elif full_ratio >= 0.50:    final_score += 0.06
 
     if final_score > 0 and domain_filter and sop.get('domain') == domain_filter: final_score += 0.05
     return round(max(0.0, min(1.0, final_score)), 2)
