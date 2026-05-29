@@ -296,7 +296,7 @@ export function useSearch() {
         top = results.filter(r => r.relevance_score >= dynamicThreshold).slice(0, 5)
       }
 
-      rest = results.filter(r => !top.includes(r)).slice(0, 10)
+      rest = results.filter(r => !top.includes(r) && r.relevance_score >= 0.60).slice(0, 10)
     }
 
     return { top5Results: top, moreSuggestions: rest }
