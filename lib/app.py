@@ -138,7 +138,7 @@ def calculate_final_score(similarity, sop, query_text=None, domain_filter=None, 
             final_score = base_score + match_bonus
     else:
         if similarity is None: similarity = 0.5
-        min_threshold = 0.35  # Hạ từ 0.4 → 0.35 để lấy thêm candidate tiếng Việt
+        min_threshold = 0.20  # Hạ từ 0.35 → 0.20 để lấy đủ candidate cho domain có nhiều SOP
         if similarity < min_threshold: rescaled = 0.0
         else: rescaled = ((similarity - min_threshold) / (1.0 - min_threshold)) * 0.40 + 0.60
         final_score = max(0.0, min(1.0, rescaled))
@@ -212,7 +212,7 @@ def search():
             # Dùng query (enriched) để tạo embedding — vector phong phú hơn
             embedding = generate_embedding(query)
             if embedding:
-                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.35, 'match_count': limit}
+                rpc_params = {'query_embedding': embedding, 'match_threshold': 0.20, 'match_count': limit}
                 if domain: rpc_params['domain_filter'] = domain
                 rpc_res = supabase.rpc('match_sops', rpc_params).execute()
                 results = rpc_res.data
