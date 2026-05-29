@@ -110,14 +110,12 @@ export function useSearch() {
 
       if (searchType === 'ai') {
         const wordCount = finalQuery.split(/\s+/).length
-        const hasNumber = /\d/.test(finalQuery)
 
-        if (hasNumber && finalQuery.length < 15) {
-          // Case: mã lỗi ngắn (ví dụ: "E-001", "403", "-500")
-          finalQuery = `Mã lỗi ZaloPay: ${finalQuery}. Nguyên nhân và cách xử lý.`
-        } else if (wordCount <= 4) {
-          // Case: cụm từ ngắn (ví dụ: "thao tác mua vé", "hoàn tiền")
-          finalQuery = `Hướng dẫn xử lý tình huống khách hàng ZaloPay: ${finalQuery}. Quy trình thao tác và cách giải quyết vấn đề.`
+        if (wordCount <= 4) {
+          // Query ngắn: lặp lại từ khóa để tăng weight, thêm "ZaloPay" để anchor domain.
+          // Không dùng prefix dài vì các từ boilerplate ("hướng dẫn", "xử lý", "quy trình")
+          // xuất hiện trong mọi SOP → gây false positives với score cao.
+          finalQuery = `ZaloPay ${finalQuery} ${finalQuery}`
         }
         // Query dài (> 4 từ): giữ nguyên — đã đủ ngữ cảnh
       }
