@@ -129,11 +129,21 @@ function ResultPanel({ result, isLowConfidence, error }: {
               <div className="space-y-1.5">
                 {result.sourceKnowledge.map((src, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
-                    <span className="text-purple-500 font-bold">#{i + 1}</span>
-                    <span>
+                    <span className="text-purple-500 font-bold flex-shrink-0">#{i + 1}</span>
+                    <span className="flex-1">
                       <span className="font-medium text-gray-800 dark:text-gray-200">{src.sopTitle}</span>
                       <span className="mx-1">·</span>{src.relevance}
                     </span>
+                    {src.link && (
+                      <a
+                        href={src.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800/50 font-medium transition-colors"
+                      >
+                        🔗 Xem SOP
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
@@ -307,24 +317,4 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
           <div className="flex items-start gap-3">
             <span className="text-2xl">!</span>
             <div>
-              <p className="font-bold text-red-700 dark:text-red-400">{error}</p>
-              {errorCode === 'NOT_FOUND' && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Thu mo ta lai van de, kiem tra domain filter, hoac lien he QC team.
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {!loading && result && (
-        <ResultPanel
-          result={result as AnalysisResult}
-          isLowConfidence={isLowConfidence}
-          error={error}
-        />
-      )}
-    </div>
-  )
-}
+      

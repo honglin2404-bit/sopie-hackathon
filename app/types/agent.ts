@@ -11,6 +11,7 @@ export interface SourceKnowledge {
   sopTitle: string
   domain: string
   relevance: string
+  link?: string
 }
 
 export interface InternalNote {

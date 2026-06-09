@@ -9,7 +9,7 @@ const DOMAIN_CODE_MAP: Record<string, string> = {
   Merchant: 'MC', General: 'GE',
 }
 
-async function searchSOPs(query: string, domain: string) {
+async function searchSOPs(query: string, domain: string, searchType: 'ai' | 'keyword' = 'ai') {
   const searchDomain =
     domain !== 'General' && DOMAIN_CODE_MAP[domain]
       ? `${domain} (${DOMAIN_CODE_MAP[domain]})`
@@ -18,7 +18,7 @@ async function searchSOPs(query: string, domain: string) {
   const res = await fetch(`${BACKEND_URL}/api/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query, domain: searchDomain, type: 'ai', limit: 5 }),
+    body: JSON.stringify({ query, domain: searchDomain, type: searchType, limit: 5 }),
   })
   if (!res.ok) throw new Error(`Search API error: ${res.status}`)
   return res.json()
@@ -56,17 +56,17 @@ export async function POST(req: NextRequest) {
           role: 'system',
           content: `Ban la AI phan tich ticket CS cua ZaloPay. Trich xuat thong tin co cau truc.
 
-QUAN TRONG khi trich xuat primarySearchQuery:
-- Neu ticket co ma loi ky thuat (TPE code, Step result code, error code), uu tien dung ma loi lam searchQuery
+QUAN TRONG khi trich xuat:
+- errorCodes: lay tat ca ma loi ky thuat (TPE code, Step result code). Vi du: "-333", "111003", "FRAUD_USER"
 - Ma loi thuong xuat hien: "Ma loi TPE: -333", "Step result: -1|21|111003|...", "error_code: XXX"
-- Neu khong co ma loi, dung mo ta tinh huong ngan gon
+- primarySearchQuery: neu co ma loi, dung chinh xac ma loi do (vi du: "-333"). Neu khong co, dung mo ta ngan.
 
 Tra ve JSON (khong giai thich):
 {
   "userId": "UserID neu co trong ticket, null neu khong",
   "transId": "TransID/Ma GD neu co trong ticket, null neu khong",
-  "errorCodes": ["danh sach ma loi tim duoc, vi du: -333, 111003, FRAUD_USER"],
-  "primarySearchQuery": "query ngan de tim SOP - uu tien ma loi, sau do mo ta tinh huong",
+  "errorCodes": ["ma loi 1", "ma loi 2"],
+  "primarySearchQuery": "ma loi chinh xac hoac mo ta ngan",
   "caseSummary": "Tom tat van de 1-2 cau theo goc nhin CS",
   "domain": "Account | Payment | Application | Lending | Promotion | Travel | Merchant | General",
   "urgency": "Thap | Trung binh | Cao",
@@ -89,14 +89,27 @@ Tra ve JSON (khong giai thich):
     }
 
     // Knowledge Retrieval
+    // Co ma loi -> keyword search truoc (chinh xac hon), fallback AI search
+    // Khong co ma loi -> AI search truc tiep
     let retrievedSOPs: any[] = []
-    try {
-      const searchResult = await searchSOPs(extracted.primarySearchQuery, extracted.domain)
-      retrievedSOPs = searchResult.results || []
+    const hasErrorCodes = extracted.errorCodes?.length > 0
 
-      // Fallback: neu search by error code khong ra, thu search by caseSummary
+    try {
+      if (hasErrorCodes) {
+        // Keyword search voi ma loi chinh xac
+        const kwResult = await searchSOPs(extracted.primarySearchQuery, extracted.domain, 'keyword')
+        retrievedSOPs = kwResult.results || []
+      }
+
+      // Fallback or primary: AI search
+      if (retrievedSOPs.length === 0) {
+        const aiResult = await searchSOPs(extracted.primarySearchQuery, extracted.domain, 'ai')
+        retrievedSOPs = aiResult.results || []
+      }
+
+      // Fallback cuoi: AI search bang caseSummary
       if (retrievedSOPs.length === 0 && extracted.caseSummary) {
-        const fallback = await searchSOPs(extracted.caseSummary, extracted.domain)
+        const fallback = await searchSOPs(extracted.caseSummary, extracted.domain, 'ai')
         retrievedSOPs = fallback.results || []
       }
     } catch (e) {
@@ -106,49 +119,47 @@ Tra ve JSON (khong giai thich):
     if (retrievedSOPs.length === 0) {
       return NextResponse.json({
         success: false,
-        error: 'Khong tim thay SOP phu hop trong knowledge base. Vui long tra cuu thu cong hoac lien he QC team.',
+        error: 'Khong tim thay SOP phu hop. Vui long tra cuu thu cong hoac lien he QC team.',
         errorCode: 'NOT_FOUND',
       })
     }
 
-    // Prompt 2: Reasoning + Internal Note + Customer Reply
+    // Lay template tu SOP top-1
+    const topSOP = retrievedSOPs[0]
+    const sopTemplate: string = topSOP?.templates?.email || topSOP?.templates?.chat || ''
+
+    // Build SOP context cho Prompt 2
     const sopContext = retrievedSOPs
       .slice(0, 3)
       .map((sop: any, i: number) =>
-        `SOP ${i + 1}:\n- ID: ${sop.id}\n- Tieu de: ${sop.title}\n- Domain: ${sop.domain}\n- Feature: ${sop.feature || 'N/A'}\n- Nguyen nhan: ${sop.cause || 'N/A'}\n- Xu ly CS1: ${sop.solution?.level1 || 'N/A'}\n- Xu ly CS2: ${sop.solution?.level2 || 'N/A'}\n- Template mail: ${sop.templates?.email || 'N/A'}\n- Template chat: ${sop.templates?.chat || 'N/A'}`
+        `SOP ${i + 1}:\n- ID: ${sop.id}\n- Tieu de: ${sop.title}\n- Domain: ${sop.domain}\n- Nguyen nhan: ${sop.cause || 'N/A'}\n- Xu ly CS1: ${sop.solution?.level1 || 'N/A'}\n- Xu ly CS2: ${sop.solution?.level2 || 'N/A'}`
       )
       .join('\n\n')
 
     const hasTransId = !!extracted.transId
     const customerTone: string = extracted.customerTone || 'normal'
 
+    // Prompt 2: Reasoning + Internal Note
+    // customerReply duoc xu ly rieng: lay template tu SOP, chi AI-adjust neu KH angry
     const reasoningRes = await openai.chat.completions.create({
       model: 'gpt-4o',
-      temperature: 0.15,
+      temperature: 0.1,
       messages: [
         {
           role: 'system',
-          content: `Ban la AI ho tro quyet dinh cho CS ZaloPay. Tao output day du dua tren ticket va SOP.
-
-QUAN TRONG:
-- Chi dung thong tin tu SOP duoc cung cap. Khong bia them chinh sach.
-- customerTone: ${customerTone} (${extracted.toneReason || ''})
-  - Neu "angry": template phai xin loi truoc, nhan manh ghi nhan van de, cam ket xu ly
-  - Neu "neutral" hoac "normal": tone than thien, lich su, khong can xin loi qua nhieu
-- Template phan hoi: dua tren template_call_chat/template_app_mail tu SOP nhung tu viet lai cho fit voi tinh huong cu the
-- Viet bang tieng Viet co dau cho tat ca output
+          content: `Ban la AI ho tro quyet dinh cho CS ZaloPay. Chi dung thong tin tu SOP duoc cung cap. Khong bia them chinh sach.
 
 Tra ve JSON:
 {
   "processingDirection": "Huong xu ly tong quan cua case (1-2 cau)",
   "internalNote": {
-    "issueSummary": "Tom tat van de KH (ngan gon, dung ngon ngu noi bo)",
+    "issueSummary": "Tom tat van de KH (ngan gon, ngon ngu noi bo)",
     "rootCause": "Nguyen nhan he thong/ky thuat",
     "suggestedAction": "Hanh dong CS nen thuc hien"
   },
-  "customerReply": "Noi dung template phan hoi KH (tieng Viet, fit voi tone da detect)",
-  "replyToneNote": "Giai thich ngan ve tone da chon va ly do",
-  "confidence": 0,
+  "replyToneNote": "Giai thich tone da chon (vi du: KH binh thuong nen dung tone lich su; KH buc xuc nen xin loi truoc)",
+  "customerReplyPrefix": "Cau xin loi them vao dau neu KH angry, hoac chuoi rong neu khong can",
+  "confidence": <so 0-100>,
   "sourceKnowledge": [
     { "sopId": "id", "sopTitle": "title", "domain": "domain", "relevance": "Ly do" }
   ]
@@ -156,7 +167,7 @@ Tra ve JSON:
         },
         {
           role: 'user',
-          content: `TICKET GOC:\n${rawInput}\n\nCONTEXT TRICH XUAT:\n${JSON.stringify(extracted, null, 2)}\n\nSOP LIEN QUAN:\n${sopContext}`,
+          content: `TICKET GOC:\n${rawInput}\n\nCONTEXT TRICH XUAT:\n${JSON.stringify(extracted, null, 2)}\n\nSOP LIEN QUAN:\n${sopContext}\n\ncustomerTone: ${customerTone}`,
         },
       ],
       response_format: { type: 'json_object' },
@@ -165,13 +176,28 @@ Tra ve JSON:
     const reasoning = JSON.parse(reasoningRes.choices[0].message.content || '{}')
     const confidence: number = reasoning.confidence ?? 0
 
-    // Build formatted internal note text
+    // Merge link_sop from retrievedSOPs into sourceKnowledge
+    const sourceKnowledgeWithLinks = (reasoning.sourceKnowledge || []).map((src: any) => {
+      const match = retrievedSOPs.find((sop: any) => sop.id === src.sopId)
+      return { ...src, link: match?.link || undefined }
+    })
+
+    // Build customerReply: dung template tu SOP, them prefix neu KH angry
+    let customerReply = sopTemplate
+    const prefix: string = reasoning.customerReplyPrefix || ''
+    if (customerTone === 'angry' && prefix && sopTemplate) {
+      customerReply = prefix + '\n\n' + sopTemplate
+    } else if (!sopTemplate) {
+      customerReply = prefix || '(Khong co template - CS tu soan phan hoi dua tren SOP)'
+    }
+
+    // Build internal note
     const noteLines: string[] = []
     noteLines.push(`UserID: ${extracted.userId || '(Khong tim thay - CS kiem tra tren CStool)'}`)
 
     if (hasTransId) {
       noteLines.push(`TransID: ${extracted.transId}`)
-      noteLines.push(`[!] Luu y: Verify lai trang thai GD truoc khi phan hoi KH. Status tai thoi diem submit ticket co the da thay doi.`)
+      noteLines.push(`[!] Luu y: Verify lai trang thai GD truoc khi phan hoi KH. Status tai thoi diem submit co the da thay doi.`)
     } else {
       noteLines.push(`TransID: Khong co`)
     }
@@ -201,9 +227,9 @@ Tra ve JSON:
         suggestedAction: reasoning.internalNote?.suggestedAction || '',
         fullText: noteLines.join('\n'),
       },
-      customerReply: reasoning.customerReply,
+      customerReply,
       replyToneNote: reasoning.replyToneNote,
-      sourceKnowledge: reasoning.sourceKnowledge || [],
+      sourceKnowledge: sourceKnowledgeWithLinks,
       confidence,
     }
 
@@ -214,14 +240,4 @@ Tra ve JSON:
         errorCode: 'LOW_CONFIDENCE',
         result,
       })
-    }
-
-    return NextResponse.json({ success: true, result })
-  } catch (error: any) {
-    console.error('Analyze error:', error)
-    return NextResponse.json(
-      { success: false, error: 'Loi he thong, vui long thu lai', errorCode: 'API_ERROR' },
-      { status: 500 },
-    )
-  }
-}
+  
