@@ -23,8 +23,8 @@ const URGENCY_COLOR: Record<string, string> = {
   'Cao': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
   'Trung binh': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
   'Thap': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  'Th\u1ea5p': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  'Trung b\u00ecnh': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  'Thấp': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  'Trung bình': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
 }
 
 const TONE_MAP: Record<string, { label: string; color: string }> = {
@@ -83,7 +83,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
     <div className="space-y-4">
       {isLowConfidence && (
         <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-xl text-amber-800 dark:text-amber-300 text-sm">
-          <strong>Do tin cay thap</strong> — {error}. Ket qua chi mang tinh tham khao.
+          <strong>Do tin cay thap</strong> -- {error}. Ket qua chi mang tinh tham khao.
         </div>
       )}
 
@@ -102,7 +102,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
         ))}
       </div>
 
-      {/* Section 1 — AI Assessment */}
+      {/* Section 1 -- AI Assessment */}
       <SectionCard icon="AI" title="AI nhan dinh ve case">
         <div className="space-y-3 text-sm">
           <div>
@@ -141,7 +141,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
                         rel="noopener noreferrer"
                         className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800/50 font-medium transition-colors"
                       >
-                        🔗 Xem SOP
+                        Xem SOP
                       </a>
                     )}
                   </div>
@@ -152,7 +152,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
         </div>
       </SectionCard>
 
-      {/* Section 2 — Internal Note */}
+      {/* Section 2 -- Internal Note */}
       <SectionCard
         icon="[N]"
         title="Internal Note"
@@ -165,7 +165,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
         </div>
       </SectionCard>
 
-      {/* Section 3 — Customer Reply */}
+      {/* Section 3 -- Customer Reply */}
       <SectionCard
         icon="[R]"
         title="Template phan hoi KH"
@@ -317,4 +317,24 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
           <div className="flex items-start gap-3">
             <span className="text-2xl">!</span>
             <div>
-      
+              <p className="font-bold text-red-700 dark:text-red-400">{error}</p>
+              {errorCode === 'NOT_FOUND' && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  Thu mo ta lai van de, kiem tra domain filter, hoac lien he QC team.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!loading && result && (
+        <ResultPanel
+          result={result as AnalysisResult}
+          isLowConfidence={isLowConfidence}
+          error={error}
+        />
+      )}
+    </div>
+  )
+}
