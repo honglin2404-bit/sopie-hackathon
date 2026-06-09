@@ -1,10 +1,10 @@
-// ============================================================
-// Agent Types — SOPie Resolution Agent V2
-// ============================================================
+// Agent Types - SOPie Resolution Agent V2
 
 export type AnalyzeMode = 'fd' | 'free'
 
-export type Urgency = 'Thấp' | 'Trung bình' | 'Cao'
+export type Urgency = 'Thap' | 'Trung binh' | 'Cao'
+
+export type CustomerTone = 'angry' | 'neutral' | 'normal'
 
 export interface SourceKnowledge {
   sopId: string
@@ -13,28 +13,28 @@ export interface SourceKnowledge {
   relevance: string
 }
 
-export interface RecommendedAction {
-  primaryAction: string
-  steps: string[]
-  escalate: boolean
-  escalateTo?: string | null
+export interface InternalNote {
+  userId: string | null
+  transId: string | null
+  hasTransId: boolean
+  issueSummary: string
+  rootCause: string
+  suggestedAction: string
+  fullText: string
 }
 
 export interface AnalysisResult {
-  // Context Extraction
-  ticketSummary: string
-  rootCause: string
-  customerIntent: string
+  caseSummary: string
+  errorCodes: string[]
   domain: string
   urgency: Urgency
-  // Reasoning + Recommendation
-  recommendation: RecommendedAction
-  // Response Generation
+  customerTone: CustomerTone
+  processingDirection: string
+  internalNote: InternalNote
   customerReply: string
-  internalNote: string
-  // Meta
-  confidence: number
+  replyToneNote: string
   sourceKnowledge: SourceKnowledge[]
+  confidence: number
 }
 
 export interface AnalyzeResponse {
@@ -44,7 +44,6 @@ export interface AnalyzeResponse {
   errorCode?: 'NOT_FOUND' | 'LOW_CONFIDENCE' | 'EXTRACTION_ERROR' | 'API_ERROR'
 }
 
-// Request shapes
 export interface FDAnalyzeRequest {
   mode: 'fd'
   ticketContent: string
