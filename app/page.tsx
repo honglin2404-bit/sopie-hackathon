@@ -8,11 +8,15 @@ import { SopDetailModal } from './components/SopDetailModal'
 import { QuickLinks } from './components/QuickLinks'
 import { LoadingSkeleton } from './components/LoadingSkeleton'
 import { SearchHistory } from './components/SearchHistory'
+import { AgentView } from './components/AgentView'
 import { useSearch } from './hooks/useSearch'
 import type { SOP, SearchHistoryItem } from './types/sop'
 
+type ActiveTab = 'agent' | 'search'
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false)
+  const [activeTab, setActiveTab] = useState<ActiveTab>('agent')
   const [selectedSop, setSelectedSop] = useState<SOP | null>(null)
   const [showHistory, setShowHistory] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -100,22 +104,22 @@ export default function Home() {
               </button>
 
               <button
-                onClick={() => setSearchType('ai')}
-                aria-pressed={searchType === 'ai'}
+                onClick={() => setActiveTab('agent')}
+                aria-pressed={activeTab === 'agent'}
                 className={`py-3 px-6 rounded-xl font-bold transition-all shadow-md ${
-                  searchType === 'ai'
-                    ? 'text-white bg-blue-600 hover:scale-105'
+                  activeTab === 'agent'
+                    ? 'text-white bg-purple-600 hover:scale-105'
                     : 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
-                🤖 AI Search
+                🤖 SOPie Agent
               </button>
 
               <button
-                onClick={() => setSearchType('keyword')}
-                aria-pressed={searchType === 'keyword'}
+                onClick={() => { setActiveTab('search'); setSearchType('keyword') }}
+                aria-pressed={activeTab === 'search'}
                 className={`py-3 px-6 rounded-xl font-bold transition-all shadow-md ${
-                  searchType === 'keyword'
+                  activeTab === 'search'
                     ? 'text-white bg-green-500 hover:scale-105'
                     : 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
@@ -130,9 +134,15 @@ export default function Home() {
       </header>
 
       {/* ============================================================ */}
-      {/* SEARCH AREA                                                   */}
+      {/* MAIN CONTENT                                                  */}
       {/* ============================================================ */}
       <main className="max-w-7xl mx-auto px-6 py-8">
+
+        {/* SOPie Agent Tab */}
+        {activeTab === 'agent' && <AgentView darkMode={darkMode} />}
+
+        {/* Key Search Tab */}
+        {activeTab === 'search' && (<>
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors duration-300 border border-gray-100 dark:border-gray-700">
           {/* Search inputs */}
           <div className="flex flex-col md:flex-row gap-3 mb-4">
@@ -348,6 +358,9 @@ export default function Home() {
             )}
           </div>
         )}
+
+        </>)}
+
       </main>
 
       {/* ============================================================ */}
