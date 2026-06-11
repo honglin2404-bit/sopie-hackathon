@@ -113,7 +113,7 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
 
 
 # Columns to select from sops table (excludes the large embedding vector)
-_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_call_chat"
+_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_call_chat, check_tool_guideline, check_tools_name, check_tools_url"
 
 
 # --- Node 2: Knowledge Retrieval ---
@@ -279,16 +279,16 @@ Write two outputs in Vietnamese:
    - Be concise (3-5 sentences)
    - If escalation needed, tell customer you will follow up
 
-2. internalNote — a brief CS team note:
-   - Root cause identified
-   - Actions taken / to be taken
-   - Escalation flag if needed
-   - SOP reference used
+2. internalNote — ghi chú nội bộ cho CS team, theo đúng format sau (tiếng Việt, không dùng label tiếng Anh):
+
+Mô tả vấn đề: [1-2 câu tóm tắt tình huống KH]
+Nguyên nhân: [1 câu ngắn gọn]
+Hướng xử lý đề xuất: [các bước xử lý theo SOP, viết liền mạch hoặc dạng "Bước 1... Bước 2..."]
 
 Return ONLY a valid JSON object:
 {{
   "replyDraft": "customer reply in Vietnamese here",
-  "internalNote": "internal note in Vietnamese here"
+  "internalNote": "internal note in Vietnamese here — chỉ phần nội dung, không bao gồm UserID/TransID"
 }}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
@@ -356,6 +356,11 @@ def handler(payload: dict, context: RequestContext) -> dict:
             "title": sop.get("title", ""),
             "domain": sop.get("domain", ""),
             "linkSop": sop.get("link_sop", "") or "",
+        },
+        "toolGuidance": {
+            "guideline": sop.get("check_tool_guideline", "") or "",
+            "toolsName": sop.get("check_tools_name", "") or "",
+            "toolsUrl": sop.get("check_tools_url", "") or "",
         },
         "templateCallChat": sop.get("template_call_chat", "") or "",
         "timestamp": datetime.now().isoformat(),

@@ -14,6 +14,16 @@ export interface SourceKnowledge {
   link?: string
 }
 
+export interface ToolLink {
+  name: string
+  url: string
+}
+
+export interface ToolGuidance {
+  guideline: string
+  tools: ToolLink[]
+}
+
 export interface InternalNote {
   userId: string | null
   transId: string | null
@@ -36,6 +46,7 @@ export interface AnalysisResult {
   replyToneNote: string
   sourceKnowledge: SourceKnowledge[]
   confidence: number
+  toolGuidance?: ToolGuidance
 }
 
 export interface AnalyzeResponse {

@@ -17,38 +17,32 @@ function extractIds(text: string): { userId: string | null; transId: string | nu
   }
 }
 
-// Build structured internal note text with UserID/TransID header
+// Build structured internal note text — Vietnamese labels, Freshdesk-ready format
 function buildInternalNoteText(params: {
   userId: string | null
   transId: string | null
-  rootCause: string
-  recommendedActions: string[]
-  needEscalation: boolean
-  sopTitle: string
   agentNote: string
 }): string {
-  const { userId, transId, rootCause, recommendedActions, needEscalation, sopTitle, agentNote } = params
+  const { userId, transId, agentNote } = params
 
-  const idLine = [
-    userId ? `UserID: ${userId}` : null,
-    transId ? `TransID: ${transId}` : null,
-  ].filter(Boolean).join(' | ')
-
-  // If agent produced a meaningful note, just prepend the ID line
-  if (agentNote && agentNote.length > 20) {
-    return idLine ? `[${idLine}]\n${agentNote}` : agentNote
-  }
-
-  // Fallback: build from scratch
   const lines: string[] = []
-  if (idLine) lines.push(`[${idLine}]`)
-  lines.push(`Nguyên nhân: ${rootCause || 'Chưa xác định'}`)
-  if (recommendedActions.length > 0) {
-    lines.push(`Hành động: ${recommendedActions.join(' → ')}`)
+
+  lines.push(`UserID: ${userId || 'Không có'}`)
+  lines.push(`TransID: ${transId || 'Không có'}`)
+  if (transId) {
+    lines.push(`[Lưu ý: Nếu ticket có TransID, CS cần verify lại status GD trên tool CXM trước khi phản hồi cho User]`)
   }
-  lines.push(`Escalation: ${needEscalation ? 'Cần nâng cấp lên CS2' : 'Không cần nâng cấp'}`)
-  lines.push(`SOP áp dụng: ${sopTitle || 'N/A'}`)
+  lines.push('')
+  lines.push(agentNote && agentNote.length > 10 ? agentNote : 'Mô tả vấn đề: Chưa xác định\nNguyên nhân: Chưa xác định\nHướng xử lý đề xuất: Cần kiểm tra thêm')
+
   return lines.join('\n')
+}
+
+// Parse tool guidance from agent response (comma-separated names/urls)
+function parseToolGuidance(toolsName: string, toolsUrl: string): { name: string; url: string }[] {
+  const names = toolsName.split(',').map(s => s.trim()).filter(Boolean)
+  const urls = toolsUrl.split(',').map(s => s.trim()).filter(Boolean)
+  return names.map((name, i) => ({ name, url: urls[i] || '' }))
 }
 
 export async function POST(req: NextRequest) {
@@ -121,19 +115,20 @@ export async function POST(req: NextRequest) {
         ]
       : []
 
-    // Build internal note with UserID/TransID prepended
+    // Build internal note — Vietnamese format, structured for Freshdesk
     const agentNote: string =
       typeof agentData.internalNote === 'string' ? agentData.internalNote : ''
 
-    const internalNoteFullText = buildInternalNoteText({
-      userId,
-      transId,
-      rootCause: agentData.rootCause || '',
-      recommendedActions,
-      needEscalation: agentData.needEscalation ?? false,
-      sopTitle,
-      agentNote,
-    })
+    const internalNoteFullText = buildInternalNoteText({ userId, transId, agentNote })
+
+    // Parse tool guidance
+    const rawTool = agentData.toolGuidance || {}
+    const toolGuidance = rawTool.guideline
+      ? {
+          guideline: rawTool.guideline,
+          tools: parseToolGuidance(rawTool.toolsName || '', rawTool.toolsUrl || ''),
+        }
+      : undefined
 
     // MVP: use template_call_chat from SOP if available; fall back to AI-generated reply
     const customerReply: string =
@@ -161,6 +156,7 @@ export async function POST(req: NextRequest) {
       replyToneNote: agentData.needEscalation ? 'Cần escalate lên CS2/QC' : '',
       sourceKnowledge,
       confidence,
+      toolGuidance,
     }
 
     if (confidence < 60) {
