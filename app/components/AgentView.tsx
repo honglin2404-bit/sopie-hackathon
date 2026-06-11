@@ -4,20 +4,20 @@ import React, { useState, useCallback } from 'react'
 import { useAnalyze } from '../hooks/useAnalyze'
 import type { AnalyzeMode, AnalysisResult } from '../types/agent'
 
-const FD_PLACEHOLDER = `Dan toan bo noi dung ticket FD vao day. Vi du:
+const FD_PLACEHOLDER = `Dán toàn bộ nội dung ticket FD vào đây. Ví dụ:
 
 Ticket ID: #5885023
-Tieu de: Khong duoc giam gia khi thanh toan (Ma GD: 260603003785147)
+Tiêu đề: Không được giảm giá khi thanh toán (Mã GD: 260603003785147)
 UserID: 190115000006235
-Ma loi TPE: -333 That bai
-Step result: -1|21|111003|Khong the ap dung uu dai.
+Mã lỗi TPE: -333 Thất bại
+Step result: -1|21|111003|Không thể áp dụng ưu đãi.
 Bank Code: ZPTCB - Techcombank`
 
-const FREE_ISSUE_PLACEHOLDER = `Mo ta van de cua khach hang. Vi du:
-"KH bao ma loi -333 khi thanh toan bang voucher, GD that bai. TransID: 260603003785147"`
+const FREE_ISSUE_PLACEHOLDER = `Mô tả vấn đề của khách hàng. Ví dụ:
+"KH báo mã lỗi -333 khi thanh toán bằng voucher, GD thất bại. TransID: 260603003785147"`
 
-const FREE_TRIED_PLACEHOLDER = `Nhung gi da thu hoac da lam. Vi du:
-"Da huong dan KH thu lai khong dung voucher, van loi."`
+const FREE_TRIED_PLACEHOLDER = `Những gì đã thử hoặc đã làm. Ví dụ:
+"Đã hướng dẫn KH thử lại không dùng voucher, vẫn lỗi."`
 
 const URGENCY_COLOR: Record<string, string> = {
   'Cao': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
@@ -28,9 +28,9 @@ const URGENCY_COLOR: Record<string, string> = {
 }
 
 const TONE_MAP: Record<string, { label: string; color: string }> = {
-  angry:   { label: 'Buc xuc', color: 'text-red-600 dark:text-red-400' },
-  neutral: { label: 'Trung tinh', color: 'text-yellow-600 dark:text-yellow-400' },
-  normal:  { label: 'Binh thuong', color: 'text-green-600 dark:text-green-400' },
+  angry:   { label: 'Bức xúc', color: 'text-red-600 dark:text-red-400' },
+  neutral: { label: 'Trung tính', color: 'text-yellow-600 dark:text-yellow-400' },
+  normal:  { label: 'Bình thường', color: 'text-green-600 dark:text-green-400' },
 }
 
 const confidenceColor = (n: number) =>
@@ -83,7 +83,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
     <div className="space-y-4">
       {isLowConfidence && (
         <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-xl text-amber-800 dark:text-amber-300 text-sm">
-          <strong>Do tin cay thap</strong> -- {error}. Ket qua chi mang tinh tham khao.
+          <strong>Độ tin cậy thấp</strong> — {error}. Kết quả chỉ mang tính tham khảo.
         </div>
       )}
 
@@ -91,9 +91,9 @@ function ResultPanel({ result, isLowConfidence, error }: {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: 'Domain', value: result.domain, cls: 'text-gray-900 dark:text-white font-bold text-sm' },
-          { label: 'Muc do', value: null, badge: <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgencyClass}`}>{result.urgency}</span> },
+          { label: 'Mức độ', value: null, badge: <span className={`text-xs font-bold px-2 py-1 rounded-full ${urgencyClass}`}>{result.urgency}</span> },
           { label: 'Tone KH', value: null, badge: <span className={`font-bold text-sm ${tone.color}`}>{tone.label}</span> },
-          { label: 'Do tin cay', value: null, badge: <span className={`font-bold text-sm ${confidenceColor(result.confidence)}`}>{result.confidence}/100</span> },
+          { label: 'Độ tin cậy', value: null, badge: <span className={`font-bold text-sm ${confidenceColor(result.confidence)}`}>{result.confidence}/100</span> },
         ].map((item, i) => (
           <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{item.label}</p>
@@ -103,15 +103,15 @@ function ResultPanel({ result, isLowConfidence, error }: {
       </div>
 
       {/* Section 1 -- AI Assessment */}
-      <SectionCard icon="AI" title="AI nhan dinh ve case">
+      <SectionCard icon="🤖" title="AI nhận định về case">
         <div className="space-y-3 text-sm">
           <div>
-            <span className="text-gray-500 dark:text-gray-400 font-medium">Tom tat: </span>
+            <span className="text-gray-500 dark:text-gray-400 font-medium">Tóm tắt: </span>
             <span className="text-gray-800 dark:text-gray-200">{result.caseSummary}</span>
           </div>
           {result.errorCodes?.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-gray-500 dark:text-gray-400 font-medium">Ma loi:</span>
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Mã lỗi:</span>
               {result.errorCodes.map((code, i) => (
                 <span key={i} className="px-2 py-0.5 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded font-mono text-xs font-semibold border border-red-200 dark:border-red-800">
                   {code}
@@ -120,12 +120,12 @@ function ResultPanel({ result, isLowConfidence, error }: {
             </div>
           )}
           <div>
-            <span className="text-gray-500 dark:text-gray-400 font-medium">Huong xu ly: </span>
+            <span className="text-gray-500 dark:text-gray-400 font-medium">Hướng xử lý: </span>
             <span className="text-gray-800 dark:text-gray-200">{result.processingDirection}</span>
           </div>
           {result.sourceKnowledge?.length > 0 && (
             <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-              <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-2">SOP tham chieu:</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-2">SOP tham chiếu:</p>
               <div className="space-y-1.5">
                 {result.sourceKnowledge.map((src, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
@@ -141,7 +141,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
                         rel="noopener noreferrer"
                         className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800/50 font-medium transition-colors"
                       >
-                        Xem SOP
+                        📋 Xem SOP
                       </a>
                     )}
                   </div>
@@ -154,9 +154,9 @@ function ResultPanel({ result, isLowConfidence, error }: {
 
       {/* Section 2 -- Internal Note */}
       <SectionCard
-        icon="[N]"
+        icon="📝"
         title="Internal Note"
-        sub="copy vao Freshdesk"
+        sub="copy vào Freshdesk"
         copyText={result.internalNote?.fullText}
         copyLabel="note"
       >
@@ -167,8 +167,8 @@ function ResultPanel({ result, isLowConfidence, error }: {
 
       {/* Section 3 -- Customer Reply */}
       <SectionCard
-        icon="[R]"
-        title="Template phan hoi KH"
+        icon="💬"
+        title="Template phản hồi KH"
         sub={tone.label}
         copyText={result.customerReply}
         copyLabel="template"
@@ -214,7 +214,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
     <div className="space-y-6">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700">
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-sm font-medium text-gray-500 dark:text-gray-400 mr-1">Che do:</span>
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400 mr-1">Chế độ:</span>
           {(['fd', 'free'] as AnalyzeMode[]).map(m => (
             <button
               key={m}
@@ -233,7 +233,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
         {mode === 'fd' && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Dan noi dung ticket FD
+              Dán nội dung ticket FD
             </label>
             <textarea
               value={ticketContent}
@@ -249,7 +249,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Mo ta van de cua khach hang <span className="text-red-500">*</span>
+                Mô tả vấn đề của khách hàng <span className="text-red-500">*</span>
               </label>
               <textarea
                 value={issueDescription}
@@ -261,7 +261,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Da thu / da lam gi <span className="text-gray-400 font-normal">(tuy chon)</span>
+                Đã thử / đã làm gì <span className="text-gray-400 font-normal">(tuỳ chọn)</span>
               </label>
               <textarea
                 value={attemptedSolutions}
@@ -284,14 +284,14 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
                 : 'bg-purple-600 hover:bg-purple-700 hover:scale-105'
             }`}
           >
-            {loading ? 'Dang phan tich...' : 'Phan tich'}
+            {loading ? 'Đang phân tích...' : 'Phân tích'}
           </button>
           {(result || error) && !loading && (
             <button
               onClick={handleReset}
               className="px-5 py-3 rounded-xl font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
-              Phan tich moi
+              Phân tích mới
             </button>
           )}
         </div>
@@ -307,7 +307,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
             <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded" />
           </div>
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
-            Dang trich xuat context, tim SOP, tong hop ket qua...
+            Đang trích xuất context, tìm SOP, tổng hợp kết quả...
           </p>
         </div>
       )}
@@ -320,7 +320,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
               <p className="font-bold text-red-700 dark:text-red-400">{error}</p>
               {errorCode === 'NOT_FOUND' && (
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Thu mo ta lai van de, kiem tra domain filter, hoac lien he QC team.
+                  Thử mô tả lại vấn đề, kiểm tra domain filter, hoặc liên hệ QC team.
                 </p>
               )}
             </div>

@@ -113,7 +113,7 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
 
 
 # Columns to select from sops table (excludes the large embedding vector)
-_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary"
+_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_call_chat"
 
 
 # --- Node 2: Knowledge Retrieval ---
@@ -211,21 +211,22 @@ Ticket context:
 Retrieved SOPs (indexed 0 to {len(sops)-1}):
 {sops_text}
 
-Based only on the ticket context and SOPs above, return ONLY a valid JSON object:
+Dựa chỉ vào context ticket và SOPs ở trên, trả về ONLY một JSON object hợp lệ:
 {{
-  "issueType": "short category label for this issue type",
-  "rootCause": "specific root cause in one clear sentence",
-  "recommendedActions": ["action step 1", "action step 2", "action step 3"],
+  "issueType": "nhãn phân loại ngắn gọn (tiếng Việt, ví dụ: Lỗi thanh toán voucher)",
+  "rootCause": "nguyên nhân gốc trong một câu rõ ràng (tiếng Việt)",
+  "recommendedActions": ["bước xử lý 1 (tiếng Việt)", "bước xử lý 2", "bước xử lý 3"],
   "needEscalation": false,
   "confidence": 85,
   "bestSopIndex": 0
 }}
 
-Rules:
-- bestSopIndex: 0-based index of the most applicable SOP, or -1 if none apply
-- confidence: 0-100, reflecting how well the SOP matches the ticket
-- needEscalation: true only if CS2 or Engineering must handle this case
-- Do not invent policies not present in the SOPs above"""
+Quy tắc:
+- bestSopIndex: index 0-based của SOP phù hợp nhất, hoặc -1 nếu không có SOP nào áp dụng
+- confidence: 0-100, phản ánh mức độ SOP khớp với ticket
+- needEscalation: true chỉ khi CS2 hoặc Engineering phải xử lý case này
+- Không được bịa chính sách không có trong các SOP ở trên
+- Tất cả các trường văn bản phải viết bằng tiếng Việt"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     reasoning = _parse_json(response.content)
@@ -354,7 +355,9 @@ def handler(payload: dict, context: RequestContext) -> dict:
             "id": str(sop.get("id", "")),
             "title": sop.get("title", ""),
             "domain": sop.get("domain", ""),
+            "linkSop": sop.get("link_sop", "") or "",
         },
+        "templateCallChat": sop.get("template_call_chat", "") or "",
         "timestamp": datetime.now().isoformat(),
     }
 

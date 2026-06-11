@@ -4,6 +4,53 @@ const AGENT_ENDPOINT_URL =
   process.env.AGENT_ENDPOINT_URL ||
   'https://endpoint-b040ca6a-70c1-4d31-80a9-8d43e294fe43.agentbase-runtime.aiplatform.vngcloud.vn/invocations'
 
+// Extract UserID and TransID from raw ticket text
+function extractIds(text: string): { userId: string | null; transId: string | null } {
+  const userIdMatch = text.match(/UserID[:\s]+(\d{6,})/i)
+  const transIdMatch =
+    text.match(/TransID[:\s]+([\w\d]+)/i) ||
+    text.match(/Mã GD[:\s]+([\w\d]+)/i) ||
+    text.match(/transaction[_\s]?id[:\s]+([\w\d]+)/i)
+  return {
+    userId: userIdMatch?.[1] || null,
+    transId: transIdMatch?.[1] || null,
+  }
+}
+
+// Build structured internal note text with UserID/TransID header
+function buildInternalNoteText(params: {
+  userId: string | null
+  transId: string | null
+  rootCause: string
+  recommendedActions: string[]
+  needEscalation: boolean
+  sopTitle: string
+  agentNote: string
+}): string {
+  const { userId, transId, rootCause, recommendedActions, needEscalation, sopTitle, agentNote } = params
+
+  const idLine = [
+    userId ? `UserID: ${userId}` : null,
+    transId ? `TransID: ${transId}` : null,
+  ].filter(Boolean).join(' | ')
+
+  // If agent produced a meaningful note, just prepend the ID line
+  if (agentNote && agentNote.length > 20) {
+    return idLine ? `[${idLine}]\n${agentNote}` : agentNote
+  }
+
+  // Fallback: build from scratch
+  const lines: string[] = []
+  if (idLine) lines.push(`[${idLine}]`)
+  lines.push(`Nguyên nhân: ${rootCause || 'Chưa xác định'}`)
+  if (recommendedActions.length > 0) {
+    lines.push(`Hành động: ${recommendedActions.join(' → ')}`)
+  }
+  lines.push(`Escalation: ${needEscalation ? 'Cần nâng cấp lên CS2' : 'Không cần nâng cấp'}`)
+  lines.push(`SOP áp dụng: ${sopTitle || 'N/A'}`)
+  return lines.join('\n')
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -11,13 +58,13 @@ export async function POST(req: NextRequest) {
 
     if (mode === 'fd' && !ticketContent?.trim()) {
       return NextResponse.json(
-        { success: false, error: 'Noi dung ticket khong duoc de trong', errorCode: 'EXTRACTION_ERROR' },
+        { success: false, error: 'Nội dung ticket không được để trống', errorCode: 'EXTRACTION_ERROR' },
         { status: 400 },
       )
     }
     if (mode === 'free' && !issueDescription?.trim()) {
       return NextResponse.json(
-        { success: false, error: 'Mo ta van de khong duoc de trong', errorCode: 'EXTRACTION_ERROR' },
+        { success: false, error: 'Mô tả vấn đề không được để trống', errorCode: 'EXTRACTION_ERROR' },
         { status: 400 },
       )
     }
@@ -25,21 +72,24 @@ export async function POST(req: NextRequest) {
     const rawInput =
       mode === 'fd'
         ? ticketContent
-        : `Van de: ${issueDescription}${attemptedSolutions ? `\nDa thu: ${attemptedSolutions}` : ''}`
+        : `Vấn đề: ${issueDescription}${attemptedSolutions ? `\nĐã thử: ${attemptedSolutions}` : ''}`
+
+    // Extract IDs from original ticket before calling agent
+    const { userId, transId } = extractIds(rawInput)
 
     // Call SOPie Agent on GreenNode AgentBase
     const agentRes = await fetch(AGENT_ENDPOINT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ticket: rawInput }),
-      signal: AbortSignal.timeout(60000), // 60s timeout
+      signal: AbortSignal.timeout(60000),
     })
 
     if (!agentRes.ok) {
       const errText = await agentRes.text().catch(() => '')
       console.error('AgentBase error:', agentRes.status, errText)
       return NextResponse.json(
-        { success: false, error: 'Loi ket noi toi SOPie Agent. Vui long thu lai.', errorCode: 'API_ERROR' },
+        { success: false, error: 'Lỗi kết nối tới SOPie Agent. Vui lòng thử lại.', errorCode: 'API_ERROR' },
         { status: 502 },
       )
     }
@@ -47,48 +97,68 @@ export async function POST(req: NextRequest) {
     const agentData = await agentRes.json()
 
     // agentData shape:
-    // { issueType, rootCause, confidence, needEscalation, recommendedActions[], replyDraft, internalNote, sourceKnowledge: { id, title, domain } }
+    // { issueType, rootCause, confidence, needEscalation, recommendedActions[], replyDraft, internalNote,
+    //   templateCallChat, sourceKnowledge: { id, title, domain, linkSop } }
 
     const confidence: number = agentData.confidence ?? 0
-
-    const sourceKnowledge = agentData.sourceKnowledge
-      ? [
-          {
-            sopId: agentData.sourceKnowledge.id || '',
-            sopTitle: agentData.sourceKnowledge.title || '',
-            domain: agentData.sourceKnowledge.domain || '',
-            relevance: 'Matched by SOPie Agent',
-          },
-        ]
-      : []
-
     const recommendedActions: string[] = Array.isArray(agentData.recommendedActions)
       ? agentData.recommendedActions
       : []
 
-    const internalNoteText: string =
-      typeof agentData.internalNote === 'string'
-        ? agentData.internalNote
-        : JSON.stringify(agentData.internalNote || '')
+    const sopTitle: string = agentData.sourceKnowledge?.title || ''
+    const sopLink: string = agentData.sourceKnowledge?.linkSop || ''
+
+    // Build source knowledge with link button
+    const sourceKnowledge = agentData.sourceKnowledge
+      ? [
+          {
+            sopId: agentData.sourceKnowledge.id || '',
+            sopTitle,
+            domain: agentData.sourceKnowledge.domain || '',
+            relevance: 'Matched by SOPie Agent',
+            ...(sopLink ? { link: sopLink } : {}),
+          },
+        ]
+      : []
+
+    // Build internal note with UserID/TransID prepended
+    const agentNote: string =
+      typeof agentData.internalNote === 'string' ? agentData.internalNote : ''
+
+    const internalNoteFullText = buildInternalNoteText({
+      userId,
+      transId,
+      rootCause: agentData.rootCause || '',
+      recommendedActions,
+      needEscalation: agentData.needEscalation ?? false,
+      sopTitle,
+      agentNote,
+    })
+
+    // MVP: use template_call_chat from SOP if available; fall back to AI-generated reply
+    const customerReply: string =
+      agentData.templateCallChat?.trim()
+        ? agentData.templateCallChat
+        : agentData.replyDraft || ''
 
     const result = {
       caseSummary: agentData.issueType || '',
       errorCodes: [],
       domain: agentData.sourceKnowledge?.domain || 'General',
-      urgency: agentData.needEscalation ? 'Cao' : 'Trung binh',
+      urgency: agentData.needEscalation ? 'Cao' : 'Trung bình',
       customerTone: 'normal',
       processingDirection: recommendedActions.join(' → ') || agentData.rootCause || '',
       internalNote: {
-        userId: null,
-        transId: null,
-        hasTransId: false,
+        userId,
+        transId,
+        hasTransId: !!transId,
         issueSummary: agentData.issueType || '',
         rootCause: agentData.rootCause || '',
         suggestedAction: recommendedActions[0] || '',
-        fullText: internalNoteText,
+        fullText: internalNoteFullText,
       },
-      customerReply: agentData.replyDraft || '',
-      replyToneNote: agentData.needEscalation ? 'Can escalate len CS2/QC' : '',
+      customerReply,
+      replyToneNote: agentData.needEscalation ? 'Cần escalate lên CS2/QC' : '',
       sourceKnowledge,
       confidence,
     }
@@ -96,7 +166,7 @@ export async function POST(req: NextRequest) {
     if (confidence < 60) {
       return NextResponse.json({
         success: false,
-        error: `Do tin cay thap (${confidence}/100) - ket qua chi mang tinh tham khao`,
+        error: `Độ tin cậy thấp (${confidence}/100) — kết quả chỉ mang tính tham khảo`,
         errorCode: 'LOW_CONFIDENCE',
         result,
       })
@@ -106,7 +176,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Analyze error:', error)
     return NextResponse.json(
-      { success: false, error: 'Loi he thong, vui long thu lai', errorCode: 'API_ERROR' },
+      { success: false, error: 'Lỗi hệ thống, vui lòng thử lại', errorCode: 'API_ERROR' },
       { status: 500 },
     )
   }
