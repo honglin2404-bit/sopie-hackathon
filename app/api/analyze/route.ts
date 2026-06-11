@@ -1,28 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { openai } from '@/lib/openai'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://sopie-search-tool.onrender.com'
-
-const DOMAIN_CODE_MAP: Record<string, string> = {
-  Account: 'AC', Payment: 'PY', Application: 'AP',
-  Lending: 'LD', Promotion: 'PM', Travel: 'TV',
-  Merchant: 'MC', General: 'GE',
-}
-
-async function searchSOPs(query: string, domain: string, searchType: 'ai' | 'keyword' = 'ai') {
-  const searchDomain =
-    domain !== 'General' && DOMAIN_CODE_MAP[domain]
-      ? `${domain} (${DOMAIN_CODE_MAP[domain]})`
-      : 'all'
-
-  const res = await fetch(`${BACKEND_URL}/api/search`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query, domain: searchDomain, type: searchType, limit: 5 }),
-  })
-  if (!res.ok) throw new Error(`Search API error: ${res.status}`)
-  return res.json()
-}
+const AGENT_ENDPOINT_URL =
+  process.env.AGENT_ENDPOINT_URL ||
+  'https://endpoint-b040ca6a-70c1-4d31-80a9-8d43e294fe43.agentbase-runtime.aiplatform.vngcloud.vn/invocations'
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,178 +27,69 @@ export async function POST(req: NextRequest) {
         ? ticketContent
         : `Van de: ${issueDescription}${attemptedSolutions ? `\nDa thu: ${attemptedSolutions}` : ''}`
 
-    // Prompt 1: Context Extraction
-    const extractionRes = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      temperature: 0,
-      messages: [
-        {
-          role: 'system',
-          content: `Ban la AI phan tich ticket CS cua ZaloPay. Trich xuat thong tin co cau truc.
-
-QUAN TRONG khi trich xuat:
-- errorCodes: lay tat ca ma loi ky thuat (TPE code, Step result code). Vi du: "-333", "111003", "FRAUD_USER"
-- Ma loi thuong xuat hien: "Ma loi TPE: -333", "Step result: -1|21|111003|...", "error_code: XXX"
-- primarySearchQuery: neu co ma loi, dung chinh xac ma loi do (vi du: "-333"). Neu khong co, dung mo ta ngan.
-
-Tra ve JSON (khong giai thich):
-{
-  "userId": "UserID neu co trong ticket, null neu khong",
-  "transId": "TransID/Ma GD neu co trong ticket, null neu khong",
-  "errorCodes": ["ma loi 1", "ma loi 2"],
-  "primarySearchQuery": "ma loi chinh xac hoac mo ta ngan",
-  "caseSummary": "Tom tat van de 1-2 cau theo goc nhin CS",
-  "domain": "Account | Payment | Application | Lending | Promotion | Travel | Merchant | General",
-  "urgency": "Thap | Trung binh | Cao",
-  "customerTone": "angry | neutral | normal",
-  "toneReason": "Ly do detect tone"
-}`,
-        },
-        { role: 'user', content: rawInput },
-      ],
-      response_format: { type: 'json_object' },
+    // Call SOPie Agent on GreenNode AgentBase
+    const agentRes = await fetch(AGENT_ENDPOINT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ticket: rawInput }),
+      signal: AbortSignal.timeout(60000), // 60s timeout
     })
 
-    const extracted = JSON.parse(extractionRes.choices[0].message.content || '{}')
-
-    if (!extracted.primarySearchQuery || !extracted.domain) {
+    if (!agentRes.ok) {
+      const errText = await agentRes.text().catch(() => '')
+      console.error('AgentBase error:', agentRes.status, errText)
       return NextResponse.json(
-        { success: false, error: 'Khong the phan tich ticket. Vui long kiem tra lai noi dung.', errorCode: 'EXTRACTION_ERROR' },
-        { status: 400 },
+        { success: false, error: 'Loi ket noi toi SOPie Agent. Vui long thu lai.', errorCode: 'API_ERROR' },
+        { status: 502 },
       )
     }
 
-    // Knowledge Retrieval
-    let retrievedSOPs: any[] = []
-    const hasErrorCodes = extracted.errorCodes?.length > 0
+    const agentData = await agentRes.json()
 
-    try {
-      if (hasErrorCodes) {
-        const kwResult = await searchSOPs(extracted.primarySearchQuery, extracted.domain, 'keyword')
-        retrievedSOPs = kwResult.results || []
-      }
+    // agentData shape:
+    // { issueType, rootCause, confidence, needEscalation, recommendedActions[], replyDraft, internalNote, sourceKnowledge: { id, title, domain } }
 
-      if (retrievedSOPs.length === 0) {
-        const aiResult = await searchSOPs(extracted.primarySearchQuery, extracted.domain, 'ai')
-        retrievedSOPs = aiResult.results || []
-      }
+    const confidence: number = agentData.confidence ?? 0
 
-      if (retrievedSOPs.length === 0 && extracted.caseSummary) {
-        const fallback = await searchSOPs(extracted.caseSummary, extracted.domain, 'ai')
-        retrievedSOPs = fallback.results || []
-      }
-    } catch (e) {
-      console.error('Search failed:', e)
-    }
+    const sourceKnowledge = agentData.sourceKnowledge
+      ? [
+          {
+            sopId: agentData.sourceKnowledge.id || '',
+            sopTitle: agentData.sourceKnowledge.title || '',
+            domain: agentData.sourceKnowledge.domain || '',
+            relevance: 'Matched by SOPie Agent',
+          },
+        ]
+      : []
 
-    if (retrievedSOPs.length === 0) {
-      return NextResponse.json({
-        success: false,
-        error: 'Khong tim thay SOP phu hop. Vui long tra cuu thu cong hoac lien he QC team.',
-        errorCode: 'NOT_FOUND',
-      })
-    }
+    const recommendedActions: string[] = Array.isArray(agentData.recommendedActions)
+      ? agentData.recommendedActions
+      : []
 
-    const topSOP = retrievedSOPs[0]
-    const sopTemplate: string = topSOP?.templates?.email || topSOP?.templates?.chat || ''
-
-    const sopContext = retrievedSOPs
-      .slice(0, 3)
-      .map((sop: any, i: number) =>
-        `SOP ${i + 1}:\n- ID: ${sop.id}\n- Tieu de: ${sop.title}\n- Domain: ${sop.domain}\n- Nguyen nhan: ${sop.cause || 'N/A'}\n- Xu ly CS1: ${sop.solution?.level1 || 'N/A'}\n- Xu ly CS2: ${sop.solution?.level2 || 'N/A'}`
-      )
-      .join('\n\n')
-
-    const hasTransId = !!extracted.transId
-    const customerTone: string = extracted.customerTone || 'normal'
-
-    const reasoningRes = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      temperature: 0.1,
-      messages: [
-        {
-          role: 'system',
-          content: `Ban la AI ho tro quyet dinh cho CS ZaloPay. Chi dung thong tin tu SOP duoc cung cap. Khong bia them chinh sach.
-
-Tra ve JSON:
-{
-  "processingDirection": "Huong xu ly tong quan cua case (1-2 cau)",
-  "internalNote": {
-    "issueSummary": "Tom tat van de KH (ngan gon, ngon ngu noi bo)",
-    "rootCause": "Nguyen nhan he thong/ky thuat",
-    "suggestedAction": "Hanh dong CS nen thuc hien"
-  },
-  "replyToneNote": "Giai thich tone da chon",
-  "customerReplyPrefix": "Cau xin loi them vao dau neu KH angry, hoac chuoi rong neu khong can",
-  "confidence": <so 0-100>,
-  "sourceKnowledge": [
-    { "sopId": "id", "sopTitle": "title", "domain": "domain", "relevance": "Ly do" }
-  ]
-}`,
-        },
-        {
-          role: 'user',
-          content: `TICKET GOC:\n${rawInput}\n\nCONTEXT TRICH XUAT:\n${JSON.stringify(extracted, null, 2)}\n\nSOP LIEN QUAN:\n${sopContext}\n\ncustomerTone: ${customerTone}`,
-        },
-      ],
-      response_format: { type: 'json_object' },
-    })
-
-    const reasoning = JSON.parse(reasoningRes.choices[0].message.content || '{}')
-    const confidence: number = reasoning.confidence ?? 0
-
-    // Merge link_sop from retrievedSOPs into sourceKnowledge
-    const sourceKnowledgeWithLinks = (reasoning.sourceKnowledge || []).map((src: any) => {
-      const match = retrievedSOPs.find((sop: any) => sop.id === src.sopId)
-      return { ...src, link: match?.link || undefined }
-    })
-
-    let customerReply = sopTemplate
-    const prefix: string = reasoning.customerReplyPrefix || ''
-    if (customerTone === 'angry' && prefix && sopTemplate) {
-      customerReply = prefix + '\n\n' + sopTemplate
-    } else if (!sopTemplate) {
-      customerReply = prefix || '(Khong co template - CS tu soan phan hoi dua tren SOP)'
-    }
-
-    const noteLines: string[] = []
-    noteLines.push(`UserID: ${extracted.userId || '(Khong tim thay - CS kiem tra tren CStool)'}`)
-
-    if (hasTransId) {
-      noteLines.push(`TransID: ${extracted.transId}`)
-      noteLines.push(`[!] Luu y: Verify lai trang thai GD truoc khi phan hoi KH. Status tai thoi diem submit co the da thay doi.`)
-    } else {
-      noteLines.push(`TransID: Khong co`)
-    }
-
-    if (extracted.errorCodes?.length > 0) {
-      noteLines.push(`Ma loi: ${extracted.errorCodes.join(', ')}`)
-    }
-
-    noteLines.push(``)
-    noteLines.push(`Tom tat van de: ${reasoning.internalNote?.issueSummary || extracted.caseSummary}`)
-    noteLines.push(`Nguyen nhan: ${reasoning.internalNote?.rootCause || 'N/A'}`)
-    noteLines.push(`Huong xu ly de xuat: ${reasoning.internalNote?.suggestedAction || 'N/A'}`)
+    const internalNoteText: string =
+      typeof agentData.internalNote === 'string'
+        ? agentData.internalNote
+        : JSON.stringify(agentData.internalNote || '')
 
     const result = {
-      caseSummary: extracted.caseSummary,
-      errorCodes: extracted.errorCodes || [],
-      domain: extracted.domain,
-      urgency: extracted.urgency,
-      customerTone: extracted.customerTone,
-      processingDirection: reasoning.processingDirection,
+      caseSummary: agentData.issueType || '',
+      errorCodes: [],
+      domain: agentData.sourceKnowledge?.domain || 'General',
+      urgency: agentData.needEscalation ? 'Cao' : 'Trung binh',
+      customerTone: 'normal',
+      processingDirection: recommendedActions.join(' → ') || agentData.rootCause || '',
       internalNote: {
-        userId: extracted.userId,
-        transId: extracted.transId,
-        hasTransId,
-        issueSummary: reasoning.internalNote?.issueSummary || '',
-        rootCause: reasoning.internalNote?.rootCause || '',
-        suggestedAction: reasoning.internalNote?.suggestedAction || '',
-        fullText: noteLines.join('\n'),
+        userId: null,
+        transId: null,
+        hasTransId: false,
+        issueSummary: agentData.issueType || '',
+        rootCause: agentData.rootCause || '',
+        suggestedAction: recommendedActions[0] || '',
+        fullText: internalNoteText,
       },
-      customerReply,
-      replyToneNote: reasoning.replyToneNote,
-      sourceKnowledge: sourceKnowledgeWithLinks,
+      customerReply: agentData.replyDraft || '',
+      replyToneNote: agentData.needEscalation ? 'Can escalate len CS2/QC' : '',
+      sourceKnowledge,
       confidence,
     }
 

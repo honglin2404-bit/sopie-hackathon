@@ -91,7 +91,7 @@ def sync_sheets():
                     'product': row.get('product'),
                     'feature': row.get('feature'),
                     'cause': row.get('cause'),
-                    
+
                     # Map vào đúng cột database
                     'solution_l1': sol_l1,
                     'solution_l2': sol_l2,
@@ -100,12 +100,18 @@ def sync_sheets():
                     'check_tools_url': ct_url,
                     'template_app_mail': tpl_mail,
                     'template_call_chat': tpl_chat,
-                    
+
                     'notes': row.get('notes'),
                     'link_sop': link_val,
                     'last_updated': row.get('last_updated'),
                     'keywords_primary': row.get('keywords_primary'),
-                    'keywords_secondary': row.get('keywords_secondary')
+                    'keywords_secondary': row.get('keywords_secondary'),
+
+                    # 4 cột mới cho Resolution Agent
+                    'error_codes': row.get('error_codes') or None,
+                    'escalation_criteria': row.get('escalation_criteria') or None,
+                    'resolution_summary': row.get('resolution_summary') or None,
+                    'access_group': row.get('access_group') or 'all',
                 }
                 
                 # Lọc bỏ các key có giá trị None (nhưng giữ chuỗi rỗng "")

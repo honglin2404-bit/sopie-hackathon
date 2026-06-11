@@ -42,9 +42,26 @@ Python virtual environment
 venv/
 env/
 ENV/
+__pycache__/
+*.pyc
+*.pyo
 
 Local database
 
 *.db
 *.sqlite
 .vercel
+.greennode.json
+
+AgentBase runtime (do not commit)
+
+.agentbase/
+.agentbase-state.json
+.greennode.json
+.greennode-agentbase-skills/
+sopie-agent/.env
+sopie-agent/venv/
+
+Accidental Windows path files
+
+C:Temp*
