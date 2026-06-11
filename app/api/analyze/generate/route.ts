@@ -4,31 +4,25 @@ const AGENT_ENDPOINT_URL =
   process.env.AGENT_ENDPOINT_URL ||
   'https://endpoint-b040ca6a-70c1-4d31-80a9-8d43e294fe43.agentbase-runtime.aiplatform.vngcloud.vn/invocations'
 
-// Build a re-check ticket text from original result + new status
+// Build a re-check ticket text from original result + new status.
+// Only surfaces the NEW status as the primary signal — old error codes are
+// intentionally excluded so extract_context doesn't latch onto stale data.
 function buildRecheckTicket(params: {
-  originalSopTitle: string
   originalIssueType: string
-  originalRootCause: string
   userId: string | null
   transId: string | null
   newStatus: string
   note: string
 }): string {
-  const { originalSopTitle, originalIssueType, originalRootCause, userId, transId, newStatus, note } = params
+  const { originalIssueType, userId, transId, newStatus, note } = params
 
   const lines = [
-    `[Re-check — CS đã xác minh trên tool]`,
-    `Vấn đề ban đầu: ${originalIssueType}`,
-    `Nguyên nhân ban đầu AI nhận định: ${originalRootCause}`,
-    `SOP tham chiếu: ${originalSopTitle}`,
-    ``,
-    `Kết quả CS kiểm tra lại trên tool:`,
-    `- Status GD hiện tại: ${newStatus}`,
-    note ? `- Ghi chú: ${note}` : '',
-    ``,
-    userId ? `UserID: ${userId}` : '',
-    transId ? `TransID: ${transId}` : '',
-  ].filter(line => line !== undefined && line !== null)
+    `[CS đã xác minh trên tool — kết quả đã cập nhật]`,
+    `Giao dịch${transId ? ` TransID ${transId}` : ''}${userId ? ` của UserID ${userId}` : ''} đã được kiểm tra thực tế.`,
+    `Kết quả mới: Status GD hiện tại là mã ${newStatus}.`,
+    note ? `Thông tin thêm từ CS: ${note}` : '',
+    `Context nghiệp vụ: ${originalIssueType}`,
+  ].filter(Boolean)
 
   return lines.join('\n').trim()
 }
@@ -46,9 +40,7 @@ export async function POST(req: NextRequest) {
     }
 
     const recheckTicket = buildRecheckTicket({
-      originalSopTitle: originalResult.sourceKnowledge?.[0]?.sopTitle || '',
       originalIssueType: originalResult.caseSummary || '',
-      originalRootCause: originalResult.processingDirection || '',
       userId: originalResult.internalNote?.userId || null,
       transId: originalResult.internalNote?.transId || null,
       newStatus,
