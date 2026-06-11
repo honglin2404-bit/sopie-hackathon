@@ -225,7 +225,7 @@ export function AgentView({ darkMode }: { darkMode: boolean }) {
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
-              {m === 'fd' ? 'FD Ticket' : 'Tuy chon'}
+              {m === 'fd' ? 'FD Ticket' : 'Optional'}
             </button>
           ))}
         </div>
