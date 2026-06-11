@@ -4,24 +4,36 @@ const AGENT_ENDPOINT_URL =
   process.env.AGENT_ENDPOINT_URL ||
   'https://endpoint-b040ca6a-70c1-4d31-80a9-8d43e294fe43.agentbase-runtime.aiplatform.vngcloud.vn/invocations'
 
-// Build a re-check ticket text from original result + new status.
-// Only surfaces the NEW status as the primary signal — old error codes are
-// intentionally excluded so extract_context doesn't latch onto stale data.
+const STATUS_LABELS: Record<string, string> = {
+  '1':     'Giao dịch thành công',
+  '-400':  'Đang xử lý / Pending',
+  '-402':  'Thất bại hoàn toàn',
+  '-1':    'Lỗi hệ thống',
+  '-333':  'Voucher / Khuyến mãi lỗi',
+  '-1343': 'Vượt hạn mức chi tiêu',
+}
+
+// Build a re-check ticket using ONLY the new status and domain context.
+// caseSummary is intentionally excluded — it may contain old error codes
+// (e.g. "-400") that cause extract_context to latch onto the wrong SOP.
+// STATUS_LABELS gives the LLM enough semantic signal to find the right SOP
+// without numeric codes (most SOPs have no error_codes data for billing).
 function buildRecheckTicket(params: {
-  originalIssueType: string
+  domain: string
   userId: string | null
   transId: string | null
   newStatus: string
   note: string
 }): string {
-  const { originalIssueType, userId, transId, newStatus, note } = params
+  const { domain, userId, transId, newStatus, note } = params
+  const statusLabel = STATUS_LABELS[newStatus] || newStatus
 
   const lines = [
-    `[CS đã xác minh trên tool — kết quả đã cập nhật]`,
-    `Giao dịch${transId ? ` TransID ${transId}` : ''}${userId ? ` của UserID ${userId}` : ''} đã được kiểm tra thực tế.`,
-    `Kết quả mới: Status GD hiện tại là mã ${newStatus}.`,
-    note ? `Thông tin thêm từ CS: ${note}` : '',
-    `Context nghiệp vụ: ${originalIssueType}`,
+    `Cần hỗ trợ xử lý giao dịch ${domain || 'thanh toán'}.`,
+    `Trạng thái giao dịch xác nhận: mã ${newStatus} — ${statusLabel}.`,
+    note ? `Ghi chú thêm: ${note}` : '',
+    userId ? `UserID: ${userId}` : '',
+    transId ? `TransID: ${transId}` : '',
   ].filter(Boolean)
 
   return lines.join('\n').trim()
@@ -40,7 +52,7 @@ export async function POST(req: NextRequest) {
     }
 
     const recheckTicket = buildRecheckTicket({
-      originalIssueType: originalResult.caseSummary || '',
+      domain: originalResult.domain || '',
       userId: originalResult.internalNote?.userId || null,
       transId: originalResult.internalNote?.transId || null,
       newStatus,
