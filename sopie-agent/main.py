@@ -156,13 +156,15 @@ def retrieve_knowledge(state: ResolutionState) -> dict:
 
     # Priority 2: Domain-filtered keyword search using intent words
     if len(sops) < 5 and domain and domain != "general":
-        for col in ("keywords_primary", "title"):
-            result = supabase.table("sops").select(_SOP_COLS).eq(
-                "domain", domain
-            ).limit(5).execute()
-            add_sops(result.data or [])
-        if len(sops) >= 5:
-            return {"retrieved_sops": sops[:5]}
+        keywords = [w for w in (intent.split()[:3] + indicators[:2]) if len(w) > 2]
+        for kw in keywords[:3]:
+            for col in ("keywords_primary", "title"):
+                result = supabase.table("sops").select(_SOP_COLS).eq(
+                    "domain", domain
+                ).ilike(col, f"%{kw}%").limit(5).execute()
+                add_sops(result.data or [])
+            if len(sops) >= 5:
+                return {"retrieved_sops": sops[:5]}
 
     # Priority 3: Multi-term keyword fallback — search title and keywords_primary
     if len(sops) < 3:
