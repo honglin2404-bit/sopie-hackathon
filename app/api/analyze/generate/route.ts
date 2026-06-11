@@ -7,6 +7,9 @@ const AGENT_ENDPOINT_URL =
 const STATUS_LABELS: Record<string, string> = {
   '1':     'Giao dịch thành công',
   '-400':  'Đang xử lý / Pending',
+  '-53':   'Đang xử lý / Pending (đối tác)',
+  '6':     'Đang xử lý / Pending (đối tác)',
+  '7':     'Đang xử lý / Pending (đối tác)',
   '-402':  'Thất bại hoàn toàn',
   '-1':    'Lỗi hệ thống',
   '-333':  'Voucher / Khuyến mãi lỗi',
