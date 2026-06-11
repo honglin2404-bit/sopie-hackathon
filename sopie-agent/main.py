@@ -113,7 +113,7 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
 
 
 # Columns to select from sops table (excludes the large embedding vector)
-_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_call_chat, check_tool_guideline, check_tools_name, check_tools_url"
+_SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_app_chat, check_tool_guideline, check_tools_name, check_tools_url"
 
 
 # --- Node 2: Knowledge Retrieval ---
@@ -362,7 +362,7 @@ def handler(payload: dict, context: RequestContext) -> dict:
             "toolsName": sop.get("check_tools_name", "") or "",
             "toolsUrl": sop.get("check_tools_url", "") or "",
         },
-        "templateCallChat": sop.get("template_call_chat", "") or "",
+        "templateCallChat": sop.get("template_app_chat", "") or "",
         "timestamp": datetime.now().isoformat(),
     }
 
