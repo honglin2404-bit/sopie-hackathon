@@ -26,6 +26,7 @@ LLM_MODEL = os.environ.get("LLM_MODEL", "")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
 _missing = [k for k, v in {
     "LLM_MODEL": LLM_MODEL, "LLM_BASE_URL": LLM_BASE_URL,
@@ -34,11 +35,21 @@ _missing = [k for k, v in {
 if _missing:
     raise ValueError(f"Missing required environment variables: {', '.join(_missing)}")
 
+# Fast LLM — used for extract_context and generate_response
 llm = ChatOpenAI(
     model=LLM_MODEL,
     base_url=LLM_BASE_URL,
     api_key=LLM_API_KEY,
     extra_body={"chat_template_kwargs": {"enable_thinking": False}},
+)
+
+# Thinking LLM — used for reason node; deeper analysis at the cost of latency
+_THINKING_MODEL = os.environ.get("LLM_THINKING_MODEL", "qwen/qwen3-30b-a3b-thinking-2507")
+llm_thinking = ChatOpenAI(
+    model=_THINKING_MODEL,
+    base_url=LLM_BASE_URL,
+    api_key=LLM_API_KEY,
+    extra_body={"chat_template_kwargs": {"enable_thinking": True}},
 )
 
 # Retrieve Supabase key from AgentBase Identity at startup (never hardcoded)
@@ -115,6 +126,46 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
 # Columns to select from sops table (excludes the large embedding vector)
 _SOP_COLS = "id, title, domain, product, cause, solution_l1, solution_l2, keywords_primary, keywords_secondary, link_sop, error_codes, escalation_criteria, resolution_summary, template_app_mail, check_tool_guideline, check_tools_name, check_tools_url"
 
+# Embedding client for semantic search — must use text-embedding-3-small (1536d)
+# to match the dimension of existing sop_embeddings stored in Supabase.
+_embed_client = None
+if OPENAI_API_KEY:
+    from openai import OpenAI as _OpenAI
+    _embed_client = _OpenAI(api_key=OPENAI_API_KEY)
+    print("[startup] OpenAI embedding client initialized (text-embedding-3-small).", flush=True)
+else:
+    print("[startup] OPENAI_API_KEY not set — semantic search disabled, using keyword-only retrieval.", flush=True)
+
+
+def _semantic_search(intent: str, limit: int = 5) -> list:
+    """Embed intent with text-embedding-3-small and search pgvector via match_sops RPC.
+
+    Falls back silently to an empty list if the embed client is unavailable,
+    OPENAI_API_KEY is missing, or the match_sops function does not exist.
+    """
+    if not _embed_client or not intent:
+        return []
+    try:
+        emb_resp = _embed_client.embeddings.create(
+            model="text-embedding-3-small",
+            input=intent[:500],
+        )
+        vec = emb_resp.data[0].embedding
+        rpc_result = supabase.rpc(
+            "match_sops",
+            {"query_embedding": vec, "match_threshold": 0.3, "match_count": limit},
+        ).execute()
+        ids = [row["id"] for row in (rpc_result.data or []) if row.get("id")]
+        if not ids:
+            return []
+        # Fetch full rows from sops table — match_sops result omits error_codes,
+        # escalation_criteria, resolution_summary which are needed for reasoning.
+        full = supabase.table("sops").select(_SOP_COLS).in_("id", ids).execute()
+        return full.data or []
+    except Exception as e:
+        print(f"[semantic_search] warn: {e}", flush=True)
+        return []
+
 
 # --- Node 2: Knowledge Retrieval ---
 # Priority: Exact error code match → Semantic search → Keyword fallback
@@ -134,6 +185,9 @@ def retrieve_knowledge(state: ResolutionState) -> dict:
             if sid and sid not in seen_ids:
                 seen_ids.add(sid)
                 sops.append(s)
+
+    # Priority 0: Semantic search via pgvector — catches intent/synonym matches keyword can't
+    add_sops(_semantic_search(intent))
 
     # Priority 1: Exact error code match — dedicated error_codes column first, then keywords fallback
     if error_code:
@@ -230,7 +284,7 @@ Quy tắc:
 - Không được bịa chính sách không có trong các SOP ở trên
 - Tất cả các trường văn bản phải viết bằng tiếng Việt"""
 
-    response = llm.invoke([HumanMessage(content=prompt)])
+    response = llm_thinking.invoke([HumanMessage(content=prompt)])
     reasoning = _parse_json(response.content)
     if not reasoning:
         reasoning = {
