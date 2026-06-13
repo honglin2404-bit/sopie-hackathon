@@ -275,9 +275,11 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, mc_status_u
             if step_result:
                 query = query.eq("step_result", step_result)
             if mc_status:
-                query = query.eq("mc_status", mc_status)
+                # mc_status in DB may be a comma-separated set e.g. "-400,-53,6,7"
+                # use ilike so "-400" matches "-400,-53,6,7"
+                query = query.ilike("mc_status", f"%{mc_status}%")
             if mc_status_updated:
-                query = query.eq("mc_status_updated", mc_status_updated)
+                query = query.ilike("mc_status_updated", f"%{mc_status_updated}%")
             if product:
                 query = query.eq("product", product)
         else:
