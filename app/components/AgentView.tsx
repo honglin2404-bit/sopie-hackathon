@@ -172,7 +172,7 @@ function ValidationCheckpoint({
             disabled={loading}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-sm transition-colors shadow-sm disabled:opacity-50"
           >
-            ✓ Kết quả khớp — Generate output
+            ✓ Kết quả khớp — Tạo kết quả
           </button>
           <button
             onClick={() => setState('recheck')}
@@ -247,7 +247,7 @@ function ValidationCheckpoint({
               disabled={!canSubmit || loading}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Đang re-generate...' : '↺ Re-generate output'}
+              {loading ? 'Đang cập nhật...' : '↺ Cập nhật kết quả'}
             </button>
             <button
               onClick={() => setState('idle')}
@@ -449,7 +449,7 @@ function ResultPanel({ result, isLowConfidence, error }: {
             onClick={() => setOutputPhase('gen1')}
             className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm shadow-sm transition-colors"
           >
-            Generate Internal Note &amp; Reply
+            Tạo Internal Note & Reply
           </button>
         </div>
       )}

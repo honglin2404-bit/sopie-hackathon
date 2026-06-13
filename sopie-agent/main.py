@@ -139,16 +139,34 @@ def _preparse_fd_ticket(text: str) -> dict:
     zalopay_keys = get_field("Zalopay chat keys") or ""
     combined_text = f"{app_field} {note_field} {channel_field} {zalopay_keys}".lower()
 
-    product_type = None
-    telco_keywords = ["viettel", "vinaphone", "mobifone", "vietnamobile", "gmobile",
-                      "nạp data", "nạp thẻ", "nạp điện thoại", "mã thẻ cào"]
-    billing_keywords = ["hóa đơn", "billing", "tiền điện", "tiền nước", "tiền internet"]
-    if any(k in combined_text for k in telco_keywords):
-        product_type = "TE"
-    elif any(k in combined_text for k in billing_keywords):
-        product_type = "BI"
+    # Product Code from Cashier/Merchant format (e.g. AC002, TE001)
+    product_code_raw = get_field("Product Code")
+    product_code = None
+    if product_code_raw:
+        m = re.match(r'([\w]+)', product_code_raw.strip())
+        product_code = m.group(1).upper() if m else None
 
-    print(f"[preparse] tpe_code={tpe_code!r} step_result={step_result!r} bc_code={bc_code!r} mc_status={mc_status!r} product_type={product_type!r}", flush=True)
+    # product_code prefix takes priority over keyword detection
+    product_type = None
+    if product_code:
+        prefix = product_code[:2].upper()
+        if prefix == "TE":
+            product_type = "TE"
+        elif prefix == "BI":
+            product_type = "BI"
+        elif prefix == "AC":
+            product_type = "AC"  # Cashier — không phải Account domain
+
+    if not product_type:
+        telco_keywords = ["viettel", "vinaphone", "mobifone", "vietnamobile", "gmobile",
+                          "nạp data", "nạp thẻ", "nạp điện thoại", "mã thẻ cào"]
+        billing_keywords = ["hóa đơn", "billing", "tiền điện", "tiền nước", "tiền internet"]
+        if any(k in combined_text for k in telco_keywords):
+            product_type = "TE"
+        elif any(k in combined_text for k in billing_keywords):
+            product_type = "BI"
+
+    print(f"[preparse] tpe_code={tpe_code!r} step_result={step_result!r} bc_code={bc_code!r} mc_status={mc_status!r} product_type={product_type!r} product_code={product_code!r}", flush=True)
     return {
         "user_id":          get_field("UserID", "User ID"),
         "trans_id":         get_field("TransID", "Trans ID", "Mã GD", "Mã giao dịch"),
@@ -161,6 +179,7 @@ def _preparse_fd_ticket(text: str) -> dict:
         "description":      get_field("Mô tả"),
         "extra_info":       get_field("Thông tin thêm"),
         "product_type":     product_type,
+        "product_code":     product_code,
     }
 
 
@@ -226,6 +245,7 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
     if preparsed.get("user_id"):      context["userId"]         = preparsed["user_id"]
     if preparsed.get("trans_id"):     context["transId"]        = preparsed["trans_id"]
     if preparsed.get("product_type"): context["routingProduct"] = preparsed["product_type"]
+    if preparsed.get("product_code"): context["productCode"]    = preparsed["product_code"]
 
     return {
         "extracted_context": context,
@@ -292,11 +312,14 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
             if step_result:
                 query = query.eq("step_result", step_result)
             if mc_status:
-                # mc_status in DB may be a comma-separated set e.g. "-400,-53,6,7"
-                # use ilike so "-400" matches "-400,-53,6,7"
+                # mc_status in DB may be comma-separated e.g. "-400,-53,6,7"
                 query = query.ilike("mc_status", f"%{mc_status}%")
             if product:
-                # Match rows where product = given value OR product IS NULL (applies to all products)
+                query = query.or_(f"product.eq.{product},product.is.null")
+        elif mc_status:
+            # Cashier/Merchant format: mc_status present but no TPE/BC code
+            query = query.ilike("mc_status", f"%{mc_status}%")
+            if product:
                 query = query.or_(f"product.eq.{product},product.is.null")
         else:
             return None, None, None, None
