@@ -148,6 +148,7 @@ def _preparse_fd_ticket(text: str) -> dict:
     elif any(k in combined_text for k in billing_keywords):
         product_type = "BI"
 
+    print(f"[preparse] tpe_code={tpe_code!r} step_result={step_result!r} bc_code={bc_code!r} mc_status={mc_status!r} product_type={product_type!r}", flush=True)
     return {
         "user_id":          get_field("UserID", "User ID"),
         "trans_id":         get_field("TransID", "Trans ID", "Mã GD", "Mã giao dịch"),
@@ -281,6 +282,7 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
     mc_status_updated intentionally excluded — the LLM confuses TPE success code (1) with
     a status update, adding a spurious AND clause that kills matches on NULL rows."""
     try:
+        print(f"[error_routing] lookup params: bc_code={bc_code!r} tpe_code={tpe_code!r} step_result={step_result!r} mc_status={mc_status!r} product={product!r}", flush=True)
         query = supabase.table("error_routing").select("sop_id, action_type, level, note")
 
         if bc_code:
@@ -300,6 +302,7 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
             return None, None, None, None
 
         result = query.order("priority", desc=True).limit(1).execute()
+        print(f"[error_routing] raw result: {result.data}", flush=True)
 
         if result.data:
             row = result.data[0]
@@ -465,6 +468,7 @@ Quy tắc:
     else:
         best_idx = reasoning.get("bestSopIndex", 0)
 
+    print(f"[reason] routing_level={state.get('routing_level')} final bestSopIndex={best_idx} (LLM suggested={reasoning.get('bestSopIndex', 0)}) sops_count={len(sops)}", flush=True)
     selected_sop = sops[best_idx] if sops and 0 <= best_idx < len(sops) else (sops[0] if sops else None)
 
     return {"reasoning": reasoning, "selected_sop": selected_sop}
