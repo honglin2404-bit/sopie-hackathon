@@ -625,7 +625,7 @@ def handler(payload: dict, context: RequestContext) -> dict:
             "toolsUrl": sop.get("check_tools_url", "") or "",
         },
         "templateCallChat": result.get("template_adapted") or sop.get("template_app_mail", "") or "",
-        "customerTone": result.get("customerTone") or "binh_thuong",
+        "customerTone": (result.get("customerTone") or (result.get("extracted_context") or {}).get("customerTone") or "binh_thuong"),
         "timestamp": datetime.now().isoformat(),
     }
 
