@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
       errorCodes: [],
       domain: agentData.sourceKnowledge?.domain || 'General',
       urgency: agentData.needEscalation ? 'Cao' : 'Trung bình',
-      customerTone: 'normal',
+      customerTone: agentData.customerTone || 'normal',
       processingDirection: recommendedActions.join(' → ') || agentData.rootCause || '',
       internalNote: {
         userId,

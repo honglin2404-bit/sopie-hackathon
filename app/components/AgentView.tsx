@@ -42,9 +42,15 @@ const URGENCY_COLOR: Record<string, string> = {
 }
 
 const TONE_MAP: Record<string, { label: string; color: string }> = {
-  angry:   { label: 'Bức xúc', color: 'text-red-600 dark:text-red-400' },
-  neutral: { label: 'Trung tính', color: 'text-yellow-600 dark:text-yellow-400' },
-  normal:  { label: 'Bình thường', color: 'text-green-600 dark:text-green-400' },
+  // Values from main.py
+  binh_thuong: { label: 'Bình thường',  color: 'text-green-600 dark:text-green-400' },
+  kho_chiu:    { label: 'Khó chịu',     color: 'text-yellow-600 dark:text-yellow-400' },
+  gay_gat:     { label: 'Gay gắt',      color: 'text-orange-600 dark:text-orange-400' },
+  de_doa:      { label: 'Đe dọa',       color: 'text-red-600 dark:text-red-400' },
+  // Legacy fallbacks
+  angry:       { label: 'Bức xúc',      color: 'text-red-600 dark:text-red-400' },
+  neutral:     { label: 'Trung tính',   color: 'text-yellow-600 dark:text-yellow-400' },
+  normal:      { label: 'Bình thường',  color: 'text-green-600 dark:text-green-400' },
 }
 
 const confidenceColor = (n: number) =>
