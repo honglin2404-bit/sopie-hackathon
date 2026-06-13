@@ -73,6 +73,7 @@ class ResolutionState(TypedDict):
     routing_level: Optional[int]
     customerTone: Optional[str]
     template_adapted: Optional[str]
+    recheck_days: Optional[int]
 
 
 def _parse_json(text: str) -> dict:
@@ -275,8 +276,10 @@ def _semantic_search(intent: str, limit: int = 5) -> list:
         return []
 
 
-def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, mc_status_updated, product):
-    """Deterministic lookup in error_routing table. Returns (sop_data, action_type, level)."""
+def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
+    """Deterministic lookup in error_routing table. Returns (sop_data, action_type, level).
+    mc_status_updated intentionally excluded — the LLM confuses TPE success code (1) with
+    a status update, adding a spurious AND clause that kills matches on NULL rows."""
     try:
         query = supabase.table("error_routing").select("sop_id, action_type, level, note")
 
@@ -290,12 +293,10 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, mc_status_u
                 # mc_status in DB may be a comma-separated set e.g. "-400,-53,6,7"
                 # use ilike so "-400" matches "-400,-53,6,7"
                 query = query.ilike("mc_status", f"%{mc_status}%")
-            if mc_status_updated:
-                query = query.ilike("mc_status_updated", f"%{mc_status_updated}%")
             if product:
                 query = query.eq("product", product)
         else:
-            return None, None, None
+            return None, None, None, None
 
         result = query.order("priority", desc=True).limit(1).execute()
 
@@ -304,8 +305,11 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, mc_status_u
             sop_id = row["sop_id"]
             sop = supabase.table("sops").select(_SOP_COLS).eq("id", sop_id).limit(1).execute()
             if sop.data:
-                print(f"[error_routing] matched sop_id={sop_id} action={row['action_type']} level={row['level']}", flush=True)
-                return sop.data[0], row["action_type"], row["level"]
+                note = row.get("note", "") or ""
+                m = re.search(r'T\+(\d+)', note)
+                recheck_days = int(m.group(1)) if m else None
+                print(f"[error_routing] matched sop_id={sop_id} action={row['action_type']} level={row['level']} recheck_days={recheck_days}", flush=True)
+                return sop.data[0], row["action_type"], row["level"], recheck_days
     except Exception as e:
         print(f"[error_routing] lookup failed: {e}", flush=True)
     return None, None, None
@@ -333,12 +337,11 @@ def retrieve_knowledge(state: ResolutionState) -> dict:
                 sops.append(s)
 
     # Priority -1: Deterministic error_routing table lookup
-    routing_sop, action_type, routing_level = _error_routing_lookup(
+    routing_sop, action_type, routing_level, recheck_days = _error_routing_lookup(
         bc_code=ctx.get("bc_code"),
         tpe_code=ctx.get("tpe_code"),
         step_result=ctx.get("step_result"),
         mc_status=ctx.get("mc_status"),
-        mc_status_updated=ctx.get("mc_status_updated"),
         product=ctx.get("routingProduct"),
     )
     if routing_sop:
@@ -376,7 +379,7 @@ def retrieve_knowledge(state: ResolutionState) -> dict:
                 ).ilike(col, f"%{kw}%").limit(5).execute()
                 add_sops(result.data or [])
             if len(sops) >= 5:
-                return {"retrieved_sops": sops[:5], "action_type": action_type, "routing_level": routing_level}
+                return {"retrieved_sops": sops[:5], "action_type": action_type, "routing_level": routing_level, "recheck_days": recheck_days}
 
     # Priority 3: Multi-term keyword fallback — search title and keywords_primary
     if len(sops) < 3:
@@ -390,7 +393,7 @@ def retrieve_knowledge(state: ResolutionState) -> dict:
             if len(sops) >= 5:
                 break
 
-    return {"retrieved_sops": sops[:5], "action_type": action_type, "routing_level": routing_level}
+    return {"retrieved_sops": sops[:5], "action_type": action_type, "routing_level": routing_level, "recheck_days": recheck_days}
 
 
 # --- Node 3: Reasoning ---
@@ -618,6 +621,7 @@ def handler(payload: dict, context: RequestContext) -> dict:
             "routing_level": None,
             "customerTone": None,
             "template_adapted": None,
+            "recheck_days": None,
         })
     except Exception as e:
         return {"error": f"Pipeline failed: {str(e)}"}
@@ -646,6 +650,7 @@ def handler(payload: dict, context: RequestContext) -> dict:
         },
         "templateCallChat": result.get("template_adapted") or sop.get("template_app_mail", "") or "",
         "customerTone": (result.get("customerTone") or (result.get("extracted_context") or {}).get("customerTone") or "binh_thuong"),
+        "recheckDays": result.get("recheck_days") or None,
         "timestamp": datetime.now().isoformat(),
     }
 

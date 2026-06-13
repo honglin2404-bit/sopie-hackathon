@@ -38,6 +38,56 @@ function buildInternalNoteText(params: {
   return lines.join('\n')
 }
 
+// Vietnamese public holidays (fixed + Tet estimates 2025-2028)
+const VN_HOLIDAYS: Set<string> = new Set([
+  // 2025
+  '2025-01-01','2025-01-27','2025-01-28','2025-01-29','2025-01-30','2025-01-31',
+  '2025-04-07','2025-04-30','2025-05-01','2025-09-02',
+  // 2026
+  '2026-01-01','2026-01-28','2026-01-29','2026-01-30','2026-01-31','2026-02-01',
+  '2026-03-18','2026-04-30','2026-05-01','2026-09-02',
+  // 2027
+  '2027-01-01','2027-02-15','2027-02-16','2027-02-17','2027-02-18','2027-02-19',
+  '2027-04-06','2027-04-30','2027-05-01','2027-09-02',
+])
+
+function isBusinessDay(date: Date): boolean {
+  const day = date.getDay() // 0=Sun, 6=Sat
+  if (day === 0 || day === 6) return false
+  const key = date.toISOString().slice(0, 10) // YYYY-MM-DD
+  return !VN_HOLIDAYS.has(key)
+}
+
+function addBusinessDays(startDate: Date, days: number): Date {
+  const result = new Date(startDate)
+  let added = 0
+  while (added < days) {
+    result.setDate(result.getDate() + 1)
+    if (isBusinessDay(result)) added++
+  }
+  return result
+}
+
+function parseDateFromTransId(transId: string | null): Date | null {
+  if (!transId || transId.length < 6) return null
+  // TransID format: YYMMDD... e.g. 260612... = 12/06/2026
+  const yy = transId.slice(0, 2)
+  const mm = transId.slice(2, 4)
+  const dd = transId.slice(4, 6)
+  const year = parseInt(`20${yy}`)
+  const month = parseInt(mm) - 1 // 0-indexed
+  const day = parseInt(dd)
+  if (isNaN(year) || isNaN(month) || isNaN(day)) return null
+  return new Date(year, month, day)
+}
+
+function formatDateVN(date: Date): string {
+  const dd = String(date.getDate()).padStart(2, '0')
+  const mm = String(date.getMonth() + 1).padStart(2, '0')
+  const yyyy = date.getFullYear()
+  return `${dd}/${mm}/${yyyy}`
+}
+
 // Parse tool guidance from agent response (comma-separated names/urls)
 function parseToolGuidance(toolsName: string, toolsUrl: string): { name: string; url: string }[] {
   const names = toolsName.split(',').map(s => s.trim()).filter(Boolean)
@@ -131,10 +181,24 @@ export async function POST(req: NextRequest) {
       : undefined
 
     // MVP: use template_call_chat from SOP if available; fall back to AI-generated reply
-    const customerReply: string =
+    let customerReply: string =
       agentData.templateCallChat?.trim()
         ? agentData.templateCallChat
         : agentData.replyDraft || ''
+
+    const recheckDays: number | null = agentData.recheckDays || null
+    const txDate = parseDateFromTransId(transId)
+
+    let appointmentDate: string | null = null
+    if (recheckDays && txDate) {
+      const deadline = addBusinessDays(txDate, recheckDays)
+      appointmentDate = formatDateVN(deadline)
+    }
+
+    // Replace ____ placeholder in customerReply with calculated date
+    if (appointmentDate && customerReply.includes('____')) {
+      customerReply = customerReply.replace(/_{2,}/g, appointmentDate)
+    }
 
     const result = {
       caseSummary: agentData.issueType || '',
@@ -157,6 +221,7 @@ export async function POST(req: NextRequest) {
       sourceKnowledge,
       confidence,
       toolGuidance,
+      appointmentDate: appointmentDate || null,
     }
 
     if (confidence < 60) {
