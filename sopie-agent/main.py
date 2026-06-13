@@ -87,67 +87,78 @@ def _parse_json(text: str) -> dict:
 
 
 def _preparse_fd_ticket(text: str) -> dict:
-    """Parse structured fields from FD ticket template using regex.
-    Handles both '+ Field: value' and '+ Field:\\nvalue' patterns.
-    Returns only fields that are explicitly present — never guesses."""
+    """Parse structured fields from FD ticket using regex.
+    Handles '+ Field: value' patterns. Only returns fields explicitly present."""
+
     def get_field(*labels):
         for label in labels:
             pattern = rf'(?:^|\n)\+?\s*{re.escape(label)}\s*[:：]\s*(.+?)(?=\n\+|\n\n|$)'
             m = re.search(pattern, text, re.IGNORECASE | re.DOTALL)
             if m:
                 val = m.group(1).strip()
-                if val and val.lower() not in ('undefined', 'null', '-', ''):
+                if val and val.lower() not in ('undefined', 'null', '-', '', 'none'):
                     return val
         return None
 
-    # Extract BC code — format: LABEL(-5077) or bare -5077
+    # BC code from "Mã lỗi BC" — format: LABEL(-5077) or -5077
     bc_raw = get_field("Mã lỗi BC", "Trạng thái BC")
     bc_code = None
     if bc_raw:
         m = re.search(r'\((-?\d+)\)', bc_raw)
-        if m:
-            bc_code = m.group(1)
-        else:
-            m = re.search(r'(-?\d{4,})', bc_raw)
-            if m:
-                bc_code = m.group(1)
+        bc_code = m.group(1) if m else None
+        if not bc_code:
+            m = re.search(r'(-\d{4,})', bc_raw)  # negative 4+ digit = BC error
+            bc_code = m.group(1) if m else None
 
-    # Extract TPE code — format: "-217 Thất bại" → "-217"
+    # TPE code — "Mã lỗi TPE: -217 Thất bại" → "-217", "Mã lỗi TPE: 1 Thành công" → "1"
     tpe_raw = get_field("Mã lỗi TPE", "TPE")
     tpe_code = None
     if tpe_raw:
-        m = re.search(r'(-?\d+)', tpe_raw)
-        if m:
-            tpe_code = m.group(1)
+        m = re.search(r'^(-?\d+)', tpe_raw.strip())
+        tpe_code = m.group(1) if m else None
 
-    # Step result — only real infocodes (6 digits), NOT bc_code leaked here
+    # Step result — only 6-digit infocodes (e.g. 210000, 210800), not "1" or "-5077"
     step_raw = get_field("Step result", "Step Result")
     step_result = None
     if step_raw:
-        m = re.search(r'(\d{6,})', step_raw)  # 6+ digits = real infocode like 210000
+        m = re.search(r'\b(\d{6,})\b', step_raw)
         step_result = m.group(1) if m else None
 
-    # Detect product from channel field
-    channel = get_field("Kênh thanh toán")
+    # mc_status from Merchant status — extract just the code part
+    merchant_raw = get_field("Trạng thái Merchant", "Merchant status")
+    mc_status = None
+    if merchant_raw:
+        m = re.search(r'^(-?\d+)', merchant_raw.strip())
+        mc_status = m.group(1) if m else None
+
+    # Product type detection — check App name, Ghi chú, AND Kênh thanh toán
+    app_field = get_field("App") or ""
+    note_field = get_field("Ghi chú") or ""
+    channel_field = get_field("Kênh thanh toán") or ""
+    zalopay_keys = get_field("Zalopay chat keys") or ""
+    combined_text = f"{app_field} {note_field} {channel_field} {zalopay_keys}".lower()
+
     product_type = None
-    if channel:
-        cl = channel.lower()
-        if any(x in cl for x in ["viettel", "vinaphone", "mobifone", "telco"]):
-            product_type = "TE"
-        elif any(x in cl for x in ["hóa đơn", "billing"]):
-            product_type = "BI"
+    telco_keywords = ["viettel", "vinaphone", "mobifone", "vietnamobile", "gmobile",
+                      "nạp data", "nạp thẻ", "nạp điện thoại", "mã thẻ cào"]
+    billing_keywords = ["hóa đơn", "billing", "tiền điện", "tiền nước", "tiền internet"]
+    if any(k in combined_text for k in telco_keywords):
+        product_type = "TE"
+    elif any(k in combined_text for k in billing_keywords):
+        product_type = "BI"
 
     return {
-        "user_id": get_field("UserID", "User ID"),
-        "trans_id": get_field("TransID", "Trans ID", "Mã GD"),
-        "channel": channel,
+        "user_id":          get_field("UserID", "User ID"),
+        "trans_id":         get_field("TransID", "Trans ID", "Mã GD", "Mã giao dịch"),
+        "channel":          channel_field or None,
         "transaction_time": get_field("Thời gian giao dịch"),
-        "tpe_code": tpe_code,
-        "step_result": step_result,
-        "bc_code": bc_code,
-        "description": get_field("Mô tả"),
-        "extra_info": get_field("Thông tin thêm"),
-        "product_type": product_type,
+        "tpe_code":         tpe_code,
+        "step_result":      step_result,
+        "bc_code":          bc_code,
+        "mc_status":        mc_status,
+        "description":      get_field("Mô tả"),
+        "extra_info":       get_field("Thông tin thêm"),
+        "product_type":     product_type,
     }
 
 
@@ -206,11 +217,12 @@ Only include information explicitly stated in the ticket. Do not infer or guess.
         }
 
     # Preparsed values take priority over LLM-guessed values
-    if preparsed.get("bc_code"):      context["bc_code"] = preparsed["bc_code"]
-    if preparsed.get("tpe_code"):     context["tpe_code"] = preparsed["tpe_code"]
-    if preparsed.get("step_result"):  context["step_result"] = preparsed["step_result"]
-    if preparsed.get("user_id"):      context["userId"] = preparsed["user_id"]
-    if preparsed.get("trans_id"):     context["transId"] = preparsed["trans_id"]
+    if preparsed.get("bc_code"):      context["bc_code"]        = preparsed["bc_code"]
+    if preparsed.get("tpe_code"):     context["tpe_code"]       = preparsed["tpe_code"]
+    if preparsed.get("step_result"):  context["step_result"]    = preparsed["step_result"]
+    if preparsed.get("mc_status"):    context["mc_status"]      = preparsed["mc_status"]
+    if preparsed.get("user_id"):      context["userId"]         = preparsed["user_id"]
+    if preparsed.get("trans_id"):     context["transId"]        = preparsed["trans_id"]
     if preparsed.get("product_type"): context["routingProduct"] = preparsed["product_type"]
 
     return {
@@ -442,7 +454,13 @@ Quy tắc:
             "bestSopIndex": -1,
         }
 
-    best_idx = reasoning.get("bestSopIndex", 0)
+    # If error_routing matched (routing_level is set), always use index 0 — deterministic routing wins
+    if state.get("routing_level") is not None:
+        best_idx = 0
+        print(f"[reason] forcing bestSopIndex=0 due to error_routing match (level={state.get('routing_level')})", flush=True)
+    else:
+        best_idx = reasoning.get("bestSopIndex", 0)
+
     selected_sop = sops[best_idx] if sops and 0 <= best_idx < len(sops) else (sops[0] if sops else None)
 
     return {"reasoning": reasoning, "selected_sop": selected_sop}
