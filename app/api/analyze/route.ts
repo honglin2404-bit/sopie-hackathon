@@ -17,51 +17,6 @@ function extractIds(text: string): { userId: string | null; transId: string | nu
   }
 }
 
-// Vietnamese public holidays (fixed + Tet estimates 2025-2028)
-const VN_HOLIDAYS = new Set([
-  '2025-01-01','2025-01-27','2025-01-28','2025-01-29','2025-01-30','2025-01-31',
-  '2025-04-07','2025-04-30','2025-05-01','2025-09-02',
-  '2026-01-01','2026-01-28','2026-01-29','2026-01-30','2026-01-31','2026-02-01',
-  '2026-03-18','2026-04-30','2026-05-01','2026-09-02',
-  '2027-01-01','2027-02-15','2027-02-16','2027-02-17','2027-02-18','2027-02-19',
-  '2027-04-06','2027-04-30','2027-05-01','2027-09-02',
-])
-
-function isBusinessDay(date: Date): boolean {
-  const day = date.getDay()
-  if (day === 0 || day === 6) return false
-  const key = date.toISOString().slice(0, 10)
-  return !VN_HOLIDAYS.has(key)
-}
-
-function addBusinessDays(startDate: Date, days: number): Date {
-  const result = new Date(startDate)
-  let added = 0
-  while (added < days) {
-    result.setDate(result.getDate() + 1)
-    if (isBusinessDay(result)) added++
-  }
-  return result
-}
-
-function parseDateFromTransId(transId: string | null): Date | null {
-  if (!transId || transId.length < 6) return null
-  const yy = transId.slice(0, 2)
-  const mm = transId.slice(2, 4)
-  const dd = transId.slice(4, 6)
-  const year = parseInt(`20${yy}`)
-  const month = parseInt(mm) - 1
-  const day = parseInt(dd)
-  if (isNaN(year) || isNaN(month) || isNaN(day)) return null
-  return new Date(year, month, day)
-}
-
-function formatDateVN(date: Date): string {
-  const dd = String(date.getDate()).padStart(2, '0')
-  const mm = String(date.getMonth() + 1).padStart(2, '0')
-  return `${dd}/${mm}/${date.getFullYear()}`
-}
-
 // Build structured internal note text — Vietnamese labels, Freshdesk-ready format
 function buildInternalNoteText(params: {
   userId: string | null
