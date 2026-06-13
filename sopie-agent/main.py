@@ -294,7 +294,8 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
                 # use ilike so "-400" matches "-400,-53,6,7"
                 query = query.ilike("mc_status", f"%{mc_status}%")
             if product:
-                query = query.eq("product", product)
+                # Match rows where product = given value OR product IS NULL (applies to all products)
+                query = query.or_(f"product.eq.{product},product.is.null")
         else:
             return None, None, None, None
 
@@ -312,7 +313,7 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
                 return sop.data[0], row["action_type"], row["level"], recheck_days
     except Exception as e:
         print(f"[error_routing] lookup failed: {e}", flush=True)
-    return None, None, None
+    return None, None, None, None
 
 
 # --- Node 2: Knowledge Retrieval ---
