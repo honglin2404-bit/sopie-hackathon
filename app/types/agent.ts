@@ -46,7 +46,7 @@ export interface AnalysisResult {
   domain: string
   urgency: Urgency
   customerTone: CustomerTone
-  processingDirection: string
+  processingDirection: string[]
   internalNote: InternalNote
   customerReply: string
   replyToneNote: string

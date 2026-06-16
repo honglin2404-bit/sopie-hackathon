@@ -396,8 +396,15 @@ function ResultPanel({ result, isLowConfidence, error }: {
             </div>
           )}
           <div>
-            <span className="text-gray-500 dark:text-gray-400 font-medium">Hướng xử lý: </span>
-            <span className="text-gray-800 dark:text-gray-200">{result.processingDirection}</span>
+            <span className="text-gray-500 dark:text-gray-400 font-medium">Hướng xử lý:</span>
+            <div className="mt-1 space-y-1">
+              {(Array.isArray(result.processingDirection) ? result.processingDirection : [result.processingDirection]).map((step: string, i: number) => (
+                <div key={i} className="flex gap-2 text-gray-800 dark:text-gray-200">
+                  <span className="text-purple-500 font-bold mt-0.5 shrink-0">→</span>
+                  <span>{step}</span>
+                </div>
+              ))}
+            </div>
           </div>
           {result.sourceKnowledge?.length > 0 && (
             <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">

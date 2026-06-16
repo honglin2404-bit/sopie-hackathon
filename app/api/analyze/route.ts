@@ -206,7 +206,7 @@ export async function POST(req: NextRequest) {
       domain: agentData.sourceKnowledge?.domain || 'General',
       urgency: agentData.needEscalation ? 'Cao' : 'Trung bình',
       customerTone: agentData.customerTone || 'normal',
-      processingDirection: recommendedActions.join(' → ') || agentData.rootCause || '',
+      processingDirection: recommendedActions.length > 0 ? recommendedActions : (agentData.rootCause ? [agentData.rootCause] : []),
       internalNote: {
         userId,
         transId,
