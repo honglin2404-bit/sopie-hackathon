@@ -83,9 +83,9 @@ export default function Home() {
             {/* Brand */}
             <div className="text-center md:text-left">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                FAQ Search Tool
+                SOPie V2
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">powered by SOPie</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Resolution Agent · powered by Zalopay CS</p>
             </div>
 
             {/* Controls */}

@@ -298,29 +298,44 @@ def _semantic_search(intent: str, limit: int = 5) -> list:
 
 
 def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
-    """Deterministic lookup in error_routing table. Returns (sop_data, action_type, level).
-    mc_status_updated intentionally excluded — the LLM confuses TPE success code (1) with
-    a status update, adding a spurious AND clause that kills matches on NULL rows."""
+    """Deterministic lookup in error_routing table. Returns (sop_data, action_type, level, recheck_days).
+
+    Routing logic (uses error_type column to disambiguate):
+    - BC  : bank rejected (bc_code present)
+    - TPE : ZaloPay engine error (tpe_code != "1")
+    - CPS : TPE success (tpe_code="1") but merchant/cashier status is pending/failed
+            For fresh tickets we filter mc_status_updated IS NULL — this is the "initial pending"
+            state row. The recheck path (/generate route) builds a new synthetic ticket so it
+            naturally resolves to the post-check SOP without needing mc_status_updated filter.
+    """
     try:
         print(f"[error_routing] lookup params: bc_code={bc_code!r} tpe_code={tpe_code!r} step_result={step_result!r} mc_status={mc_status!r} product={product!r}", flush=True)
         query = supabase.table("error_routing").select("sop_id, action_type, level, note")
 
         if bc_code:
-            query = query.eq("bc_code", bc_code)
-        elif tpe_code:
-            query = query.eq("tpe_code", tpe_code)
+            # BC: bank error — match by error_type + bc_code only
+            query = query.eq("error_type", "BC").eq("bc_code", bc_code)
+
+        elif tpe_code and tpe_code != "1":
+            # TPE: ZaloPay engine failure — match by error_type + tpe_code + optional step_result
+            query = query.eq("error_type", "TPE").eq("tpe_code", tpe_code)
             if step_result:
                 query = query.eq("step_result", step_result)
-            if mc_status:
-                # mc_status in DB may be comma-separated e.g. "-400,-53,6,7"
-                query = query.ilike("mc_status", f"%{mc_status}%")
-            if product:
-                query = query.or_(f"product.eq.{product},product.is.null")
+
         elif mc_status:
-            # Cashier/Merchant format: mc_status present but no TPE/BC code
+            # CPS: TPE returned success (1) but merchant/cashier status is pending or failed
+            # Also handles tickets where tpe_code is absent but mc_status is present
+            query = query.eq("error_type", "CPS")
+            if tpe_code == "1":
+                query = query.eq("tpe_code", "1")
+            # mc_status in DB is comma-separated e.g. "-400,-53,6,7"
             query = query.ilike("mc_status", f"%{mc_status}%")
+            # Fresh ticket: only match rows where mc_status_updated IS NULL (initial/pending state)
+            # This prevents non-deterministic picks among rows differing only by mc_status_updated
+            query = query.is_("mc_status_updated", "null")
             if product:
                 query = query.or_(f"product.eq.{product},product.is.null")
+
         else:
             return None, None, None, None
 

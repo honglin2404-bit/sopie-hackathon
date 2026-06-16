@@ -4,7 +4,13 @@ export type AnalyzeMode = 'fd' | 'free'
 
 export type Urgency = 'Thap' | 'Trung binh' | 'Cao'
 
-export type CustomerTone = 'angry' | 'neutral' | 'normal'
+// Actual values from backend (main.py)
+export type CustomerTone =
+  | 'binh_thuong'  // neutral, normal
+  | 'kho_chiu'     // frustrated
+  | 'gay_gat'      // aggressive
+  | 'de_doa'       // threatening
+  | 'angry' | 'neutral' | 'normal' // legacy fallbacks
 
 export interface SourceKnowledge {
   sopId: string
@@ -47,6 +53,7 @@ export interface AnalysisResult {
   sourceKnowledge: SourceKnowledge[]
   confidence: number
   toolGuidance?: ToolGuidance
+  appointmentDate?: string | null  // T+N business days deadline, calculated from TransID date
 }
 
 export interface AnalyzeResponse {
