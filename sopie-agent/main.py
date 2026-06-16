@@ -22,11 +22,13 @@ load_dotenv()
 app = GreenNodeAgentBaseApp()
 
 # --- Environment ---
-LLM_MODEL = os.environ.get("LLM_MODEL", "")
-LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "")
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+LLM_MODEL        = os.environ.get("LLM_MODEL", "")           # extract_context (fast, structured)
+LLM_MODEL_REASON = os.environ.get("LLM_MODEL_REASON", "")    # reason (strongest — critical node)
+LLM_MODEL_GEN    = os.environ.get("LLM_MODEL_GEN", "")       # generate_response (Vietnamese text)
+LLM_BASE_URL     = os.environ.get("LLM_BASE_URL", "")
+LLM_API_KEY      = os.environ.get("LLM_API_KEY", "")
+SUPABASE_URL     = os.environ.get("SUPABASE_URL", "")
+OPENAI_API_KEY   = os.environ.get("OPENAI_API_KEY", "")
 
 _missing = [k for k, v in {
     "LLM_MODEL": LLM_MODEL, "LLM_BASE_URL": LLM_BASE_URL,
@@ -35,15 +37,26 @@ _missing = [k for k, v in {
 if _missing:
     raise ValueError(f"Missing required environment variables: {', '.join(_missing)}")
 
-# Fast LLM — used for extract_context and generate_response
-llm = ChatOpenAI(
-    model=LLM_MODEL,
-    base_url=LLM_BASE_URL,
-    api_key=LLM_API_KEY,
-    extra_body={"chat_template_kwargs": {"enable_thinking": False}},
-)
+# Fallback: nếu không set LLM_MODEL_REASON / LLM_MODEL_GEN thì dùng LLM_MODEL
+_reason_model = LLM_MODEL_REASON or LLM_MODEL
+_gen_model    = LLM_MODEL_GEN    or LLM_MODEL
 
-print(f"[startup] llm={LLM_MODEL}", flush=True)
+def _make_llm(model: str) -> ChatOpenAI:
+    """Create a ChatOpenAI instance. Qwen models need enable_thinking=False;
+    other models (MiniMax, Gemma, etc.) don't support that param."""
+    kwargs: dict = dict(model=model, base_url=LLM_BASE_URL, api_key=LLM_API_KEY)
+    if model.startswith("qwen"):
+        kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
+    return ChatOpenAI(**kwargs)
+
+# Node 1 — extract_context: fast structured JSON extraction
+llm = _make_llm(LLM_MODEL)
+# Node 3 — reason: strongest model, picks correct SOP and decides escalation
+llm_reason = _make_llm(_reason_model)
+# Node 4 — generate_response: instruction-following, Vietnamese text generation
+llm_generate = _make_llm(_gen_model)
+
+print(f"[startup] llm={LLM_MODEL} | llm_reason={_reason_model} | llm_generate={_gen_model}", flush=True)
 
 # Retrieve Supabase key from AgentBase Identity at startup (never hardcoded)
 print("[startup] Initializing Supabase client via AgentBase Identity...", flush=True)
@@ -118,11 +131,12 @@ def _preparse_fd_ticket(text: str) -> dict:
         m = re.search(r'^(-?\d+)', tpe_raw.strip())
         tpe_code = m.group(1) if m else None
 
-    # Step result — only 6-digit infocodes (e.g. 210000, 210800), not "1" or "-5077"
+    # Step result — only valid infocodes (pattern: 21xxxx, e.g. 210000, 210800)
+    # Reject codes like 101118 which are step position codes, not infocodes
     step_raw = get_field("Step result", "Step Result")
     step_result = None
     if step_raw:
-        m = re.search(r'\b(\d{6,})\b', step_raw)
+        m = re.search(r'\b(21\d{4})\b', step_raw)
         step_result = m.group(1) if m else None
 
     # mc_status from Merchant status — extract just the code part
@@ -154,8 +168,7 @@ def _preparse_fd_ticket(text: str) -> dict:
             product_type = "TE"
         elif prefix == "BI":
             product_type = "BI"
-        elif prefix == "AC":
-            product_type = "AC"  # Cashier — không phải Account domain
+        # AC prefix: don't set yet — let keyword detection run first
 
     if not product_type:
         telco_keywords = ["viettel", "vinaphone", "mobifone", "vietnamobile", "gmobile",
@@ -165,6 +178,10 @@ def _preparse_fd_ticket(text: str) -> dict:
             product_type = "TE"
         elif any(k in combined_text for k in billing_keywords):
             product_type = "BI"
+
+    # AC prefix with no keyword match → default BI (merchant/service payment, not telco)
+    if not product_type and product_code and product_code[:2].upper() == "AC":
+        product_type = "BI"
 
     print(f"[preparse] tpe_code={tpe_code!r} step_result={step_result!r} bc_code={bc_code!r} mc_status={mc_status!r} product_type={product_type!r} product_code={product_code!r}", flush=True)
     return {
@@ -201,7 +218,7 @@ Focus on extracting: intent, keyIndicators, transactionType, product from the M�
 
 Return ONLY a valid JSON object with exactly these fields:
 {{
-  "errorCode": "error/transaction code if mentioned, or null",
+  "errorCode": "ONLY if a literal 'Mã lỗi' field exists in ticket with a numeric code, else null — do NOT infer",
   "product": "ZaloPay product area (wallet, payment, lending, promotion, travel, merchant, or general)",
   "transactionType": "transaction type if applicable (transfer, topup, withdrawal, payment, etc.), or null",
   "intent": "what the customer wants in one sentence",
@@ -333,7 +350,9 @@ def _error_routing_lookup(bc_code, tpe_code, step_result, mc_status, product):
             # Fresh ticket: only match rows where mc_status_updated IS NULL (initial/pending state)
             # This prevents non-deterministic picks among rows differing only by mc_status_updated
             query = query.is_("mc_status_updated", "null")
-            if product:
+            # Only apply product filter for known CPS product types (TE, BI)
+            # AC or other prefixes have no dedicated CPS rows — fall back to any match
+            if product in ("TE", "BI"):
                 query = query.or_(f"product.eq.{product},product.is.null")
 
         else:
@@ -458,6 +477,10 @@ def reason(state: ResolutionState) -> dict:
     else:
         sops_text = "No relevant SOPs found."
 
+    routing_hint = ""
+    if state.get("routing_level") is not None:
+        routing_hint = f"\n⚠️ Routing hint: SOP[0] được xác định bởi error_routing table (tất định, độ chính xác cao). Ưu tiên chọn SOP[0] TRỪ KHI customer intent rõ ràng không khớp (ví dụ: KH hỏi về hoàn tiền nhưng SOP[0] chỉ cover lỗi GD thất bại)."
+
     prompt = f"""You are a Senior Shift Lead at ZaloPay Customer Service.
 
 Ticket context:
@@ -466,7 +489,7 @@ Ticket context:
 - Transaction Type: {ctx.get('transactionType') or 'None'}
 - Customer Intent: {ctx.get('intent')}
 - Key Indicators: {', '.join(ctx.get('keyIndicators', []))}
-
+{routing_hint}
 Retrieved SOPs (indexed 0 to {len(sops)-1}):
 {sops_text}
 
@@ -483,11 +506,12 @@ Dựa chỉ vào context ticket và SOPs ở trên, trả về ONLY một JSON o
 Quy tắc:
 - bestSopIndex: index 0-based của SOP phù hợp nhất, hoặc -1 nếu không có SOP nào áp dụng
 - confidence: 0-100, phản ánh mức độ SOP khớp với ticket
-- needEscalation: true chỉ khi CS2 hoặc Engineering phải xử lý case này
+- needEscalation: true CHỈ KHI SOP không có bước tự xử lý nào và bắt buộc chuyển CS2/Engineering ngay từ đầu. Nếu SOP có check_tool_guideline hoặc bất kỳ bước kiểm tra nào → needEscalation PHẢI là false (CS agent cần tự kiểm tra trước)
+- confidence: phản ánh mức độ SOP khớp với ticket. Nếu có tool check steps chưa hoàn thành → cap tối đa 80
 - Không được bịa chính sách không có trong các SOP ở trên
 - Tất cả các trường văn bản phải viết bằng tiếng Việt"""
 
-    response = llm.invoke([HumanMessage(content=prompt)])
+    response = llm_reason.invoke([HumanMessage(content=prompt)])
     reasoning = _parse_json(response.content)
     if not reasoning:
         reasoning = {
@@ -499,12 +523,13 @@ Quy tắc:
             "bestSopIndex": -1,
         }
 
-    # If error_routing matched (routing_level is set), always use index 0 — deterministic routing wins
-    if state.get("routing_level") is not None:
-        best_idx = 0
-        print(f"[reason] forcing bestSopIndex=0 due to error_routing match (level={state.get('routing_level')})", flush=True)
-    else:
-        best_idx = reasoning.get("bestSopIndex", 0)
+    # If error_routing matched, treat index 0 as priority hint but allow LLM to override
+    # when customer intent clearly doesn't match (e.g., hoàn tiền vs. GD thất bại)
+    best_idx = reasoning.get("bestSopIndex", 0)
+    if state.get("routing_level") is not None and best_idx != 0:
+        print(f"[reason] LLM overrode error_routing: bestSopIndex={best_idx} (routing_level={state.get('routing_level')})", flush=True)
+    elif state.get("routing_level") is not None:
+        print(f"[reason] confirmed error_routing match: bestSopIndex=0 (level={state.get('routing_level')})", flush=True)
 
     print(f"[reason] routing_level={state.get('routing_level')} final bestSopIndex={best_idx} (LLM suggested={reasoning.get('bestSopIndex', 0)}) sops_count={len(sops)}", flush=True)
     selected_sop = sops[best_idx] if sops and 0 <= best_idx < len(sops) else (sops[0] if sops else None)
@@ -612,7 +637,7 @@ Return ONLY a valid JSON object:
   "templateAdapted": "Chào bạn,\n{tone_config['empathy']}\n[solution content]\n{tone_config['closing']}"
 }}"""
 
-    response = llm.invoke([HumanMessage(content=prompt)])
+    response = llm_generate.invoke([HumanMessage(content=prompt)])
     output = _parse_json(response.content)
     if not output:
         output = {

@@ -166,8 +166,11 @@ export async function POST(req: NextRequest) {
       : []
 
     // Build internal note — Vietnamese format, structured for Freshdesk
+    // Normalize line breaks: LLM may return literal \n strings instead of actual newlines
     const agentNote: string =
-      typeof agentData.internalNote === 'string' ? agentData.internalNote : ''
+      typeof agentData.internalNote === 'string'
+        ? agentData.internalNote.replace(/\\n/g, '\n')
+        : ''
 
     const internalNoteFullText = buildInternalNoteText({ userId, transId, agentNote })
 

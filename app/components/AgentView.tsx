@@ -134,134 +134,28 @@ function ToolCheckBox({ toolGuidance }: { toolGuidance: ToolGuidance }) {
 }
 
 // ─── CS Validation Checkpoint ─────────────────────────────────────────────────
-type ValidationState = 'idle' | 'confirmed' | 'recheck'
-
 function ValidationCheckpoint({
   onConfirm,
-  onRecheck,
-  loading,
 }: {
   onConfirm: () => void
-  onRecheck: (newStatus: string, note: string) => void
-  loading: boolean
 }) {
-  const [state, setState] = useState<ValidationState>('idle')
-  const [newStatus, setNewStatus] = useState('')
-  const [customStatus, setCustomStatus] = useState('')
-  const [note, setNote] = useState('')
-
-  const handleRecheck = useCallback(() => {
-    const status = newStatus === 'other' ? customStatus.trim() : newStatus
-    if (!status) return
-    onRecheck(status, note)
-  }, [newStatus, customStatus, note, onRecheck])
-
-  if (state === 'idle') {
-    return (
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg">✅</span>
-          <h3 className="text-base font-bold text-gray-900 dark:text-white">Xác nhận kết quả tool</h3>
-        </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Sau khi kiểm tra trên tool, kết quả có khớp với nhận định của AI không?
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={() => { setState('confirmed'); onConfirm() }}
-            disabled={loading}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-sm transition-colors shadow-sm disabled:opacity-50"
-          >
-            ✓ Kết quả khớp — Tạo kết quả
-          </button>
-          <button
-            onClick={() => setState('recheck')}
-            disabled={loading}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-900/50 text-amber-800 dark:text-amber-300 font-semibold text-sm transition-colors"
-          >
-            ↺ Kết quả thay đổi
-          </button>
-        </div>
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-lg">✅</span>
+        <h3 className="text-base font-bold text-gray-900 dark:text-white">Xác nhận kết quả tool</h3>
       </div>
-    )
-  }
-
-  if (state === 'recheck') {
-    const canSubmit = newStatus && (newStatus !== 'other' || customStatus.trim().length > 0)
-    return (
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-amber-200 dark:border-amber-800">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg">↺</span>
-          <h3 className="text-base font-bold text-gray-900 dark:text-white">Nhập kết quả tool mới</h3>
-        </div>
-
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
-              Status mới sau khi check tool <span className="text-red-500">*</span>
-            </label>
-            <select
-              value={newStatus}
-              onChange={e => setNewStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-purple-500"
-            >
-              <option value="">-- Chọn status --</option>
-              {PAYMENT_STATUS_OPTIONS.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
-          </div>
-
-          {newStatus === 'other' && (
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
-                Nhập mã lỗi / status
-              </label>
-              <input
-                type="text"
-                value={customStatus}
-                onChange={e => setCustomStatus(e.target.value)}
-                placeholder="VD: -999"
-                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-purple-500"
-              />
-            </div>
-          )}
-
-          <div>
-            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
-              Ghi chú thêm <span className="text-gray-400 font-normal">(tuỳ chọn, tối đa 150 ký tự)</span>
-            </label>
-            <input
-              type="text"
-              value={note}
-              onChange={e => setNote(e.target.value.slice(0, 150))}
-              placeholder='VD: "GD đã cập nhật thành công, KH xác nhận nhận được tiền"'
-              className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-purple-500"
-            />
-            <p className="text-xs text-gray-400 mt-1 text-right">{note.length}/150</p>
-          </div>
-
-          <div className="flex gap-3 pt-1">
-            <button
-              onClick={handleRecheck}
-              disabled={!canSubmit || loading}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Đang cập nhật...' : '↺ Cập nhật kết quả'}
-            </button>
-            <button
-              onClick={() => setState('idle')}
-              className="px-4 py-2.5 rounded-xl text-sm text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 transition-colors"
-            >
-              Quay lại
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  return null
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        Sau khi kiểm tra trên tool, nhấn để tạo Internal Note và Template phản hồi.
+      </p>
+      <button
+        onClick={onConfirm}
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-sm transition-colors shadow-sm"
+      >
+        ✓ Tạo kết quả
+      </button>
+    </div>
+  )
 }
 
 // ─── Final Output Panel ────────────────────────────────────────────────────────
@@ -269,20 +163,13 @@ function OutputPanel({
   internalNoteText,
   customerReply,
   replyToneNote,
-  isGen2,
 }: {
   internalNoteText: string
   customerReply: string
   replyToneNote: string
-  isGen2?: boolean
 }) {
   return (
     <div className="space-y-4">
-      {isGen2 && (
-        <div className="flex items-center gap-2 px-4 py-2 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
-          <span className="text-purple-600 dark:text-purple-400 text-sm font-semibold">✓ Đã cập nhật theo kết quả tool</span>
-        </div>
-      )}
 
       <SectionCard
         icon="📝"
@@ -312,48 +199,19 @@ function OutputPanel({
 }
 
 // ─── Result Panel (full flow) ──────────────────────────────────────────────────
-type OutputPhase = 'none' | 'gen1' | 'gen2'
-
 function ResultPanel({ result, isLowConfidence, error }: {
   result: AnalysisResult; isLowConfidence: boolean; error: string | null
 }) {
   const tone = TONE_MAP[result.customerTone] || TONE_MAP.normal
   const urgencyClass = URGENCY_COLOR[result.urgency] || 'bg-gray-100 text-gray-700'
 
-  const [outputPhase, setOutputPhase] = useState<OutputPhase>('none')
-  const [gen2Loading, setGen2Loading] = useState(false)
-  const [gen2Note, setGen2Note] = useState('')
-  const [gen2Reply, setGen2Reply] = useState('')
+  const [showOutput, setShowOutput] = useState(false)
 
   const hasToolGuidance = !!(result.toolGuidance?.guideline)
 
   const handleConfirm = useCallback(() => {
-    setOutputPhase('gen1')
+    setShowOutput(true)
   }, [])
-
-  const handleRecheck = useCallback(async (newStatus: string, note: string) => {
-    setGen2Loading(true)
-    try {
-      const res = await fetch('/api/analyze/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          originalResult: result,
-          newStatus,
-          note,
-        }),
-      })
-      const data = await res.json()
-      if (data.internalNote) setGen2Note(data.internalNote)
-      if (data.customerReply) setGen2Reply(data.customerReply)
-      setOutputPhase('gen2')
-    } catch {
-      // fallback: show gen1 output
-      setOutputPhase('gen1')
-    } finally {
-      setGen2Loading(false)
-    }
-  }, [result])
 
   return (
     <div className="space-y-4">
@@ -441,19 +299,15 @@ function ResultPanel({ result, isLowConfidence, error }: {
       )}
 
       {/* Section 3 — Validation Checkpoint */}
-      {hasToolGuidance && outputPhase === 'none' && (
-        <ValidationCheckpoint
-          onConfirm={handleConfirm}
-          onRecheck={handleRecheck}
-          loading={gen2Loading}
-        />
+      {hasToolGuidance && !showOutput && (
+        <ValidationCheckpoint onConfirm={handleConfirm} />
       )}
 
       {/* No tool guidance: show generate button directly */}
-      {!hasToolGuidance && outputPhase === 'none' && (
+      {!hasToolGuidance && !showOutput && (
         <div className="flex justify-start">
           <button
-            onClick={() => setOutputPhase('gen1')}
+            onClick={() => setShowOutput(true)}
             className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm shadow-sm transition-colors"
           >
             Tạo Internal Note & Reply
@@ -462,29 +316,12 @@ function ResultPanel({ result, isLowConfidence, error }: {
       )}
 
       {/* Final Output */}
-      {outputPhase === 'gen1' && (
+      {showOutput && (
         <OutputPanel
           internalNoteText={result.internalNote?.fullText || ''}
           customerReply={result.customerReply}
           replyToneNote={result.replyToneNote}
-          isGen2={false}
         />
-      )}
-      {outputPhase === 'gen2' && (
-        <OutputPanel
-          internalNoteText={gen2Note || result.internalNote?.fullText || ''}
-          customerReply={gen2Reply || result.customerReply}
-          replyToneNote={result.replyToneNote}
-          isGen2={true}
-        />
-      )}
-      {gen2Loading && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 animate-pulse">
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-3" />
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-2" />
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
-          <p className="text-center text-sm text-gray-500 mt-4">Đang re-generate theo kết quả tool mới...</p>
-        </div>
       )}
     </div>
   )
@@ -492,94 +329,35 @@ function ResultPanel({ result, isLowConfidence, error }: {
 
 // ─── Main AgentView ────────────────────────────────────────────────────────────
 export function AgentView({ darkMode }: { darkMode: boolean }) {
-  const [mode, setMode] = useState<AnalyzeMode>('fd')
   const [ticketContent, setTicketContent] = useState('')
-  const [issueDescription, setIssueDescription] = useState('')
-  const [attemptedSolutions, setAttemptedSolutions] = useState('')
   const { loading, result, error, errorCode, isLowConfidence, analyze, reset } = useAnalyze()
 
   const handleAnalyze = useCallback(() => {
-    if (mode === 'fd') {
-      analyze({ mode: 'fd', ticketContent })
-    } else {
-      analyze({ mode: 'free', issueDescription, attemptedSolutions })
-    }
-  }, [mode, ticketContent, issueDescription, attemptedSolutions, analyze])
+    analyze({ mode: 'fd', ticketContent })
+  }, [ticketContent, analyze])
 
   const handleReset = useCallback(() => {
     reset()
     setTicketContent('')
-    setIssueDescription('')
-    setAttemptedSolutions('')
   }, [reset])
 
-  const canAnalyze = !loading && (
-    mode === 'fd' ? ticketContent.trim().length > 10 : issueDescription.trim().length > 5
-  )
+  const canAnalyze = !loading && ticketContent.trim().length > 10
 
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-sm font-medium text-gray-500 dark:text-gray-400 mr-1">Chế độ:</span>
-          {(['fd', 'free'] as AnalyzeMode[]).map(m => (
-            <button
-              key={m}
-              onClick={() => { setMode(m); reset() }}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                mode === m
-                  ? 'bg-purple-600 text-white shadow-sm'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-              }`}
-            >
-              {m === 'fd' ? 'FD Ticket' : 'Optional'}
-            </button>
-          ))}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Dán nội dung ticket FD
+          </label>
+          <textarea
+            value={ticketContent}
+            onChange={e => setTicketContent(e.target.value)}
+            placeholder={FD_PLACEHOLDER}
+            rows={9}
+            className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-purple-500 transition-colors placeholder-gray-400 text-sm resize-none"
+          />
         </div>
-
-        {mode === 'fd' && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Dán nội dung ticket FD
-            </label>
-            <textarea
-              value={ticketContent}
-              onChange={e => setTicketContent(e.target.value)}
-              placeholder={FD_PLACEHOLDER}
-              rows={9}
-              className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-purple-500 transition-colors placeholder-gray-400 text-sm resize-none"
-            />
-          </div>
-        )}
-
-        {mode === 'free' && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Mô tả vấn đề của khách hàng <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                value={issueDescription}
-                onChange={e => setIssueDescription(e.target.value)}
-                placeholder={FREE_ISSUE_PLACEHOLDER}
-                rows={5}
-                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-purple-500 transition-colors placeholder-gray-400 text-sm resize-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Đã thử / đã làm gì <span className="text-gray-400 font-normal">(tuỳ chọn)</span>
-              </label>
-              <textarea
-                value={attemptedSolutions}
-                onChange={e => setAttemptedSolutions(e.target.value)}
-                placeholder={FREE_TRIED_PLACEHOLDER}
-                rows={3}
-                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-purple-500 transition-colors placeholder-gray-400 text-sm resize-none"
-              />
-            </div>
-          </div>
-        )}
 
         <div className="flex items-center gap-3 mt-5">
           <button
