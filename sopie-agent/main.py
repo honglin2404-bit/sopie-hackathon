@@ -574,6 +574,7 @@ def generate_response(state: ResolutionState) -> dict:
     tone_config = _TONE_LINES.get(customer_tone, _TONE_LINES["binh_thuong"])
 
     # Ưu tiên resolution_summary (ngắn gọn cho AI), fallback sang solution_l1
+    sop_cause = sop.get("cause", "")
     sop_solution = sop.get("resolution_summary", "") or sop.get("solution_l1", "")
     sop_detail = sop.get("solution_l2", "")
     sop_escalation = sop.get("escalation_criteria", "")
@@ -591,6 +592,7 @@ Ticket summary:
 - Recommended Actions: {json.dumps(reasoning.get('recommendedActions', []), ensure_ascii=False)}
 - Needs Escalation: {reasoning.get('needEscalation')}
 - SOP: {sop.get('title', 'N/A')}
+- SOP Cause (dùng làm Nguyên nhân trong internalNote): {sop_cause or reasoning.get('rootCause') or 'Không xác định'}
 - SOP Solution: {sop_solution}
 - SOP Detail: {sop_detail}
 - Escalation Criteria: {sop_escalation or 'Not specified'}{action_guidance}
@@ -607,7 +609,7 @@ Write three outputs in Vietnamese:
 
 Mô tả vấn đề: [1-2 câu mô tả tình huống khách hàng gặp phải]
 
-Nguyên nhân: [nguyên nhân kỹ thuật hoặc nghiệp vụ]
+Nguyên nhân: [lấy trực tiếp từ "SOP Cause" ở trên — không được viết "Không xác định" nếu SOP Cause đã có nội dung]
 
 Hướng xử lý đề xuất: [các bước xử lý, mỗi bước trên 1 dòng, dùng dấu → để phân cách]
 
@@ -629,6 +631,7 @@ TONE ADAPTATION RULES:
 4. Solution content (middle section) is taken directly from the base template — do NOT modify it.
 5. Output the complete template: "Chào bạn," + empathy line + solution content + closing line.
 6. If base template is "N/A" or empty, output an empty string for templateAdapted.
+7. CRITICAL: If the base template contains "____" (underscores placeholder), preserve it EXACTLY as "____" — do NOT replace it with a date, number, or any text. The system will fill it in automatically.
 
 Return ONLY a valid JSON object:
 {{
